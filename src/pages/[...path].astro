@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Home from '../components/Home.astro';
+import InnerPage from '../components/InnerPage.astro';
+import { routes, copy, type Lang } from '../data/site';
+export function getStaticPaths() {
+  return (['en', 'hi'] as const).flatMap((lang) =>
+    routes.map((slug, i) => ({
+      params: {
+        path:
+          [lang === 'hi' ? 'hi' : '', slug].filter(Boolean).join('/') ||
+          undefined,
+      },
+      props: { lang, slug, title: copy[lang].titles[i] },
+    })),
+  );
+}
+const { lang, slug, title } = Astro.props as {
+  lang: Lang;
+  slug: string;
+  title: string;
+};
+---
+
+<Layout
+  lang={lang}
+  slug={slug}
+  title={title}
+  description={slug ? `${title}. ${copy[lang].intro}` : copy[lang].heroText}
+>
+  {slug ? (
+    <InnerPage lang={lang} slug={slug} title={title} />
+  ) : (
+    <Home lang={lang} />
+  )}
+</Layout>

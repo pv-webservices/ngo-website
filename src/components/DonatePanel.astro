@@ -1,0 +1,53 @@
+---
+import { copy, url, img, type Lang } from '../data/site';
+import Icon from './Icon.astro';
+import BankDetails from './BankDetails.astro';
+const { lang, showButton = true } = Astro.props as {
+  lang: Lang;
+  showButton?: boolean;
+};
+const t = copy[lang];
+---
+
+<div class="donate-panel">
+  <div class="donate-visual">
+    <img
+      src={img('generated/donate-hands')}
+      width="1200"
+      height="896"
+      alt=""
+      loading="lazy"
+    />
+  </div>
+  <div class="donate-copy">
+    <span class="eyebrow">{t.supportEyebrow}</span>
+    <h2>{t.supportTitle}</h2>
+    <p>{t.supportText}</p>
+    <ul class="use-list">
+      {t.supportUses.map((use) => (
+        <li>
+          <Icon name="check" size={16} />
+          {use}
+        </li>
+      ))}
+    </ul>
+    {showButton && (
+      <a class="btn btn-donate" href={url(lang, 'donate')}>
+        {t.donate}
+        <Icon name="arrow" size={18} />
+      </a>
+    )}
+  </div>
+  <BankDetails lang={lang} />
+  <div class="qr-panel hover-card">
+    <h3>{t.scan}</h3>
+    <img
+      src="/images/donation-qr.png"
+      alt={t.qrAlt}
+      width="295"
+      height="295"
+      loading="lazy"
+    />
+    <p>{t.qrNote}</p>
+  </div>
+</div>

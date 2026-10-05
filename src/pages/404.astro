@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { copy } from '../data/site';
+---
+
+<Layout lang="en" slug="" title="Page not found">
+  <section class="section">
+    <div class="container cta-card">
+      <span class="eyebrow">404</span>
+      <h1>{copy.en.notFound}</h1>
+      <div class="btn-row center">
+        <a class="btn" href="/">
+          {copy.en.backHome}
+          <Icon name="arrow" size={18} />
+        </a>
+        <a class="btn btn-outline" href="/contact/">
+          {copy.en.contact}
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

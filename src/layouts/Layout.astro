@@ -1,0 +1,353 @@
+---
+import '@fontsource/manrope/latin-400.css';
+import '@fontsource/manrope/latin-500.css';
+import '@fontsource/manrope/latin-600.css';
+import '@fontsource/manrope/latin-700.css';
+import '@fontsource/poppins/latin-600.css';
+import '@fontsource/poppins/latin-700.css';
+import '@fontsource/poppins/devanagari-600.css';
+import '@fontsource/poppins/devanagari-700.css';
+import '@fontsource/kalam/latin-400.css';
+import '@fontsource/kalam/devanagari-400.css';
+import '@fontsource/noto-sans-devanagari/devanagari-400.css';
+import '@fontsource/noto-sans-devanagari/devanagari-600.css';
+import '../styles/global.css';
+import { copy, site, url, programs, type Lang } from '../data/site';
+import Icon from '../components/Icon.astro';
+const {
+  lang = 'en',
+  slug = '',
+  title,
+  description,
+} = Astro.props as {
+  lang: Lang;
+  slug?: string;
+  title: string;
+  description?: string;
+};
+const t = copy[lang];
+const navSlugs = [
+  '',
+  'about',
+  'our-work',
+  'gallery',
+  'videos',
+  'get-involved',
+  'contact',
+];
+const quickLinks = [
+  ['', t.nav[0]],
+  ['about', t.nav[1]],
+  ['our-work', t.nav[2]],
+  ['gallery', t.nav[3]],
+  ['videos', t.nav[4]],
+  ['get-involved', t.nav[5]],
+  ['donate', t.donate],
+  ['contact', t.nav[6]],
+];
+const canonical = `https://${site.domain}${url(lang, slug)}`;
+const social = [
+  ['facebook', site.facebook, lang === 'hi' ? 'फेसबुक' : 'Facebook'],
+  ['instagram', site.instagram, lang === 'hi' ? 'इंस्टाग्राम' : 'Instagram'],
+];
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#d62828" />
+    <title>{title} | {t.name}</title>
+    <meta name="description" content={description || t.heroText} />
+    <link rel="canonical" href={canonical} />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href={`https://${site.domain}${url('en', slug)}`}
+    />
+    <link
+      rel="alternate"
+      hreflang="hi"
+      href={`https://${site.domain}${url('hi', slug)}`}
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={`https://${site.domain}${url('en', slug)}`}
+    />
+    <link rel="icon" type="image/webp" href="/images/logo.webp" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`${title} | ${t.name}`} />
+    <meta property="og:description" content={description || t.heroText} />
+    <meta property="og:url" content={canonical} />
+    <meta
+      property="og:image"
+      content={`https://${site.domain}/images/generated/hero-care.webp`}
+    />
+    <meta property="og:locale" content={lang === 'hi' ? 'hi_IN' : 'en_IN'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'NGO',
+        name: site.name,
+        url: `https://${site.domain}`,
+        logo: `https://${site.domain}/images/logo.webp`,
+        email: site.email,
+        telephone: site.phones,
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: site.address.en,
+          addressLocality: 'Delhi',
+          postalCode: '110054',
+          addressCountry: 'IN',
+        },
+        sameAs: [site.facebook, site.instagram],
+      })}
+    />
+  </head>
+  <body data-lang={lang} data-slug={slug}>
+    <a class="skip-link" href="#main">
+      {t.skip}
+    </a>
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <div class="topbar-contact">
+          <a href={`tel:${site.phones[0]}`}>
+            <Icon name="phone" size={14} />
+            <span>{site.phoneLabels[0]}</span>
+          </a>
+          <span class="divider" aria-hidden="true"></span>
+          <a class="top-phone-2" href={`tel:${site.phones[1]}`}>
+            {site.phoneLabels[1]}
+          </a>
+          <a class="top-email" href={`mailto:${site.email}`}>
+            <Icon name="mail" size={15} />
+            {site.email}
+          </a>
+        </div>
+        <div class="top-social">
+          <div class="language-switch" role="group" aria-label={t.language}>
+            <a
+              lang="en"
+              href={url('en', slug)}
+              data-language="en"
+              aria-current={lang === 'en' ? 'true' : undefined}
+            >
+              EN
+            </a>
+            <a
+              lang="hi"
+              href={url('hi', slug)}
+              data-language="hi"
+              aria-current={lang === 'hi' ? 'true' : undefined}
+            >
+              हिन्दी
+            </a>
+          </div>
+          <span class="follow-label">{t.follow}</span>
+          {social.map(([icon, href, label]) => (
+            <a
+              href={href}
+              aria-label={label}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={`social-dot ${icon}`}
+            >
+              <Icon name={icon} size={14} />
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href={url(lang)}>
+          <img src="/images/logo.webp" width="72" height="72" alt="" />
+          <span>
+            <strong>{t.name}</strong>
+            <small>{t.tagline}</small>
+          </span>
+        </a>
+        <button
+          class="menu-toggle"
+          aria-expanded="false"
+          aria-controls="navigation"
+          aria-label={t.menu}
+        >
+          <Icon name="menu" />
+        </button>
+        <nav
+          id="navigation"
+          aria-label={lang === 'hi' ? 'मुख्य नेविगेशन' : 'Main navigation'}
+        >
+          <ul class="nav-links">
+            {navSlugs.map((s, i) => (
+              <li>
+                <a
+                  href={url(lang, s)}
+                  aria-current={slug === s ? 'page' : undefined}
+                >
+                  {t.nav[i]}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <a href={url(lang, 'donate')} class="btn btn-donate">
+            <Icon name="heart" size={16} filled />
+            {t.donate}
+          </a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <section class="touch-band" aria-labelledby="touch-title">
+      <div class="container touch-grid">
+        <div class="touch-copy">
+          <h2 id="touch-title">{t.contactEyebrow}</h2>
+          <p>{t.contactText}</p>
+          <div class="touch-methods">
+            <a href={`tel:${site.phones[0]}`} class="touch-item">
+              <span class="touch-icon">
+                <Icon name="phone" size={20} />
+              </span>
+              <span>
+                {site.phoneLabels[0]}
+                <small>{site.phoneLabels[1]}</small>
+              </span>
+            </a>
+            <a href={`mailto:${site.email}`} class="touch-item">
+              <span class="touch-icon">
+                <Icon name="mail" size={20} />
+              </span>
+              <span class="break">{site.email}</span>
+            </a>
+            <a href={`https://${site.domain}`} class="touch-item">
+              <span class="touch-icon">
+                <Icon name="globe" size={20} />
+              </span>
+              <span class="break">www.{site.domain}</span>
+            </a>
+            <div class="touch-social">
+              {social.map(([icon, href, label]) => (
+                <a
+                  href={href}
+                  aria-label={label}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class={`social-dot ${icon}`}
+                >
+                  <Icon name={icon} size={18} />
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div class="office-card hover-card">
+          <h3>
+            <Icon name="pin" size={20} />
+            {t.office}
+          </h3>
+          <address>{site.address[lang]}</address>
+          <a
+            class="text-link"
+            href={site.mapUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t.directions}
+            <Icon name="external" size={16} />
+          </a>
+        </div>
+      </div>
+    </section>
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href={url(lang)}>
+            <img
+              src="/images/logo.webp"
+              width="76"
+              height="76"
+              alt=""
+              loading="lazy"
+            />
+            <span>
+              <strong>{t.name}</strong>
+              <small>{t.tagline}</small>
+            </span>
+          </a>
+          <p>{t.footerText}</p>
+        </div>
+        <div>
+          <h3>{t.quickLinks}</h3>
+          <ul class="footer-links">
+            {quickLinks.map(([s, label]) => (
+              <li>
+                <a href={url(lang, s)}>{label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3>{t.ourPrograms}</h3>
+          <ul class="footer-links single">
+            {programs.map((p) => (
+              <li>
+                <a href={url(lang, p.slug)}>{p[lang].title}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3>{t.follow.replace(':', '')}</h3>
+          <div class="footer-social">
+            {social.map(([icon, href, label]) => (
+              <a
+                href={href}
+                aria-label={label}
+                target="_blank"
+                rel="noopener noreferrer"
+                class={`social-dot large ${icon}`}
+              >
+                <Icon name={icon} size={22} />
+              </a>
+            ))}
+          </div>
+          <div class="footer-language">
+            <a href={url('en', slug)} data-language="en" lang="en">
+              English
+            </a>
+            <span aria-hidden="true">|</span>
+            <a href={url('hi', slug)} data-language="hi" lang="hi">
+              हिन्दी
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container footer-bottom-inner">
+          <small>
+            © {new Date().getFullYear()} {t.name}. {t.rights}
+          </small>
+          <div class="policy-links">
+            <a href={url(lang, 'privacy-policy')}>{t.titles[15]}</a>
+            <a href={url(lang, 'terms')}>{t.titles[16]}</a>
+            <a href={url(lang, 'support-policy')}>{t.titles[17]}</a>
+          </div>
+          <small>
+            {t.designed}
+            <Icon name="heart" size={13} filled />
+            {t.designedFor}
+          </small>
+        </div>
+      </div>
+    </footer>
+    <script src="../scripts/site.ts"></script>
+  </body>
+</html>

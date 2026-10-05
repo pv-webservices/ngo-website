@@ -1,0 +1,50 @@
+---
+import { programs, copy, url, img, type Lang } from '../data/site';
+import Icon from './Icon.astro';
+const {
+  lang,
+  limit = programs.length,
+  exclude = '',
+} = Astro.props as {
+  lang: Lang;
+  limit?: number;
+  exclude?: string;
+};
+const t = copy[lang];
+const items = programs.filter((p) => p.slug !== exclude).slice(0, limit);
+---
+
+<div class="program-grid">
+  {items.map((p) => (
+    <article class={`program-card hover-card ${p.color}`}>
+      <a
+        href={url(lang, p.slug)}
+        tabindex="-1"
+        aria-hidden="true"
+        class="program-image"
+      >
+        <img
+          src={img(p.image)}
+          alt=""
+          width="1200"
+          height="896"
+          loading="lazy"
+        />
+        <span class="program-icon">
+          <Icon name={p.icon} size={22} />
+        </span>
+      </a>
+      <div class="program-body">
+        <h3>
+          <a href={url(lang, p.slug)}>{p[lang].title}</a>
+        </h3>
+        <p>{p[lang].text}</p>
+        <a class="card-link" href={url(lang, p.slug)}>
+          {t.more}
+          <span class="sr-only">: {p[lang].title}</span>
+          <Icon name="arrow" size={15} />
+        </a>
+      </div>
+    </article>
+  ))}
+</div>

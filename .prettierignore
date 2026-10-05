@@ -1,0 +1,6 @@
+scripts/browser-audit.js
+scripts/interaction-audit.js
+scripts/capture-pages.js
+output/
+dist/
+.astro/

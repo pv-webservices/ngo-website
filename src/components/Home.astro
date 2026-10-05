@@ -1,0 +1,256 @@
+---
+import {
+  copy,
+  programs,
+  stats,
+  testimonials,
+  url,
+  img,
+  type Lang,
+} from '../data/site';
+import Icon from './Icon.astro';
+import Gallery from './Gallery.astro';
+import ProgramCards from './ProgramCards.astro';
+import DonatePanel from './DonatePanel.astro';
+import VideoCards from './VideoCards.astro';
+const { lang } = Astro.props as { lang: Lang };
+const t = copy[lang];
+const aboutTargets = [
+  ['about', 'mission', 'heart', 'orange'],
+  ['about', 'vision', 'eye', 'gold'],
+  ['about', 'objectives', 'target', 'blue'],
+  ['activities', '', 'calendar', 'green'],
+  ['get-involved', '', 'group', 'purple'],
+];
+---
+
+<section class="hero">
+  <img
+    class="hero-media"
+    src={img('generated/hero-care')}
+    width="1376"
+    height="768"
+    alt={t.heroAlt}
+    fetchpriority="high"
+  />
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <p class="script hero-script">{t.heroScript}</p>
+      <h1>
+        <span class="hero-line-1">{t.hero1}</span>
+        <span class="hero-line-2">{t.hero2}</span>
+      </h1>
+      <p class="hero-text">{t.heroText}</p>
+      <div class="btn-row">
+        <a class="btn" href={url(lang, 'our-work')}>
+          {t.ourWork}
+          <Icon name="arrow" size={18} />
+        </a>
+        <a class="btn btn-outline" href={url(lang, 'donate')}>
+          {t.support}
+          <Icon name="heart" size={17} filled />
+        </a>
+      </div>
+      <ul class="hero-badges">
+        {t.heroBadges.map((badge, i) => (
+          <li>
+            <Icon name={['shield', 'heart', 'pin'][i]} size={16} />
+            {badge}
+          </li>
+        ))}
+      </ul>
+    </div>
+    <p class="script hero-quote" aria-hidden="true">
+      {t.heroQuote}
+      <Icon name="heart" size={22} />
+    </p>
+  </div>
+</section>
+
+<section class="services" aria-label={t.eyebrow}>
+  <div class="container services-grid">
+    {programs.map((p) => (
+      <a href={url(lang, p.slug)} class={`service-card hover-card ${p.color}`}>
+        <span class="icon-badge">
+          <Icon name={p.icon} size={30} />
+        </span>
+        <h2>{p[lang].title}</h2>
+        <p>{p[lang].card}</p>
+        <span class="card-link">
+          {t.more}
+          <Icon name="arrow" size={15} />
+        </span>
+      </a>
+    ))}
+  </div>
+</section>
+
+<section class="section about-home" aria-labelledby="about-title">
+  <div class="container about-home-grid">
+    <figure class="about-frame">
+      <img
+        src={img('care')}
+        width="609"
+        height="435"
+        alt={t.aboutPhoto}
+        loading="lazy"
+      />
+      <figcaption>
+        <strong>{t.leader}</strong>
+        {t.leaderRole}
+      </figcaption>
+    </figure>
+    <div class="about-home-copy">
+      <span class="eyebrow">{t.aboutEyebrow}</span>
+      <h2 id="about-title" class="title-red">
+        {t.name}
+      </h2>
+      <p>{t.aboutText}</p>
+      <a class="btn" href={url(lang, 'about')}>
+        {t.read}
+        <Icon name="arrow" size={18} />
+      </a>
+    </div>
+    <ul class="about-links">
+      {aboutTargets.map(([page, hash, icon, color], i) => (
+        <li>
+          <a href={`${url(lang, page)}${hash ? '#' + hash : ''}`}>
+            <span class={`mini-icon ${color}`}>
+              <Icon name={icon} size={18} />
+            </span>
+            {t.aboutLinks[i]}
+            <Icon name="chevron-right" size={16} />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section class="impact" aria-labelledby="impact-title">
+  <img
+    class="impact-bg"
+    src={img('generated/donate-hands')}
+    width="1200"
+    height="896"
+    alt=""
+    loading="lazy"
+  />
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2 id="impact-title" class="section-title">
+          {t.impactEyebrow}
+        </h2>
+        <p class="section-sub">{t.impactTitle}</p>
+      </div>
+    </div>
+    <div class="stats-grid">
+      {stats.map((s, i) => (
+        <div class={`stat-card hover-card ${s.color}`}>
+          <span class="stat-icon">
+            <Icon name={s.icon} size={34} />
+          </span>
+          <strong data-count={s.value}>{s.value}+</strong>
+          <span>{t.stats[i]}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="programs-title">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2 id="programs-title" class="section-title">
+          {t.programsEyebrow}
+        </h2>
+        <p class="section-sub">{t.programsTitle}</p>
+      </div>
+      <a class="btn btn-pill" href={url(lang, 'our-work')}>
+        {t.viewPrograms}
+        <Icon name="arrow" size={16} />
+      </a>
+    </div>
+    <ProgramCards lang={lang} limit={4} />
+  </div>
+</section>
+
+<section class="section section-soft" aria-labelledby="gallery-title">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2 id="gallery-title" class="section-title">
+          {t.galleryTitle}
+        </h2>
+        <p class="section-sub">{t.galleryText}</p>
+      </div>
+      <a class="btn btn-pill" href={url(lang, 'gallery')}>
+        {t.viewPhotos}
+        <Icon name="arrow" size={16} />
+      </a>
+    </div>
+    <Gallery lang={lang} carousel />
+  </div>
+</section>
+
+<section class="section" aria-labelledby="videos-title">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2 id="videos-title" class="section-title">
+          {t.videosTitle}
+        </h2>
+        <p class="section-sub">{t.videosText}</p>
+      </div>
+      <a class="btn btn-pill" href={url(lang, 'videos')}>
+        {t.viewVideos}
+        <Icon name="arrow" size={16} />
+      </a>
+    </div>
+    <VideoCards lang={lang} />
+  </div>
+</section>
+
+<section class="section donate-section" id="donate">
+  <div class="container">
+    <DonatePanel lang={lang} />
+  </div>
+</section>
+
+<section class="section testimonials" aria-labelledby="voices-title">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2 id="voices-title" class="section-title">
+          {t.testimonialsEyebrow}
+        </h2>
+        <p class="section-sub">{t.testimonialsTitle}</p>
+      </div>
+    </div>
+    <div class="testimonial-grid">
+      {testimonials.map((item) => (
+        <figure class="testimonial-card hover-card">
+          <img
+            src={img(item.image)}
+            width="200"
+            height="200"
+            alt=""
+            loading="lazy"
+          />
+          <div>
+            <blockquote>“{item[lang][0]}”</blockquote>
+            <figcaption>
+              <strong>– {item[lang][1]}</strong>
+              {item[lang][2]}
+            </figcaption>
+          </div>
+          <span class="quote-badge" aria-hidden="true">
+            <Icon name="quote" size={18} filled />
+          </span>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

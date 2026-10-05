@@ -1,0 +1,95 @@
+---
+import { copy, photos, img, type Lang } from '../data/site';
+import Icon from './Icon.astro';
+const {
+  lang,
+  full = false,
+  carousel = false,
+  limit = photos.length,
+} = Astro.props as {
+  lang: Lang;
+  full?: boolean;
+  carousel?: boolean;
+  limit?: number;
+};
+const t = copy[lang];
+const filters = Object.entries(t.galleryFilters);
+const items = photos.slice(0, limit);
+---
+
+{full && (
+  <div class="gallery-filters" role="group" aria-label={t.titles[10]}>
+    <button class="active" data-filter="all" aria-pressed="true">
+      {t.all}
+    </button>
+    {filters.map(([key, label]) => (
+      <button data-filter={key} aria-pressed="false">
+        {label}
+      </button>
+    ))}
+  </div>
+)}
+<div class:list={['gallery-wrap', { 'is-carousel': carousel }]}>
+  {carousel && (
+    <button
+      class="carousel-btn prev"
+      data-carousel="-1"
+      aria-label={t.previous}
+    >
+      <Icon name="chevron-left" size={22} />
+    </button>
+  )}
+  <div
+    class:list={[
+      'gallery-grid',
+      { 'full-gallery': full, 'carousel-track': carousel },
+    ]}
+  >
+    {items.map((photo, i) => (
+      <figure data-category={photo.category} class="gallery-item hover-card">
+        <button
+          class="gallery-photo"
+          data-gallery={i}
+          data-src={img(photo.image)}
+          data-caption={photo[lang]}
+          aria-label={`${t.enlarge}: ${photo[lang]}`}
+        >
+          <img
+            src={img(photo.image)}
+            alt=""
+            width="600"
+            height="440"
+            loading="lazy"
+          />
+          <span class="photo-caption" aria-hidden="true">
+            {photo[lang]}
+          </span>
+        </button>
+      </figure>
+    ))}
+  </div>
+  {carousel && (
+    <button class="carousel-btn next" data-carousel="1" aria-label={t.next}>
+      <Icon name="chevron-right" size={22} />
+    </button>
+  )}
+</div>
+{full && <p class="fine-print">{t.photoNote}</p>}
+<dialog class="lightbox" aria-label={t.titles[10]}>
+  <button class="lightbox-close" data-close aria-label={t.close}>
+    <Icon name="close" />
+  </button>
+  <div class="lightbox-content">
+    <img alt="" />
+    <p></p>
+  </div>
+  <div class="lightbox-controls">
+    <button data-prev aria-label={t.previous}>
+      <Icon name="chevron-left" size={20} />
+    </button>
+    <span data-counter></span>
+    <button data-next aria-label={t.next}>
+      <Icon name="chevron-right" size={20} />
+    </button>
+  </div>
+</dialog>

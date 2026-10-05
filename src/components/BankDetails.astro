@@ -1,0 +1,42 @@
+---
+import { copy, site, type Lang } from '../data/site';
+import Icon from './Icon.astro';
+const { lang } = Astro.props as { lang: Lang };
+const t = copy[lang];
+const values = [
+  site.bank.name,
+  site.bank.accountName,
+  site.bank.account,
+  site.bank.ifsc,
+];
+---
+
+<div class="bank-panel hover-card">
+  <h3>
+    <span class="bank-icon">
+      <Icon name="bank" size={22} />
+    </span>
+    {t.bankTitle}
+  </h3>
+  <dl>
+    {values.map((value, i) => (
+      <div>
+        <dt>{t.bankLabels[i]}:</dt>
+        <dd class={i >= 2 ? 'bank-number' : ''} lang="en">
+          {value}
+        </dd>
+      </div>
+    ))}
+  </dl>
+  <button
+    class="copy-button"
+    type="button"
+    data-copy={site.bank.account}
+    data-success={t.copied}
+    data-error={t.copyError}
+  >
+    <Icon name="copy" size={16} />
+    <span>{t.copyAccount}</span>
+  </button>
+  <span class="copy-status sr-only" role="status"></span>
+</div>
