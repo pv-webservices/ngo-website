@@ -10,78 +10,130 @@ const t = copy[lang];
 ---
 
 <section class="hero">
-  <span class="hero-backdrop" aria-hidden="true"></span>
+  <div class="hero-bg" aria-hidden="true">
+    <svg class="hero-wave" viewBox="0 0 800 900" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="hero-wave-fill" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#a42a24" />
+          <stop offset="1" stop-color="#6e1517" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M330 0C250 120 300 230 230 330 150 445 40 470 60 620 78 760 200 830 150 900H800V0Z"
+        fill="url(#hero-wave-fill)"
+      ></path>
+      <path
+        d="M420 0C380 150 470 260 420 380 370 500 250 560 300 720 330 810 420 860 400 900"
+        class="hero-wave-line"
+      ></path>
+      <path
+        d="M800 640C700 650 610 720 590 820 584 850 588 880 596 900"
+        class="hero-wave-line"
+      ></path>
+    </svg>
+    <span class="hero-orb hero-orb-1"></span>
+    <span class="hero-orb hero-orb-2"></span>
+    <svg class="hero-leaves" viewBox="0 0 120 360">
+      <path class="hero-stem" d="M60 360C64 260 56 150 72 10"></path>
+      <path d="M62 300c-30-6-48-26-52-50 28 2 48 22 52 50Z"></path>
+      <path d="M63 250c26-10 44-32 46-58-26 6-44 28-46 58Z"></path>
+      <path d="M62 200c-28-8-44-30-46-56 26 4 44 26 46 56Z"></path>
+      <path d="M66 150c24-10 40-32 40-56-24 6-40 28-40 56Z"></path>
+      <path d="M67 100c-24-8-38-28-38-50 22 4 38 24 38 50Z"></path>
+      <path d="M71 52c18-10 28-26 28-44-18 6-28 22-28 44Z"></path>
+    </svg>
+  </div>
   <div class="container hero-grid">
     <div class="hero-copy">
       <p class="eyebrow">{t.heroEyebrow}</p>
-      <h1>{t.heroTitle}</h1>
+      <h1>
+        {t.heroTitle[0]} <span class="hero-highlight">{t.heroTitle[1]}</span>{' '}
+        {t.heroTitle[2]}
+      </h1>
       <p class="hero-text">{t.heroText}</p>
       <div class="btn-row">
-        <a class="btn btn-primary" href={url(lang, 'donate')}>
+        <a class="btn btn-primary btn-lg" href={url(lang, 'donate')}>
           {t.donate}
           <Icon name="arrow" size={18} />
         </a>
-        <a class="btn btn-secondary" href={url(lang, 'our-work')}>
-          {t.work}
+        <a class="btn btn-outline-brand btn-lg" href="#impact">
+          {t.seeImpact}
+          <Icon name="arrow" size={18} />
         </a>
       </div>
-      <ul class="credentials" aria-label={t.heroBadges[0]}>
-        {t.credentials.map((item) => (
+      <ul class="hero-credentials">
+        {t.heroCredentials.map(([title, text], i) => (
           <li>
-            <Icon name="check" size={15} />
-            {item}
+            <span class="hero-credential-icon">
+              <Icon name={['shield', 'file', 'group'][i]} size={22} />
+            </span>
+            <span>
+              <strong>{title}</strong>
+              {text}
+            </span>
           </li>
         ))}
       </ul>
     </div>
-    <div class="hero-visual">
-      <div class="hero-media">
-        <figure class="hero-photo hero-photo-main">
-          <img
-            src={img('residents-gathering')}
-            srcset={srcset('residents-gathering')}
-            sizes="(min-width: 1000px) 34vw, 60vw"
-            width="1200"
-            height="1600"
-            alt={t.heroAlt}
-            fetchpriority="high"
-          />
-          <figcaption>
-            <Icon name="pin" size={15} />
-            {t.heroPlace}
-          </figcaption>
-        </figure>
-        <figure class="hero-photo">
-          <img
-            src={imgSm('shared-meal')}
-            width="640"
-            height="1138"
-            alt={t.heroPhotoAlts[0]}
-          />
-        </figure>
-        <figure class="hero-photo">
-          <img
-            src={imgSm('hand-care')}
-            width="640"
-            height="1023"
-            alt={t.heroPhotoAlts[1]}
-          />
-        </figure>
-      </div>
-      <div class="hero-note">
+    <div class="hero-media">
+      <svg class="hero-spark" viewBox="0 0 60 60" aria-hidden="true">
+        <path d="M8 40 26 52M24 10l10 22M50 4l-4 26"></path>
+      </svg>
+      <figure class="hero-photo hero-photo-main">
+        <img
+          src={img('residents-gathering')}
+          srcset={srcset('residents-gathering')}
+          sizes="(min-width: 1000px) 30vw, 60vw"
+          width="1200"
+          height="1600"
+          alt={t.heroAlt}
+          fetchpriority="high"
+        />
+      </figure>
+      <figure class="hero-photo hero-photo-top">
+        <img
+          src={imgSm('shared-meal')}
+          width="640"
+          height="1138"
+          alt={t.heroPhotoAlts[0]}
+        />
+        <figcaption class="hero-place">
+          <Icon name="pin" size={18} />
+          {t.heroPlace}
+        </figcaption>
+      </figure>
+      <figure class="hero-photo hero-photo-bottom">
+        <img
+          src={imgSm('hand-care')}
+          width="640"
+          height="1023"
+          alt={t.heroPhotoAlts[1]}
+        />
+      </figure>
+      <p class="hero-note hero-note-meal">
         <span class="hero-note-icon">
-          <Icon name="heart" size={20} />
+          <Icon name="meal" size={20} />
         </span>
-        <p>
-          <strong>{t.heroNoteTitle}</strong>
-          {t.heroNoteText}
-        </p>
+        {t.heroNotes[0]}
+      </p>
+      <p class="hero-note hero-note-care">
+        <span class="hero-note-icon">
+          <Icon name="stethoscope" size={20} />
+        </span>
+        {t.heroNotes[1]}
+      </p>
+      <div class="hero-promise">
+        <span class="hero-promise-icon">
+          <Icon name="heart" size={26} />
+        </span>
+        <p class="hero-promise-title">{t.heroPromise}</p>
+        <p class="hero-promise-text">{t.heroPromiseText}</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="impact" aria-labelledby="impact-title">
+<section class="impact" id="impact" aria-labelledby="impact-title">
   <div class="container impact-grid">
     <h2 id="impact-title" class="impact-title">
       <span>{t.impactEyebrow}</span>
