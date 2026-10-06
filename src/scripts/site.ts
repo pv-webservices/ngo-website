@@ -195,6 +195,27 @@ document.querySelectorAll<HTMLElement>('[data-lives]').forEach((strip) => {
     toggle.setAttribute('aria-pressed', String(paused));
   });
 });
+// Touch screens get the same card lift as hover while a card is pressed.
+const TOUCH_RELEASE_MS = 450;
+document.querySelectorAll<HTMLElement>('.lift').forEach((card) => {
+  let timer = 0;
+  card.addEventListener(
+    'touchstart',
+    () => {
+      window.clearTimeout(timer);
+      card.classList.add('is-touched');
+    },
+    { passive: true },
+  );
+  const release = () => {
+    timer = window.setTimeout(
+      () => card.classList.remove('is-touched'),
+      TOUCH_RELEASE_MS,
+    );
+  };
+  card.addEventListener('touchend', release, { passive: true });
+  card.addEventListener('touchcancel', release, { passive: true });
+});
 // Gallery carousel arrows scroll one photo at a time and wrap around.
 document
   .querySelectorAll<HTMLButtonElement>('[data-carousel]')

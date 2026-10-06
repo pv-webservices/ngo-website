@@ -136,21 +136,21 @@ const involveTargets = [
     </section>
     <section class="section section-soft">
       <div class="container value-grid">
-        <article id="mission" class="value-card">
+        <article id="mission" class="value-card lift">
           <span class="icon-badge">
             <Icon name="heart" size={26} />
           </span>
           <h2>{t.mission}</h2>
           <p>{t.missionText}</p>
         </article>
-        <article id="vision" class="value-card">
+        <article id="vision" class="value-card lift">
           <span class="icon-badge">
             <Icon name="eye" size={26} />
           </span>
           <h2>{t.vision}</h2>
           <p>{t.visionText}</p>
         </article>
-        <article id="objectives" class="value-card wide">
+        <article id="objectives" class="value-card wide lift">
           <span class="icon-badge">
             <Icon name="target" size={26} />
           </span>
@@ -254,7 +254,7 @@ const involveTargets = [
           <h3>{t.provides}</h3>
           <ul class="focus-grid">
             {program[lang].focus.map((f) => (
-              <li>
+              <li class="lift">
                 <Icon name="check" size={18} />
                 {f}
               </li>
@@ -323,7 +323,7 @@ const involveTargets = [
         </div>
         <ol class="journey-steps">
           {t.journey.map((step, i) => (
-            <li>
+            <li class="lift">
               <span>0{i + 1}</span>
               <div>
                 <h3>{step}</h3>
@@ -373,7 +373,7 @@ const involveTargets = [
       </div>
       <div class="activity-grid">
         {photos.map((p) => (
-          <article class="activity-card">
+          <article class="activity-card lift">
             <img
               src={imgSm(p.image)}
               width="640"
@@ -441,7 +441,7 @@ const involveTargets = [
     <section class="section">
       <div class="container involvement-grid">
         {t.involvedOptions.map((option, i) => (
-          <article class="involve-card">
+          <article class="involve-card lift">
             <span class="icon-badge">
               <Icon name={['group', 'heart', 'shield', 'globe'][i]} size={28} />
             </span>
@@ -527,7 +527,7 @@ const involveTargets = [
         <h2>{t.contactTitle}</h2>
         <p>{t.contactText}</p>
         <div class="contact-methods">
-          <div class="contact-card">
+          <div class="contact-card lift">
             <span class="mini-icon">
               <Icon name="phone" size={20} />
             </span>
@@ -537,7 +537,7 @@ const involveTargets = [
               <a href={`tel:${site.phones[1]}`}>{site.phoneLabels[1]}</a>
             </div>
           </div>
-          <div class="contact-card">
+          <div class="contact-card lift">
             <span class="mini-icon">
               <Icon name="mail" size={20} />
             </span>
@@ -548,7 +548,7 @@ const involveTargets = [
               </a>
             </div>
           </div>
-          <div class="contact-card">
+          <div class="contact-card lift">
             <span class="mini-icon">
               <Icon name="pin" size={20} />
             </span>

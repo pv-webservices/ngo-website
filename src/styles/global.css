@@ -23,6 +23,7 @@
   --radius: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
+  --shadow-lift: 0 18px 40px rgba(31, 27, 23, 0.13);
   --shadow: 0 1px 2px rgba(31, 27, 23, 0.05), 0 8px 24px rgba(31, 27, 23, 0.07);
   --font-body: 'Manrope', 'Noto Sans Devanagari', system-ui, sans-serif;
   --font-display: 'Source Serif 4', 'Noto Serif Devanagari', Georgia, serif;
@@ -644,7 +645,7 @@ html[lang='hi'] .hero-credentials strong {
 .hero-place {
   position: absolute;
   top: -22px;
-  left: -10px;
+  left: 28px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -670,31 +671,35 @@ html[lang='hi'] .hero-credentials strong {
   stroke-width: 3.5;
   stroke-linecap: round;
 }
+/* Notes sit only over face-free bands: the banner at the top of the meal photo,
+   and the gap between the two right-hand photos (table below, window above). */
 .hero-note {
   position: absolute;
   right: var(--float-out);
   z-index: 2;
-  width: 156px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 210px;
   margin: 0;
-  padding: 18px 18px 20px;
+  padding: 14px 16px;
   border-radius: 16px;
   background: var(--white);
   box-shadow: 0 16px 36px rgba(31, 27, 23, 0.16);
   color: var(--ink-2);
-  font-size: 0.875rem;
+  font-size: 0.84rem;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 .hero-note-icon {
-  width: 44px;
-  height: 44px;
-  margin-bottom: 12px;
+  width: 40px;
+  height: 40px;
 }
 .hero-note-meal {
-  top: 9%;
+  top: -30px;
 }
 .hero-note-care {
-  top: 55%;
+  top: calc(50% - 40px);
 }
 .hero-promise {
   position: absolute;
@@ -750,6 +755,112 @@ html[lang='hi'] .hero-promise-title {
   color: var(--ink-2);
   font-size: 0.875rem;
   line-height: 1.5;
+}
+
+/* Hero load-in: copy rises line by line, photo cards settle, small cards pop last. */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+}
+@keyframes hero-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+}
+@keyframes hero-pop {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.9);
+  }
+}
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes hero-wave-in {
+  from {
+    opacity: 0;
+    transform: translateX(6%);
+  }
+}
+@keyframes hero-brush {
+  from {
+    background-size: 0% 0.3em;
+  }
+}
+@keyframes hero-underline {
+  from {
+    transform: scaleX(0);
+  }
+}
+.hero-wave {
+  animation: hero-wave-in 1.2s var(--ease) both;
+}
+.hero-orb,
+.hero-leaves {
+  animation: hero-fade 1.4s ease 0.5s both;
+}
+.hero-copy .eyebrow {
+  animation: hero-rise 0.8s var(--ease) 0.1s both;
+}
+.hero h1 {
+  animation: hero-rise 0.9s var(--ease) 0.2s both;
+}
+.hero-highlight {
+  animation: hero-brush 0.9s var(--ease) 1s both;
+}
+.hero-text {
+  animation: hero-rise 0.8s var(--ease) 0.4s both;
+}
+.hero-copy .btn-row {
+  animation: hero-rise 0.8s var(--ease) 0.55s both;
+}
+.hero-credentials li {
+  animation: hero-rise 0.7s var(--ease) both;
+}
+.hero-credentials li:nth-child(1) {
+  animation-delay: 0.7s;
+}
+.hero-credentials li:nth-child(2) {
+  animation-delay: 0.8s;
+}
+.hero-credentials li:nth-child(3) {
+  animation-delay: 0.9s;
+}
+.hero-photo {
+  animation: hero-card-in 1s var(--ease) both;
+}
+.hero-photo-main {
+  animation-delay: 0.25s;
+}
+.hero-photo-top {
+  animation-delay: 0.4s;
+}
+.hero-photo-bottom {
+  animation-delay: 0.55s;
+}
+.hero-place {
+  animation: hero-pop 0.6s var(--ease) 1s both;
+}
+.hero-spark {
+  animation: hero-pop 0.6s var(--ease) 1.1s both;
+}
+.hero-note-meal {
+  animation: hero-pop 0.7s var(--ease) 1.1s both;
+}
+.hero-note-care {
+  animation: hero-pop 0.7s var(--ease) 1.25s both;
+}
+.hero-promise {
+  animation: hero-pop 0.8s var(--ease) 1.35s both;
+}
+.hero-promise-title::after {
+  transform-origin: left;
+  animation: hero-underline 0.7s var(--ease) 1.9s both;
 }
 
 /* ---------- Impact band ---------- */
@@ -908,10 +1019,6 @@ html[lang='hi'] .impact-title span {
   background: var(--white);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  transition: box-shadow 0.3s;
-}
-.program-card:hover {
-  box-shadow: var(--shadow);
 }
 .program-image {
   display: block;
@@ -976,10 +1083,11 @@ html[lang='hi'] .impact-title span {
 }
 .lives-strip {
   display: grid;
-  gap: 16px;
+  gap: 0;
 }
 .lives-row {
   overflow: hidden;
+  padding-block: 10px;
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent,
@@ -1775,6 +1883,8 @@ html[lang='hi'] .tag {
   grid-auto-flow: column;
   grid-auto-columns: calc((100% - 3 * 24px) / 4);
   overflow-x: auto;
+  padding-block: 10px 14px;
+  margin-block: -10px -14px;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }
@@ -2009,6 +2119,54 @@ html[lang='hi'] .tag {
 }
 .policy-content .text-link {
   margin-top: 28px;
+}
+
+/* ---------- Card lift (hover, and press on touch screens via .is-touched) ---------- */
+.lift {
+  transition:
+    transform 0.35s var(--ease),
+    box-shadow 0.35s var(--ease),
+    border-color 0.35s var(--ease);
+}
+/* Cards without their own background cast the shadow from their media. */
+.video-card .video-frame,
+.gallery-item .gallery-photo {
+  transition: box-shadow 0.35s var(--ease);
+}
+@media (hover: hover) {
+  .lift:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lift);
+    border-color: #d6c6b0;
+  }
+  .video-card.lift:hover,
+  .gallery-item.lift:hover {
+    box-shadow: none;
+  }
+  .video-card.lift:hover .video-frame,
+  .gallery-item.lift:hover .gallery-photo {
+    box-shadow: var(--shadow-lift);
+  }
+  .video-card.is-playing.lift:hover {
+    transform: none;
+  }
+}
+.lift.is-touched {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lift);
+  border-color: #d6c6b0;
+}
+.video-card.lift.is-touched,
+.gallery-item.lift.is-touched {
+  box-shadow: none;
+}
+.video-card.lift.is-touched .video-frame,
+.gallery-item.lift.is-touched .gallery-photo {
+  box-shadow: var(--shadow-lift);
+}
+.lives .lift:hover,
+.lives .lift.is-touched {
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45);
 }
 
 /* ---------- Scroll reveal (added by JS only) ---------- */
@@ -2347,6 +2505,11 @@ html[lang='hi'] .tag {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .hero,
+  .hero *,
+  .hero *::after {
+    animation: none !important;
+  }
   html {
     scroll-behavior: auto;
   }
@@ -2359,6 +2522,10 @@ html[lang='hi'] .tag {
   }
   .lives-track {
     animation: none;
+  }
+  .lift:hover,
+  .lift.is-touched {
+    transform: none !important;
   }
   .lives-row {
     overflow-x: auto;

@@ -18,7 +18,7 @@ const items = programs.filter((p) => p.slug !== exclude).slice(0, limit);
 
 <div class:list={['program-grid', { 'is-featured': featured }]}>
   {items.map((p) => (
-    <article class="program-card">
+    <article class="program-card lift">
       <a
         href={url(lang, p.slug)}
         tabindex="-1"
