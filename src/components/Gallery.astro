@@ -1,20 +1,29 @@
 ---
-import { copy, photos, img, type Lang } from '../data/site';
+import { copy, photos, img, imgSm, type Lang } from '../data/site';
 import Icon from './Icon.astro';
 const {
   lang,
   full = false,
   carousel = false,
+  category = '',
   limit = photos.length,
 } = Astro.props as {
   lang: Lang;
   full?: boolean;
   carousel?: boolean;
+  category?: string;
   limit?: number;
 };
 const t = copy[lang];
 const filters = Object.entries(t.galleryFilters);
-const items = photos.slice(0, limit);
+// A program page leads with photographs from its own category.
+const ordered = category
+  ? [
+      ...photos.filter((p) => p.category === category),
+      ...photos.filter((p) => p.category !== category),
+    ]
+  : photos;
+const items = ordered.slice(0, limit);
 ---
 
 {full && (
@@ -46,7 +55,7 @@ const items = photos.slice(0, limit);
     ]}
   >
     {items.map((photo, i) => (
-      <figure data-category={photo.category} class="gallery-item hover-card">
+      <figure data-category={photo.category} class="gallery-item">
         <button
           class="gallery-photo"
           data-gallery={i}
@@ -55,16 +64,15 @@ const items = photos.slice(0, limit);
           aria-label={`${t.enlarge}: ${photo[lang]}`}
         >
           <img
-            src={img(photo.image)}
+            src={imgSm(photo.image)}
             alt=""
-            width="600"
-            height="440"
+            width="640"
+            height="480"
             loading="lazy"
+            decoding="async"
           />
-          <span class="photo-caption" aria-hidden="true">
-            {photo[lang]}
-          </span>
         </button>
+        <figcaption>{photo[lang]}</figcaption>
       </figure>
     ))}
   </div>

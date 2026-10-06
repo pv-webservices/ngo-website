@@ -6,6 +6,8 @@ import {
   site,
   url,
   img,
+  imgSm,
+  srcset,
   pageImages,
   type Lang,
 } from '../data/site';
@@ -46,6 +48,7 @@ const description = program
     ? t.policyIntro
     : descriptions[slug] || t.intro;
 const banner = program ? program.image : pageImages[slug];
+const bannerAlt = photos.find((photo) => photo.image === banner)?.[lang] ?? '';
 const involveTargets = [
   url(lang, 'contact'),
   url(lang, 'donate'),
@@ -54,43 +57,49 @@ const involveTargets = [
 ];
 ---
 
-<section class="page-hero">
-  <img
-    class="page-hero-media"
-    src={img(banner)}
-    alt=""
-    width="1200"
-    height="896"
-    fetchpriority="high"
-  />
+<section class:list={['page-hero', { 'has-media': banner }]}>
   <div class="container page-hero-inner">
-    <nav
-      class="breadcrumb"
-      aria-label={lang === 'hi' ? 'पृष्ठ का रास्ता' : 'Breadcrumb'}
-    >
-      <a href={url(lang)}>{t.nav[0]}</a>
-      <Icon name="chevron-right" size={14} />
-      {program && (
-        <>
-          <a href={url(lang, 'our-work')}>{t.nav[2]}</a>
-          <Icon name="chevron-right" size={14} />
-        </>
+    <div class="page-hero-copy">
+      <nav
+        class="breadcrumb"
+        aria-label={lang === 'hi' ? 'पृष्ठ का रास्ता' : 'Breadcrumb'}
+      >
+        <a href={url(lang)}>{t.nav[0]}</a>
+        <Icon name="chevron-right" size={14} />
+        {program && (
+          <>
+            <a href={url(lang, 'our-work')}>{t.nav[2]}</a>
+            <Icon name="chevron-right" size={14} />
+          </>
+        )}
+        <span aria-current="page">{title}</span>
+      </nav>
+      <h1>{title}</h1>
+      <p>{description}</p>
+      {!policy && slug !== 'donate' && (
+        <div class="btn-row">
+          <a class="btn btn-primary" href={url(lang, 'donate')}>
+            {t.donate}
+            <Icon name="arrow" size={18} />
+          </a>
+          <a class="btn btn-secondary" href={url(lang, 'contact')}>
+            {t.contact}
+          </a>
+        </div>
       )}
-      <span aria-current="page">{title}</span>
-    </nav>
-    <h1>{title}</h1>
-    <p>{description}</p>
-    {!policy && slug !== 'donate' && (
-      <div class="btn-row">
-        <a class="btn btn-donate" href={url(lang, 'donate')}>
-          <Icon name="heart" size={16} filled />
-          {t.donate}
-        </a>
-        <a class="btn btn-ghost" href={url(lang, 'contact')}>
-          {t.contact}
-          <Icon name="arrow" size={18} />
-        </a>
-      </div>
+    </div>
+    {banner && (
+      <figure class="page-hero-media">
+        <img
+          src={img(banner)}
+          srcset={srcset(banner)}
+          sizes="(min-width: 900px) 40vw, 100vw"
+          alt={bannerAlt}
+          width="1200"
+          height="900"
+          fetchpriority="high"
+        />
+      </figure>
     )}
   </div>
 </section>
@@ -99,12 +108,12 @@ const involveTargets = [
   <>
     <section class="section">
       <div class="container story-grid">
-        <figure class="about-frame">
+        <figure class="leader-photo">
           <img
-            src={img('care')}
-            width="609"
-            height="435"
-            alt={photos[0][lang]}
+            src={img('president-portrait')}
+            width="400"
+            height="455"
+            alt=""
             loading="lazy"
           />
           <figcaption>
@@ -113,12 +122,12 @@ const involveTargets = [
           </figcaption>
         </figure>
         <div>
-          <span class="eyebrow">{t.aboutEyebrow}</span>
-          <h2 class="title-red">{t.aboutTitle}</h2>
+          <p class="eyebrow">{t.aboutEyebrow}</p>
+          <h2>{t.aboutTitle}</h2>
           <p>{t.aboutText}</p>
           <p>{t.aboutText2}</p>
           <p class="values-line">{t.values}</p>
-          <a href={url(lang, 'our-work')} class="btn">
+          <a href={url(lang, 'our-work')} class="btn btn-primary">
             {t.work}
             <Icon name="arrow" size={18} />
           </a>
@@ -127,21 +136,21 @@ const involveTargets = [
     </section>
     <section class="section section-soft">
       <div class="container value-grid">
-        <article id="mission" class="value-card hover-card orange">
+        <article id="mission" class="value-card">
           <span class="icon-badge">
             <Icon name="heart" size={26} />
           </span>
           <h2>{t.mission}</h2>
           <p>{t.missionText}</p>
         </article>
-        <article id="vision" class="value-card hover-card blue">
+        <article id="vision" class="value-card">
           <span class="icon-badge">
             <Icon name="eye" size={26} />
           </span>
           <h2>{t.vision}</h2>
           <p>{t.visionText}</p>
         </article>
-        <article id="objectives" class="value-card hover-card green wide">
+        <article id="objectives" class="value-card wide">
           <span class="icon-badge">
             <Icon name="target" size={26} />
           </span>
@@ -162,10 +171,10 @@ const involveTargets = [
       <div class="container">
         <div class="section-head">
           <div>
-            <h2 class="section-title">{t.programsEyebrow}</h2>
-            <p class="section-sub">{t.programsTitle}</p>
+            <p class="eyebrow">{t.programsEyebrow}</p>
+            <h2>{t.programsTitle}</h2>
           </div>
-          <a class="btn btn-pill" href={url(lang, 'our-journey')}>
+          <a class="text-link" href={url(lang, 'our-journey')}>
             {t.journeyLink}
             <Icon name="arrow" size={16} />
           </a>
@@ -184,21 +193,20 @@ const involveTargets = [
           id={p.slug}
           class:list={['story-grid', { reversed: i % 2 === 1 }]}
         >
-          <figure class={`story-image ${p.color}`}>
+          <figure class="story-image">
             <img
               src={img(p.image)}
+              srcset={srcset(p.image)}
+              sizes="(min-width: 900px) 45vw, 100vw"
               alt={p[lang].title}
               width="1200"
-              height="896"
+              height="900"
               loading="lazy"
             />
             <span class="story-number">0{i + 1}</span>
           </figure>
           <div>
-            <span class={`mini-icon ${p.color}`}>
-              <Icon name={p.icon} size={20} />
-            </span>
-            <h2 class={`program-title ${p.color}`}>{p[lang].title}</h2>
+            <h2 class="program-title">{p[lang].title}</h2>
             <p class="lead">{p[lang].short}</p>
             <p>{p[lang].why}</p>
             <ul class="check-list compact">
@@ -209,7 +217,7 @@ const involveTargets = [
                 </li>
               ))}
             </ul>
-            <a class="btn btn-pill" href={url(lang, p.slug)}>
+            <a class="text-link" href={url(lang, p.slug)}>
               {t.more}
               <span class="sr-only">: {p[lang].title}</span>
               <Icon name="arrow" size={16} />
@@ -225,26 +233,28 @@ const involveTargets = [
   <>
     <section class="section">
       <div class="container story-grid">
-        <figure class={`story-image ${program.color}`}>
+        <figure class="story-image">
           <img
             src={img(program.photo)}
+            srcset={srcset(program.photo)}
+            sizes="(min-width: 900px) 45vw, 100vw"
             alt={
               photos.find((photo) => photo.image === program.photo)?.[lang] ||
               program[lang].title
             }
             width="1200"
-            height="896"
+            height="900"
             loading="lazy"
           />
         </figure>
         <div>
-          <span class="eyebrow">{program[lang].short}</span>
-          <h2 class="title-red">{t.why}</h2>
+          <p class="eyebrow">{program[lang].short}</p>
+          <h2>{t.why}</h2>
           <p>{program[lang].why}</p>
           <h3>{t.provides}</h3>
           <ul class="focus-grid">
             {program[lang].focus.map((f) => (
-              <li class={`hover-card ${program.color}`}>
+              <li>
                 <Icon name="check" size={18} />
                 {f}
               </li>
@@ -257,30 +267,27 @@ const involveTargets = [
       <div class="container">
         <div class="section-head">
           <div>
-            <h2 class="section-title">{t.galleryTitle}</h2>
+            <h2>{t.galleryTitle}</h2>
             <p class="section-sub">{t.galleryText}</p>
           </div>
-          <a class="btn btn-pill" href={url(lang, 'gallery')}>
+          <a class="text-link" href={url(lang, 'gallery')}>
             {t.viewPhotos}
             <Icon name="arrow" size={16} />
           </a>
         </div>
-        <Gallery lang={lang} carousel />
+        <Gallery lang={lang} carousel category={program.category} />
       </div>
     </section>
     <section class="section">
       <div class="container cta-card">
-        <span class="icon-badge red">
-          <Icon name="heart" size={28} />
-        </span>
         <h2>{t.helpTitle}</h2>
         <p>{t.helpText}</p>
         <div class="btn-row center">
-          <a class="btn btn-donate" href={url(lang, 'donate')}>
+          <a class="btn btn-primary" href={url(lang, 'donate')}>
             {t.donate}
-            <Icon name="heart" size={17} filled />
+            <Icon name="arrow" size={18} />
           </a>
-          <a class="btn btn-outline" href={url(lang, 'get-involved')}>
+          <a class="btn btn-secondary" href={url(lang, 'get-involved')}>
             {t.involved}
             <Icon name="arrow" size={18} />
           </a>
@@ -291,7 +298,7 @@ const involveTargets = [
       <div class="container">
         <div class="section-head">
           <div>
-            <h2 class="section-title">{t.related}</h2>
+            <h2>{t.related}</h2>
           </div>
         </div>
         <ProgramCards lang={lang} exclude={slug} />
@@ -305,18 +312,18 @@ const involveTargets = [
     <section class="section">
       <div class="container story-grid">
         <div>
-          <span class="eyebrow">{t.journeyEyebrow}</span>
-          <h2 class="title-red">{t.journeyTitle}</h2>
+          <p class="eyebrow">{t.journeyEyebrow}</p>
+          <h2>{t.journeyTitle}</h2>
           <p>{t.aboutText}</p>
           <p>{t.aboutText2}</p>
-          <a class="btn" href={url(lang, 'activities')}>
+          <a class="btn btn-primary" href={url(lang, 'activities')}>
             {t.titles[9]}
             <Icon name="arrow" size={18} />
           </a>
         </div>
         <ol class="journey-steps">
           {t.journey.map((step, i) => (
-            <li class="hover-card">
+            <li>
               <span>0{i + 1}</span>
               <div>
                 <h3>{step}</h3>
@@ -331,7 +338,7 @@ const involveTargets = [
       <div class="container">
         <div class="section-head">
           <div>
-            <h2 class="section-title">{t.galleryTitle}</h2>
+            <h2>{t.galleryTitle}</h2>
             <p class="section-sub">{t.galleryText}</p>
           </div>
         </div>
@@ -342,7 +349,7 @@ const involveTargets = [
       <div class="container cta-card">
         <h2>{t.vision}</h2>
         <p>{t.visionText}</p>
-        <a href={url(lang, 'get-involved')} class="btn">
+        <a href={url(lang, 'get-involved')} class="btn btn-primary">
           {t.involved}
           <Icon name="arrow" size={18} />
         </a>
@@ -356,21 +363,21 @@ const involveTargets = [
     <div class="container">
       <div class="section-head">
         <div>
-          <h2 class="section-title">{t.activityTitle}</h2>
+          <h2>{t.activityTitle}</h2>
           <p class="section-sub">{t.photoNote}</p>
         </div>
-        <a class="btn btn-pill" href={url(lang, 'gallery')}>
+        <a class="text-link" href={url(lang, 'gallery')}>
           {t.viewPhotos}
           <Icon name="arrow" size={16} />
         </a>
       </div>
       <div class="activity-grid">
         {photos.map((p) => (
-          <article class="activity-card hover-card">
+          <article class="activity-card">
             <img
-              src={img(p.image)}
-              width="600"
-              height="440"
+              src={imgSm(p.image)}
+              width="640"
+              height="480"
               alt={p[lang]}
               loading="lazy"
             />
@@ -400,7 +407,7 @@ const involveTargets = [
     <div class="container">
       <div class="section-head">
         <div>
-          <h2 class="section-title">{t.videosEyebrow}</h2>
+          <h2>{t.videosEyebrow}</h2>
           <p class="section-sub">{t.videosPageText}</p>
         </div>
       </div>
@@ -434,9 +441,7 @@ const involveTargets = [
     <section class="section">
       <div class="container involvement-grid">
         {t.involvedOptions.map((option, i) => (
-          <article
-            class={`involve-card hover-card ${['orange', 'red', 'green', 'blue'][i]}`}
-          >
+          <article class="involve-card">
             <span class="icon-badge">
               <Icon name={['group', 'heart', 'shield', 'globe'][i]} size={28} />
             </span>
@@ -458,25 +463,27 @@ const involveTargets = [
     </section>
     <section class="section section-soft">
       <div class="container story-grid">
-        <figure class="story-image orange">
+        <figure class="story-image">
           <img
-            src={img('generated/volunteers')}
-            width="1200"
-            height="896"
-            alt={photos[11][lang]}
+            src={img('volunteers')}
+            srcset={srcset('volunteers')}
+            sizes="(min-width: 900px) 45vw, 100vw"
+            width="960"
+            height="1280"
+            alt={photos.find((p) => p.image === 'volunteers')?.[lang] ?? ''}
             loading="lazy"
           />
         </figure>
         <div>
-          <span class="eyebrow">{t.nav[5]}</span>
-          <h2 class="title-red">{t.involvedTitle}</h2>
+          <p class="eyebrow">{t.nav[5]}</p>
+          <h2>{t.involvedTitle}</h2>
           <p>{t.involvedText}</p>
           <div class="btn-row">
-            <a class="btn" href={url(lang, 'contact')}>
+            <a class="btn btn-primary" href={url(lang, 'contact')}>
               {t.contact}
               <Icon name="arrow" size={18} />
             </a>
-            <a class="btn btn-outline" href={`tel:${site.phones[0]}`}>
+            <a class="btn btn-secondary" href={`tel:${site.phones[0]}`}>
               <Icon name="phone" size={17} />
               {site.phoneLabels[0]}
             </a>
@@ -496,7 +503,7 @@ const involveTargets = [
     </section>
     <section class="section section-soft">
       <div class="container faq">
-        <h2 class="section-title">{t.faqTitle}</h2>
+        <h2>{t.faqTitle}</h2>
         {t.faqs.map(([question, answer]) => (
           <details>
             <summary>{question}</summary>
@@ -516,12 +523,12 @@ const involveTargets = [
   <section class="section">
     <div class="container contact-layout">
       <div>
-        <span class="eyebrow">{t.contactEyebrow}</span>
-        <h2 class="title-red">{t.contactTitle}</h2>
+        <p class="eyebrow">{t.contactEyebrow}</p>
+        <h2>{t.contactTitle}</h2>
         <p>{t.contactText}</p>
         <div class="contact-methods">
-          <div class="contact-card hover-card orange">
-            <span class="mini-icon orange">
+          <div class="contact-card">
+            <span class="mini-icon">
               <Icon name="phone" size={20} />
             </span>
             <div>
@@ -530,8 +537,8 @@ const involveTargets = [
               <a href={`tel:${site.phones[1]}`}>{site.phoneLabels[1]}</a>
             </div>
           </div>
-          <div class="contact-card hover-card blue">
-            <span class="mini-icon blue">
+          <div class="contact-card">
+            <span class="mini-icon">
               <Icon name="mail" size={20} />
             </span>
             <div>
@@ -541,8 +548,8 @@ const involveTargets = [
               </a>
             </div>
           </div>
-          <div class="contact-card hover-card green">
-            <span class="mini-icon green">
+          <div class="contact-card">
+            <span class="mini-icon">
               <Icon name="pin" size={20} />
             </span>
             <div>
@@ -616,7 +623,7 @@ const involveTargets = [
             rows="5"
           ></textarea>
         </label>
-        <button class="btn" type="submit">
+        <button class="btn btn-primary" type="submit">
           {t.formSubmit}
           <Icon name="mail" size={18} />
         </button>
@@ -634,7 +641,7 @@ const involveTargets = [
   <section class="section">
     <div class="container policy-content">
       {policy.map(([heading, text]) => (
-        <article class="hover-card">
+        <article>
           <h2>{heading}</h2>
           <p>{text}</p>
         </article>

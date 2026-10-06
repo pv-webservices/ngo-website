@@ -164,26 +164,36 @@ const updateHeader = () =>
   header?.classList.toggle('scrolled', window.scrollY > 8);
 updateHeader();
 window.addEventListener('scroll', updateHeader, { passive: true });
-// Touch devices get the same card lift as hover while a card is pressed.
-const TOUCH_RELEASE_MS = 450;
-document.querySelectorAll<HTMLElement>('.hover-card').forEach((card) => {
-  let timer = 0;
-  card.addEventListener(
-    'touchstart',
-    () => {
-      window.clearTimeout(timer);
-      card.classList.add('is-touched');
-    },
-    { passive: true },
+// Videos load only when asked for; starting one pauses any other.
+const videoCards = Array.from(
+  document.querySelectorAll<HTMLElement>('.video-card'),
+);
+videoCards.forEach((card) => {
+  const video = card.querySelector('video');
+  const play = card.querySelector<HTMLButtonElement>('[data-video-play]');
+  if (!video || !play) return;
+  play.addEventListener('click', () => {
+    card.classList.add('is-playing');
+    video.controls = true;
+    video.play().catch(() => {
+      /* Native controls stay available if autoplay is refused. */
+    });
+    video.focus();
+  });
+  video.addEventListener('play', () =>
+    videoCards.forEach((other) => {
+      const otherVideo = other.querySelector('video');
+      if (otherVideo && otherVideo !== video) otherVideo.pause();
+    }),
   );
-  const release = () => {
-    timer = window.setTimeout(
-      () => card.classList.remove('is-touched'),
-      TOUCH_RELEASE_MS,
-    );
-  };
-  card.addEventListener('touchend', release, { passive: true });
-  card.addEventListener('touchcancel', release, { passive: true });
+});
+// Moving photo rows pause on hover and focus, and with the visible toggle (WCAG 2.2.2).
+document.querySelectorAll<HTMLElement>('[data-lives]').forEach((strip) => {
+  const toggle = strip.querySelector<HTMLButtonElement>('.lives-toggle');
+  toggle?.addEventListener('click', () => {
+    const paused = strip.classList.toggle('is-paused');
+    toggle.setAttribute('aria-pressed', String(paused));
+  });
 });
 // Gallery carousel arrows scroll one photo at a time and wrap around.
 document

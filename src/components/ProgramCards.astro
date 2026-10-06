@@ -1,22 +1,24 @@
 ---
-import { programs, copy, url, img, type Lang } from '../data/site';
+import { programs, copy, url, imgSm, type Lang } from '../data/site';
 import Icon from './Icon.astro';
 const {
   lang,
   limit = programs.length,
   exclude = '',
+  featured = false,
 } = Astro.props as {
   lang: Lang;
   limit?: number;
   exclude?: string;
+  featured?: boolean;
 };
 const t = copy[lang];
 const items = programs.filter((p) => p.slug !== exclude).slice(0, limit);
 ---
 
-<div class="program-grid">
+<div class:list={['program-grid', { 'is-featured': featured }]}>
   {items.map((p) => (
-    <article class={`program-card hover-card ${p.color}`}>
+    <article class="program-card">
       <a
         href={url(lang, p.slug)}
         tabindex="-1"
@@ -24,22 +26,20 @@ const items = programs.filter((p) => p.slug !== exclude).slice(0, limit);
         class="program-image"
       >
         <img
-          src={img(p.image)}
+          src={imgSm(p.image)}
           alt=""
-          width="1200"
-          height="896"
+          width="640"
+          height="480"
           loading="lazy"
         />
-        <span class="program-icon">
-          <Icon name={p.icon} size={22} />
-        </span>
       </a>
       <div class="program-body">
+        <span class="program-number">0{programs.indexOf(p) + 1}</span>
         <h3>
           <a href={url(lang, p.slug)}>{p[lang].title}</a>
         </h3>
         <p>{p[lang].text}</p>
-        <a class="card-link" href={url(lang, p.slug)}>
+        <a class="text-link" href={url(lang, p.slug)}>
           {t.more}
           <span class="sr-only">: {p[lang].title}</span>
           <Icon name="arrow" size={15} />

@@ -11,17 +11,15 @@ const values = [
 ];
 ---
 
-<div class="bank-panel hover-card">
+<div class="bank-panel">
   <h3>
-    <span class="bank-icon">
-      <Icon name="bank" size={22} />
-    </span>
+    <Icon name="bank" size={20} />
     {t.bankTitle}
   </h3>
   <dl>
     {values.map((value, i) => (
       <div>
-        <dt>{t.bankLabels[i]}:</dt>
+        <dt>{t.bankLabels[i]}</dt>
         <dd class={i >= 2 ? 'bank-number' : ''} lang="en">
           {value}
         </dd>

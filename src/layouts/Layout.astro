@@ -3,12 +3,8 @@ import '@fontsource/manrope/latin-400.css';
 import '@fontsource/manrope/latin-500.css';
 import '@fontsource/manrope/latin-600.css';
 import '@fontsource/manrope/latin-700.css';
-import '@fontsource/poppins/latin-600.css';
-import '@fontsource/poppins/latin-700.css';
-import '@fontsource/poppins/devanagari-600.css';
-import '@fontsource/poppins/devanagari-700.css';
-import '@fontsource/kalam/latin-400.css';
-import '@fontsource/kalam/devanagari-400.css';
+import '@fontsource/source-serif-4/latin-600.css';
+import '@fontsource/noto-serif-devanagari/devanagari-600.css';
 import '@fontsource/noto-sans-devanagari/devanagari-400.css';
 import '@fontsource/noto-sans-devanagari/devanagari-600.css';
 import '../styles/global.css';
@@ -57,7 +53,7 @@ const social = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#d62828" />
+    <meta name="theme-color" content="#8f1d1f" />
     <title>{title} | {t.name}</title>
     <meta name="description" content={description || t.heroText} />
     <link rel="canonical" href={canonical} />
@@ -83,7 +79,7 @@ const social = [
     <meta property="og:url" content={canonical} />
     <meta
       property="og:image"
-      content={`https://${site.domain}/images/generated/hero-care.webp`}
+      content={`https://${site.domain}/images/photos/residents-gathering.webp`}
     />
     <meta property="og:locale" content={lang === 'hi' ? 'hi_IN' : 'en_IN'} />
     <meta name="twitter:card" content="summary_large_image" />
@@ -147,7 +143,6 @@ const social = [
               हिन्दी
             </a>
           </div>
-          <span class="follow-label">{t.follow}</span>
           {social.map(([icon, href, label]) => (
             <a
               href={href}
@@ -196,7 +191,7 @@ const social = [
             ))}
           </ul>
 
-          <a href={url(lang, 'donate')} class="btn btn-donate">
+          <a href={url(lang, 'donate')} class="btn btn-primary btn-donate">
             <Icon name="heart" size={16} filled />
             {t.donate}
           </a>
@@ -248,7 +243,7 @@ const social = [
             </div>
           </div>
         </div>
-        <div class="office-card hover-card">
+        <div class="office-card">
           <h3>
             <Icon name="pin" size={20} />
             {t.office}
@@ -340,11 +335,7 @@ const social = [
             <a href={url(lang, 'terms')}>{t.titles[16]}</a>
             <a href={url(lang, 'support-policy')}>{t.titles[17]}</a>
           </div>
-          <small>
-            {t.designed}
-            <Icon name="heart" size={13} filled />
-            {t.designedFor}
-          </small>
+          <small>{t.credentials.join(' · ')}</small>
         </div>
       </div>
     </footer>
