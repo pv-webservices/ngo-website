@@ -41,27 +41,19 @@ export const routes = [
   'privacy-policy',
   'terms',
   'support-policy',
+  'mahila-diwas',
+  'transparency',
 ];
-export const url = (lang: Lang, slug = '') =>
-  `${lang === 'hi' ? '/hi' : ''}/${slug ? slug + '/' : ''}`;
+// A slug may carry an in-page anchor ("activities#winter"); the trailing slash goes before it.
+export const url = (lang: Lang, slug = ''): string => {
+  const [path, hash] = slug.split('#');
+  return `${lang === 'hi' ? '/hi' : ''}/${path ? path + '/' : ''}${hash ? '#' + hash : ''}`;
+};
 // The NGO's own photographs, prepared by scripts/prepare-photos.mjs.
 export const img = (name: string) => `/images/photos/${name}.webp`;
 export const imgSm = (name: string) => `/images/photos/${name}-sm.webp`;
 export const srcset = (name: string) =>
   `${imgSm(name)} 640w, ${img(name)} 1600w`;
-
-// Header photograph for inner routes; policy pages have none.
-export const pageImages: Record<string, string> = {
-  about: 'president-with-resident',
-  'our-work': 'residents-gathering',
-  'our-journey': 'ashram-dormitory',
-  activities: 'street-outreach',
-  gallery: 'shared-meal',
-  videos: 'yoga-session',
-  'get-involved': 'volunteers',
-  donate: 'ration-distribution',
-  contact: 'office-celebration',
-};
 
 export const copy = {
   en: {
@@ -81,12 +73,12 @@ export const copy = {
       'About Us',
       'Our Work',
       'Old Age Home',
-      'Orphanage & Child Care',
+      'Support for Underprivileged Children',
       'Yoga & Meditation',
-      'Medical Support',
-      'Day Care',
+      'Medical & Eye-Care Support',
+      'Day Care & Companionship',
       'Our Journey',
-      'Activities',
+      'Events & Stories',
       'Photo Gallery',
       'NGO Activity Videos',
       'Get Involved',
@@ -95,6 +87,8 @@ export const copy = {
       'Privacy Policy',
       'Terms & Conditions',
       'Donation & Support Information',
+      'Mahila Diwas',
+      'Transparency & Documents',
     ],
     donate: 'Donate Now',
     work: 'Explore Our Work',
@@ -107,46 +101,14 @@ export const copy = {
     close: 'Close',
     follow: 'Follow Us:',
     language: 'Language',
-    heroScript: 'Together for a Kinder, Healthier and Happier Society',
-    hero1: 'Care Today',
-    hero2: 'Brighter Tomorrows',
     heroText:
-      'Shanti Jan Kalyan Sansthan (Regd.) is dedicated to the care of the elderly, support for orphans, promotion of yoga and meditation, and providing medical facilities to those in need.',
-    heroBadges: [
-      'Registered NGO',
-      'Free care for destitute elders',
-      'Serving Delhi with love',
-    ],
-    heroEyebrow: 'Shanti Dham Ashram · Delhi',
-    heroTitle: ['Together, we can', 'care for every elder', 'in need.'],
-    seeImpact: 'See Our Impact',
-    heroCredentials: [
-      ['Regd. No. 323', 'Registered NGO'],
-      ['80G & 12A', 'Income Tax registered'],
-      ['NITI Aayog Darpan', 'Listed NGO'],
-    ],
-    heroNotes: [
-      'Nutritious meals for stronger, happier lives.',
-      'Medical care for a healthier tomorrow.',
-    ],
-    heroPromise: 'Every contribution restores dignity.',
-    heroPromiseText: 'Support today. Brighter tomorrows for our elders.',
-    heroAlt: 'Residents of Shanti Dham Ashram gathered with our team',
-    heroPhotoAlts: [
-      'A shared meal at Shanti Dham Vridhashram',
-      'A caregiver checking on a resident’s health',
-    ],
-    heroPlace: 'Majnu Ka Tilla, Delhi',
-    credentials: [
-      'Regd. No. 323',
-      '80G & 12A registered',
-      'NITI Aayog Darpan listed',
-    ],
+      'Shanti Jan Kalyan Sansthan (Regd.) runs Shanti Dham Ashram in Delhi, giving shelter, meals, medical help and company to elders with no family support, and reaching out to women, children and people on the street.',
+    credentials: ['Regd. No. 323', 'Shanti Dham Ashram, Delhi'],
     eyebrow: 'Our Programs',
     aboutEyebrow: 'About Us',
     aboutTitle: 'A helping hand. A place to belong.',
     aboutText:
-      'Shanti Jan Kalyan Sansthan (Regd.) is a social welfare organization committed to serving humanity. We run an old age home, support orphans, promote yoga and meditation, and provide essential medical facilities to the needy. Our aim is to create a healthier, more compassionate and inclusive society.',
+      'Shanti Jan Kalyan Sansthan (Regd.) is a social welfare organisation in Delhi. We run Shanti Dham Ashram for elders without family support, arrange medical help and eye-care camps, reach out to people on the street, and support women and underprivileged children through community events and study sessions.',
     aboutText2:
       'For destitute elders, our ashram offers shelter, meals, yoga, meditation and medical facilities free of cost — because every person deserves to live with warmth, respect and dignity.',
     leader: 'Sunita Bhushan',
@@ -160,7 +122,7 @@ export const copy = {
     ],
     mission: 'Our Mission',
     missionText:
-      'To support destitute elders, orphaned children and people in need through compassionate care, free facilities and community service.',
+      'To support destitute elders, underprivileged children and people in need through compassionate care, free facilities and community service.',
     vision: 'Our Vision',
     visionText:
       'A kinder, healthier society where no elder is left alone and every child has a chance to grow with love.',
@@ -169,20 +131,12 @@ export const copy = {
       'Our purpose is to connect practical support with care that respects each person.',
     objectivesList: [
       'Provide shelter, nutritious food and companionship to destitute elders.',
-      'Give orphaned and underprivileged children education, food and love.',
+      'Support underprivileged children with study sessions, books and festivals.',
       'Promote physical and mental well-being through yoga and meditation.',
       'Make basic healthcare and medicines reachable for the needy.',
     ],
     values: 'Dignity · Compassion · Community',
     aboutPhoto: 'Care that feels like family',
-    impactEyebrow: 'Our Impact',
-    impactTitle: 'Changing Lives, Building a Kinder Society',
-    stats: [
-      'Elderly People Supported',
-      'Children & Orphans Cared For',
-      'Medical Beneficiaries',
-      'Yoga & Meditation Participants',
-    ],
     programsEyebrow: 'Our Programs & Work Areas',
     programsTitle: 'Focused Initiatives for a Healthier and Happier Community',
     programsText: 'Every program is built around dignity, care and compassion.',
@@ -216,7 +170,9 @@ export const copy = {
     enlarge: 'View photograph',
     galleryFilters: {
       elders: 'Elder Care',
-      health: 'Medical Care',
+      health: 'Medical & Eye Care',
+      women: 'Women & Mahila Diwas',
+      children: 'Children',
       wellness: 'Yoga & Wellness',
       outreach: 'Street Outreach',
       community: 'Community',
@@ -235,11 +191,11 @@ export const copy = {
     supportEyebrow: 'Support Our Cause',
     supportTitle: 'Your Kindness Can Change Lives',
     supportText:
-      'Your contribution helps us provide food, shelter, healthcare, education and a better future for the elderly, children and underprivileged people. Together we can build a more compassionate and healthier society.',
+      'Your contribution provides meals, shelter, medicines and daily care for elders at Shanti Dham Ashram, and keeps our outreach to people on the street, women and children going.',
     supportUses: [
-      'Nutritious meals for elders & children',
+      'Nutritious meals for residents',
       'Medicines and health check-ups',
-      'Education and school supplies',
+      'Books and study materials for children',
       'Warm clothes, blankets and shelter',
     ],
     bankTitle: 'Bank Details',
@@ -250,11 +206,6 @@ export const copy = {
     scan: 'Scan & Donate',
     qrAlt: 'Donation QR code of Shanti Jan Kalyan Sansthan',
     qrNote: 'Scan this QR code to support our work',
-    livesEyebrow: 'Lives We Touch',
-    livesTitle: 'The people at the heart of our work',
-    livesText:
-      'Elders, patients and people from the street who found care, dignity and company with us.',
-    pauseStrip: 'Pause moving photographs',
     involvedTitle: 'A little of your time. A world of possibility.',
     involvedText:
       'Volunteer, donate, partner with us or help spread awareness. Every helping hand brings comfort to someone who needs it.',
@@ -297,9 +248,8 @@ export const copy = {
     helpText:
       'Your support — time, supplies or a donation — directly reaches the people in our care.',
     related: 'Explore More of Our Work',
-    activityTitle: 'A closer look at community care.',
     activityText:
-      'Daily life at our ashram is filled with care, prayer, yoga, meals together and moments of joy. Contact our team to visit or take part.',
+      'Camps, winter outreach and festivals with children and residents — recorded by our own team, with dates wherever the photographs show them.',
     formTitle: 'Send Us a Message',
     formNote:
       'This form prepares a draft in your email app. Your message is sent when you send the email.',
@@ -316,6 +266,7 @@ export const copy = {
       'Program enquiry',
       'Donation enquiry',
       'Partnership',
+      'Document request',
     ],
     formSubmit: 'Prepare Email',
     formSuccess:
@@ -334,6 +285,10 @@ export const copy = {
       [
         'How do I get an acknowledgement for my donation?',
         'Call or email the team with your transfer details and we will get back to you. Never share your payment PIN, password or OTP with anyone.',
+      ],
+      [
+        'Is my donation tax-deductible?',
+        'This website does not promise a tax deduction. If you need a receipt for tax purposes, ask the team before you donate so they can confirm what applies.',
       ],
     ],
     policyIntro:
@@ -412,12 +367,12 @@ export const copy = {
       'हमारे बारे में',
       'हमारे कार्य',
       'वृद्ध आश्रम',
-      'अनाथालय एवं बाल देखभाल',
+      'वंचित बच्चों के लिए सहयोग',
       'योग एवं ध्यान',
-      'चिकित्सा सहयोग',
-      'डे केयर',
+      'चिकित्सा एवं नेत्र सहायता',
+      'डे केयर एवं अपनापन',
       'हमारी यात्रा',
-      'गतिविधियाँ',
+      'आयोजन एवं कहानियाँ',
       'फोटो गैलरी',
       'संस्थान की गतिविधियों के वीडियो',
       'हमसे जुड़ें',
@@ -426,6 +381,8 @@ export const copy = {
       'गोपनीयता नीति',
       'नियम एवं शर्तें',
       'दान और सहयोग की जानकारी',
+      'महिला दिवस',
+      'पारदर्शिता एवं दस्तावेज़',
     ],
     donate: 'दान करें',
     work: 'हमारे कार्य देखें',
@@ -438,50 +395,14 @@ export const copy = {
     close: 'बंद करें',
     follow: 'हमसे जुड़ें:',
     language: 'भाषा',
-    heroScript: 'एक दयालु, स्वस्थ और खुशहाल समाज के लिए साथ मिलकर',
-    hero1: 'आज की देखभाल',
-    hero2: 'कल की नई उम्मीद',
     heroText:
-      'शांति जन कल्याण संस्थान (रजि.) बुज़ुर्गों की देखभाल, अनाथ बच्चों के सहयोग, योग एवं ध्यान के प्रचार और ज़रूरतमंदों को चिकित्सा सुविधाएँ उपलब्ध कराने के लिए समर्पित है।',
-    heroBadges: [
-      'पंजीकृत संस्था',
-      'बेसहारा बुज़ुर्गों की निःशुल्क देखभाल',
-      'दिल्ली में प्रेम से सेवा',
-    ],
-    heroEyebrow: 'शान्ति धाम आश्रम · दिल्ली',
-    heroTitle: [
-      'साथ मिलकर हम',
-      'हर ज़रूरतमंद बुज़ुर्ग',
-      'की देखभाल कर सकते हैं।',
-    ],
-    seeImpact: 'हमारा प्रभाव देखें',
-    heroCredentials: [
-      ['पंजीकरण सं. 323', 'पंजीकृत संस्था'],
-      ['80G और 12A', 'आयकर पंजीकृत'],
-      ['नीति आयोग दर्पण', 'सूचीबद्ध संस्था'],
-    ],
-    heroNotes: [
-      'स्वस्थ और खुशहाल जीवन के लिए पौष्टिक भोजन।',
-      'स्वस्थ कल के लिए चिकित्सा देखभाल।',
-    ],
-    heroPromise: 'हर योगदान सम्मान लौटाता है।',
-    heroPromiseText: 'आज का सहयोग, हमारे बुज़ुर्गों के लिए बेहतर कल।',
-    heroAlt: 'हमारी टीम के साथ शान्ति धाम आश्रम के निवासी',
-    heroPhotoAlts: [
-      'शान्ति धाम वृद्धाश्रम में साथ भोजन',
-      'एक निवासी के स्वास्थ्य की जाँच करती देखभालकर्ता',
-    ],
-    heroPlace: 'मजनू का टीला, दिल्ली',
-    credentials: [
-      'पंजीकरण सं. 323',
-      '80G और 12A पंजीकृत',
-      'नीति आयोग दर्पण में सूचीबद्ध',
-    ],
+      'शांति जन कल्याण संस्थान (रजि.) दिल्ली में शान्ति धाम आश्रम चलाता है, जहाँ बेसहारा बुज़ुर्गों को आश्रय, भोजन, चिकित्सा सहायता और अपनापन मिलता है, और महिलाओं, बच्चों व सड़क पर रहने वालों तक सेवा पहुँचती है।',
+    credentials: ['पंजीकरण सं. 323', 'शान्ति धाम आश्रम, दिल्ली'],
     eyebrow: 'हमारी पहल',
     aboutEyebrow: 'हमारे बारे में',
     aboutTitle: 'सहारा देने वाला हाथ। अपनापन देने वाली जगह।',
     aboutText:
-      'शांति जन कल्याण संस्थान (रजि.) मानवता की सेवा के लिए समर्पित एक सामाजिक कल्याण संस्था है। हम वृद्ध आश्रम चलाते हैं, अनाथ बच्चों का सहयोग करते हैं, योग और ध्यान को बढ़ावा देते हैं और ज़रूरतमंदों को आवश्यक चिकित्सा सुविधाएँ देते हैं। हमारा लक्ष्य एक स्वस्थ, संवेदनशील और समावेशी समाज बनाना है।',
+      'शांति जन कल्याण संस्थान (रजि.) दिल्ली की एक सामाजिक कल्याण संस्था है। हम बेसहारा बुज़ुर्गों के लिए शान्ति धाम आश्रम चलाते हैं, चिकित्सा सहायता और आँख जाँच शिविर आयोजित करते हैं, सड़क पर रहने वालों तक पहुँचते हैं, और सामुदायिक आयोजनों व पढ़ाई के सत्रों से महिलाओं और वंचित बच्चों का सहयोग करते हैं।',
     aboutText2:
       'बेसहारा बुज़ुर्गों के लिए हमारे आश्रम में रहना, खाना, योग, मेडिटेशन और चिकित्सा सुविधाएँ निःशुल्क उपलब्ध हैं — क्योंकि हर व्यक्ति स्नेह, सम्मान और गरिमा के साथ जीने का हकदार है।',
     leader: 'सुनीता भूषण',
@@ -495,7 +416,7 @@ export const copy = {
     ],
     mission: 'हमारा मिशन',
     missionText:
-      'संवेदनशील देखभाल, निःशुल्क सुविधाओं और सामुदायिक सेवा से बेसहारा बुज़ुर्गों, अनाथ बच्चों और ज़रूरतमंदों का सहारा बनना।',
+      'संवेदनशील देखभाल, निःशुल्क सुविधाओं और सामुदायिक सेवा से बेसहारा बुज़ुर्गों, वंचित बच्चों और ज़रूरतमंदों का सहारा बनना।',
     vision: 'हमारा दृष्टिकोण',
     visionText:
       'एक दयालु और स्वस्थ समाज, जहाँ कोई बुज़ुर्ग अकेला न रहे और हर बच्चे को प्यार से बढ़ने का अवसर मिले।',
@@ -504,20 +425,12 @@ export const copy = {
       'हमारा उद्देश्य व्यावहारिक सहयोग को ऐसी देखभाल से जोड़ना है, जिसमें हर व्यक्ति का सम्मान हो।',
     objectivesList: [
       'बेसहारा बुज़ुर्गों को आश्रय, पौष्टिक भोजन और अपनापन देना।',
-      'अनाथ और वंचित बच्चों को शिक्षा, भोजन और स्नेह देना।',
+      'पढ़ाई के सत्रों, किताबों और त्योहारों से वंचित बच्चों का सहयोग करना।',
       'योग और ध्यान से शारीरिक व मानसिक स्वास्थ्य को बढ़ावा देना।',
       'ज़रूरतमंदों तक बुनियादी स्वास्थ्य सेवा और दवाइयाँ पहुँचाना।',
     ],
     values: 'सम्मान · करुणा · समुदाय',
     aboutPhoto: 'परिवार जैसा अपनापन',
-    impactEyebrow: 'हमारा प्रभाव',
-    impactTitle: 'जीवन में बदलाव, एक दयालु समाज का निर्माण',
-    stats: [
-      'बुज़ुर्गों को सहारा',
-      'बच्चों व अनाथों की देखभाल',
-      'चिकित्सा लाभार्थी',
-      'योग एवं ध्यान प्रतिभागी',
-    ],
     programsEyebrow: 'हमारे कार्यक्रम एवं कार्य क्षेत्र',
     programsTitle: 'स्वस्थ और खुशहाल समुदाय के लिए केंद्रित पहल',
     programsText: 'हमारा हर कार्यक्रम सम्मान, देखभाल और करुणा पर आधारित है।',
@@ -551,7 +464,9 @@ export const copy = {
     enlarge: 'तस्वीर देखें',
     galleryFilters: {
       elders: 'बुज़ुर्गों की देखभाल',
-      health: 'चिकित्सा देखभाल',
+      health: 'चिकित्सा एवं नेत्र',
+      women: 'महिलाएँ एवं महिला दिवस',
+      children: 'बच्चे',
       wellness: 'योग एवं स्वास्थ्य',
       outreach: 'सड़क पर सेवा',
       community: 'समुदाय',
@@ -570,11 +485,11 @@ export const copy = {
     supportEyebrow: 'हमारे कार्य में सहयोग करें',
     supportTitle: 'आपकी दयालुता जीवन बदल सकती है',
     supportText:
-      'आपका सहयोग बुज़ुर्गों, बच्चों और वंचित लोगों के लिए भोजन, आश्रय, स्वास्थ्य सेवा, शिक्षा और बेहतर भविष्य देने में मदद करता है। साथ मिलकर हम एक अधिक संवेदनशील और स्वस्थ समाज बना सकते हैं।',
+      'आपका योगदान शान्ति धाम आश्रम में बुज़ुर्गों के लिए भोजन, आश्रय, दवाइयाँ और रोज़ की देखभाल देता है, और सड़क पर रहने वालों, महिलाओं व बच्चों तक हमारी सेवा जारी रखता है।',
     supportUses: [
-      'बुज़ुर्गों और बच्चों के लिए पौष्टिक भोजन',
+      'निवासियों के लिए पौष्टिक भोजन',
       'दवाइयाँ और स्वास्थ्य जाँच',
-      'शिक्षा और पढ़ाई की सामग्री',
+      'बच्चों के लिए किताबें और पढ़ाई की सामग्री',
       'गर्म कपड़े, कंबल और आश्रय',
     ],
     bankTitle: 'बैंक विवरण',
@@ -585,11 +500,6 @@ export const copy = {
     scan: 'स्कैन करें और दान दें',
     qrAlt: 'शांति जन कल्याण संस्थान का दान क्यूआर कोड',
     qrNote: 'हमारे कार्य में सहयोग के लिए यह क्यूआर कोड स्कैन करें',
-    livesEyebrow: 'जिनके जीवन को हमने छुआ',
-    livesTitle: 'हमारे कार्य के केंद्र में ये लोग हैं',
-    livesText:
-      'बुज़ुर्ग, मरीज़ और सड़क पर रहने वाले लोग, जिन्हें हमारे साथ देखभाल, सम्मान और अपनापन मिला।',
-    pauseStrip: 'चलती तस्वीरें रोकें',
     involvedTitle: 'आपका थोड़ा सा समय। नई संभावनाओं की शुरुआत।',
     involvedText:
       'स्वयंसेवा करें, दान दें, साथ काम करें या जागरूकता फैलाएँ। मदद का हर हाथ किसी ज़रूरतमंद को सुकून देता है।',
@@ -632,9 +542,8 @@ export const copy = {
     helpText:
       'आपका सहयोग — समय, सामग्री या दान — सीधे हमारी देखभाल में रहने वाले लोगों तक पहुँचता है।',
     related: 'हमारे अन्य कार्य देखें',
-    activityTitle: 'सामुदायिक देखभाल को करीब से जानें।',
     activityText:
-      'हमारे आश्रम का रोज़मर्रा का जीवन देखभाल, प्रार्थना, योग, साथ भोजन और खुशी के पलों से भरा है। मिलने या जुड़ने के लिए हमारी टीम से संपर्क करें।',
+      'शिविर, सर्दियों की सेवा, और बच्चों व निवासियों के साथ त्योहार — हमारी अपनी टीम द्वारा रिकॉर्ड, जहाँ तस्वीरों में तारीख़ दिखती है वहाँ तारीख़ के साथ।',
     formTitle: 'हमें संदेश भेजें',
     formNote:
       'यह फ़ॉर्म आपके ईमेल ऐप में मसौदा तैयार करता है। ईमेल भेजने पर ही संदेश जाएगा।',
@@ -645,6 +554,7 @@ export const copy = {
       'कार्यक्रम की जानकारी',
       'दान संबंधी प्रश्न',
       'भागीदारी',
+      'दस्तावेज़ का अनुरोध',
     ],
     formSubmit: 'ईमेल तैयार करें',
     formSuccess:
@@ -663,6 +573,10 @@ export const copy = {
       [
         'दान की पावती कैसे मिलेगी?',
         'अपने ट्रांसफर के विवरण के साथ टीम को कॉल या ईमेल करें, हम आपसे संपर्क करेंगे। भुगतान पिन, पासवर्ड या ओटीपी कभी किसी से साझा न करें।',
+      ],
+      [
+        'क्या मेरे दान पर कर छूट मिलेगी?',
+        'यह वेबसाइट किसी कर छूट का वादा नहीं करती। कर के लिए रसीद चाहिए तो दान से पहले टीम से पूछें ताकि वे बता सकें कि क्या लागू होता है।',
       ],
     ],
     policyIntro:
@@ -731,101 +645,34 @@ export const programs = [
     slug: 'old-age-home',
     icon: 'elder',
     color: 'orange',
+    status: 'ongoing',
     image: 'residents-gathering',
-    photo: 'ashram-dormitory',
+    photo: 'resident-and-caregiver',
     category: 'elders',
     en: {
-      title: 'Old Age Home',
-      card: 'A safe, caring and dignified home for senior citizens.',
+      title: 'Elder Shelter & Care',
+      card: 'A safe, caring and dignified home for elders with no family support.',
       short: 'A caring home. A life of dignity.',
-      text: 'Shelter, nutrition, care and emotional support for senior citizens.',
-      why: 'Many elders are left alone in their final years. At our ashram, destitute senior citizens receive a safe place to live, meals, medical help and the companionship of a family — free of cost.',
+      text: 'Shelter, meals, daily care and company for elders at Shanti Dham Ashram.',
+      why: 'Many elders are left alone in their final years. At Shanti Dham Ashram, destitute senior citizens receive a safe place to live, meals, medical help and the companionship of a family — free of cost.',
       focus: [
         'Free shelter and nutritious meals',
-        'Daily care and companionship',
+        'Bathing, grooming and clean clothes',
         'Medical check-ups and medicines',
         'Prayer, yoga and festivals together',
       ],
     },
     hi: {
-      title: 'वृद्ध आश्रम',
-      card: 'वरिष्ठ नागरिकों के लिए सुरक्षित, स्नेह भरा और सम्मानजनक घर।',
+      title: 'बुज़ुर्गों को आश्रय और देखभाल',
+      card: 'पारिवारिक सहारे से वंचित बुज़ुर्गों के लिए सुरक्षित, स्नेह भरा और सम्मानजनक घर।',
       short: 'स्नेह भरा घर। सम्मान भरा जीवन।',
-      text: 'वरिष्ठ नागरिकों के लिए आश्रय, पोषण, देखभाल और भावनात्मक सहयोग।',
-      why: 'कई बुज़ुर्ग जीवन के अंतिम वर्षों में अकेले रह जाते हैं। हमारे आश्रम में बेसहारा वरिष्ठ नागरिकों को रहने की सुरक्षित जगह, भोजन, चिकित्सा सहायता और परिवार जैसा अपनापन — निःशुल्क मिलता है।',
+      text: 'शान्ति धाम आश्रम में बुज़ुर्गों के लिए आश्रय, भोजन, रोज़ की देखभाल और अपनापन।',
+      why: 'कई बुज़ुर्ग जीवन के अंतिम वर्षों में अकेले रह जाते हैं। शान्ति धाम आश्रम में बेसहारा वरिष्ठ नागरिकों को रहने की सुरक्षित जगह, भोजन, चिकित्सा सहायता और परिवार जैसा अपनापन — निःशुल्क मिलता है।',
       focus: [
         'निःशुल्क आश्रय और पौष्टिक भोजन',
-        'रोज़ाना देखभाल और अपनापन',
+        'नहलाना, साफ़-सफ़ाई और साफ़ कपड़े',
         'स्वास्थ्य जाँच और दवाइयाँ',
         'साथ में प्रार्थना, योग और त्योहार',
-      ],
-    },
-  },
-  {
-    slug: 'child-welfare',
-    icon: 'child',
-    color: 'blue',
-    image: 'ration-distribution',
-    photo: 'office-celebration',
-    category: 'community',
-    en: {
-      title: 'Orphanage',
-      card: 'Love, education and support for a brighter future.',
-      short: 'Nurturing hope for the next generation.',
-      text: 'Education, food, shelter and love for orphaned and underprivileged children.',
-      why: 'Every child deserves a safe childhood. We help orphaned and underprivileged children with food, education and care so they can grow with confidence and hope.',
-      focus: [
-        'Food, clothing and basic needs',
-        'Education and school supplies',
-        'Care, guidance and encouragement',
-        'Joyful time with elders and festivals',
-      ],
-    },
-    hi: {
-      title: 'अनाथालय',
-      card: 'उज्ज्वल भविष्य के लिए प्यार, शिक्षा और सहयोग।',
-      short: 'अगली पीढ़ी के लिए नई उम्मीद।',
-      text: 'अनाथ और वंचित बच्चों के लिए शिक्षा, भोजन, आश्रय और स्नेह।',
-      why: 'हर बच्चे को सुरक्षित बचपन का हक है। हम अनाथ और वंचित बच्चों को भोजन, शिक्षा और देखभाल देते हैं ताकि वे आत्मविश्वास और उम्मीद के साथ बढ़ सकें।',
-      focus: [
-        'भोजन, कपड़े और बुनियादी ज़रूरतें',
-        'शिक्षा और पढ़ाई की सामग्री',
-        'देखभाल, मार्गदर्शन और प्रोत्साहन',
-        'बुज़ुर्गों के साथ खुशी के पल और त्योहार',
-      ],
-    },
-  },
-  {
-    slug: 'yoga-meditation',
-    icon: 'lotus',
-    color: 'green',
-    image: 'yoga-session',
-    photo: 'yoga-group',
-    category: 'wellness',
-    en: {
-      title: 'Yoga & Meditation',
-      card: 'For better physical, mental and emotional well-being.',
-      short: 'A little balance. A better everyday.',
-      text: 'Regular yoga and meditation sessions for physical and mental well-being.',
-      why: 'Gentle movement, breathing and meditation bring calm, strength and connection. Our regular sessions help elders and community members stay active and peaceful.',
-      focus: [
-        'Morning yoga sessions',
-        'Guided meditation and pranayama',
-        'Stress relief and mental peace',
-        'Community wellness gatherings',
-      ],
-    },
-    hi: {
-      title: 'योग एवं ध्यान',
-      card: 'बेहतर शारीरिक, मानसिक और भावनात्मक स्वास्थ्य के लिए।',
-      short: 'थोड़ा संतुलन। बेहतर रोज़मर्रा।',
-      text: 'शारीरिक और मानसिक स्वास्थ्य के लिए नियमित योग और ध्यान सत्र।',
-      why: 'हल्का व्यायाम, श्वास और ध्यान शांति, शक्ति और जुड़ाव लाते हैं। हमारे नियमित सत्र बुज़ुर्गों और समुदाय को सक्रिय और शांत रहने में मदद करते हैं।',
-      focus: [
-        'सुबह के योग सत्र',
-        'निर्देशित ध्यान और प्राणायाम',
-        'तनाव से राहत और मानसिक शांति',
-        'सामुदायिक स्वास्थ्य कार्यक्रम',
       ],
     },
   },
@@ -833,33 +680,104 @@ export const programs = [
     slug: 'medical-support',
     icon: 'pulse',
     color: 'red',
-    image: 'hand-care',
+    status: 'ongoing',
+    image: 'eye-camp-team',
     photo: 'hospital-admission',
     category: 'health',
     en: {
-      title: 'Medical Support',
-      card: 'Basic healthcare and medical facilities for the underprivileged.',
+      title: 'Medical & Eye-Care Support',
+      card: 'Check-ups, medicines, hospital visits and eye-care camps.',
       short: 'Helping care reach those in need.',
-      text: 'Health check-ups, medicines and medical facilities for the needy.',
-      why: 'Illness can be a heavy burden for people with no support. We arrange check-ups, medicines and medical help so that care reaches those who need it most.',
+      text: 'Check-ups and medicines for residents, help reaching hospital, and free eye-test camps.',
+      why: 'Illness is a heavy burden for someone with no one beside them. We arrange check-ups and medicines for residents, go with them to hospital, and bring care to the ashram — such as the free eye-test camp held there on 2 July 2024.',
       focus: [
-        'Regular health check-ups',
-        'Free medicines for residents',
-        'Health camps for the community',
-        'Help reaching hospitals when needed',
+        'Health check-ups and medicines for residents',
+        'Going with residents to hospital',
+        'Free eye-test camp at the ashram, 2 July 2024',
+        'First aid for people on the street',
       ],
     },
     hi: {
-      title: 'चिकित्सा सहयोग',
-      card: 'वंचितों के लिए बुनियादी स्वास्थ्य सेवा और चिकित्सा सुविधाएँ।',
+      title: 'चिकित्सा एवं नेत्र सहायता',
+      card: 'स्वास्थ्य जाँच, दवाइयाँ, अस्पताल तक मदद और आँख जाँच शिविर।',
       short: 'ज़रूरतमंद लोगों तक सहायता।',
-      text: 'ज़रूरतमंदों के लिए स्वास्थ्य जाँच, दवाइयाँ और चिकित्सा सुविधाएँ।',
-      why: 'बिना सहारे वाले लोगों के लिए बीमारी बड़ा बोझ बन सकती है। हम स्वास्थ्य जाँच, दवाइयों और चिकित्सा सहायता की व्यवस्था करते हैं ताकि देखभाल सबसे ज़रूरतमंद तक पहुँचे।',
+      text: 'निवासियों के लिए जाँच और दवाइयाँ, अस्पताल तक मदद, और निःशुल्क आँख जाँच शिविर।',
+      why: 'जिसके साथ कोई नहीं, उसके लिए बीमारी बड़ा बोझ है। हम निवासियों की जाँच और दवाइयों की व्यवस्था करते हैं, उनके साथ अस्पताल जाते हैं, और आश्रम तक देखभाल लाते हैं — जैसे 2 जुलाई 2024 को वहाँ लगा निःशुल्क आँख जाँच शिविर।',
       focus: [
-        'नियमित स्वास्थ्य जाँच',
-        'निवासियों के लिए निःशुल्क दवाइयाँ',
-        'समुदाय के लिए स्वास्थ्य शिविर',
-        'ज़रूरत पड़ने पर अस्पताल तक मदद',
+        'निवासियों के लिए स्वास्थ्य जाँच और दवाइयाँ',
+        'निवासियों के साथ अस्पताल जाना',
+        'आश्रम में निःशुल्क आँख जाँच शिविर, 2 जुलाई 2024',
+        'सड़क पर रहने वालों को प्राथमिक उपचार',
+      ],
+    },
+  },
+  {
+    slug: 'child-welfare',
+    icon: 'child',
+    color: 'blue',
+    status: 'periodic',
+    image: 'children-education',
+    photo: 'children-class',
+    category: 'children',
+    en: {
+      title: 'Support for Underprivileged Children',
+      card: 'Study sessions, books and festivals for children from nearby families.',
+      short: 'Every child has the right to learn.',
+      text: 'Study sessions, study materials and festival days with children from low-income families.',
+      why: 'Children from low-income families near our centres often miss out on support with their studies. We hold study sessions with books and materials, and celebrate festivals such as Holi with them.',
+      focus: [
+        'Study sessions with books',
+        'Study materials for children',
+        'Festival days, such as Holi in March 2023',
+        'Time with our elders and volunteers',
+      ],
+    },
+    hi: {
+      title: 'वंचित बच्चों के लिए सहयोग',
+      card: 'आसपास के परिवारों के बच्चों के लिए पढ़ाई, किताबें और त्योहार।',
+      short: 'हर बच्चे को पढ़ने का अधिकार है।',
+      text: 'कम आय वाले परिवारों के बच्चों के साथ पढ़ाई के सत्र, पढ़ाई की सामग्री और त्योहार।',
+      why: 'हमारे केंद्रों के आसपास कम आय वाले परिवारों के बच्चों को अक्सर पढ़ाई में सहयोग नहीं मिलता। हम किताबों और सामग्री के साथ पढ़ाई के सत्र करते हैं और होली जैसे त्योहार उनके साथ मनाते हैं।',
+      focus: [
+        'किताबों के साथ पढ़ाई के सत्र',
+        'बच्चों के लिए पढ़ाई की सामग्री',
+        'त्योहार, जैसे मार्च 2023 की होली',
+        'हमारे बुज़ुर्गों और स्वयंसेवकों के साथ समय',
+      ],
+    },
+  },
+  {
+    slug: 'yoga-meditation',
+    icon: 'lotus',
+    color: 'green',
+    status: 'periodic',
+    image: 'yoga-session',
+    photo: 'yoga-group',
+    category: 'wellness',
+    en: {
+      title: 'Yoga & Meditation',
+      card: 'For better physical, mental and emotional well-being.',
+      short: 'A little balance. A better everyday.',
+      text: 'Yoga and meditation sessions with residents, including International Yoga Day.',
+      why: 'Gentle movement, breathing and meditation bring calm, strength and connection. Our sessions help residents stay active and peaceful, and every 21 June we mark International Yoga Day together.',
+      focus: [
+        'Gentle yoga for residents',
+        'Guided meditation and pranayama',
+        'Stress relief and mental peace',
+        'International Yoga Day, 21 June',
+      ],
+    },
+    hi: {
+      title: 'योग एवं ध्यान',
+      card: 'बेहतर शारीरिक, मानसिक और भावनात्मक स्वास्थ्य के लिए।',
+      short: 'थोड़ा संतुलन। बेहतर रोज़मर्रा।',
+      text: 'निवासियों के साथ योग और ध्यान सत्र, जिसमें अंतरराष्ट्रीय योग दिवस शामिल है।',
+      why: 'हल्का व्यायाम, श्वास और ध्यान शांति, शक्ति और जुड़ाव लाते हैं। हमारे सत्र निवासियों को सक्रिय और शांत रहने में मदद करते हैं, और हर 21 जून को हम साथ मिलकर अंतरराष्ट्रीय योग दिवस मनाते हैं।',
+      focus: [
+        'निवासियों के लिए हल्का योग',
+        'निर्देशित ध्यान और प्राणायाम',
+        'तनाव से राहत और मानसिक शांति',
+        'अंतरराष्ट्रीय योग दिवस, 21 जून',
       ],
     },
   },
@@ -867,11 +785,12 @@ export const programs = [
     slug: 'day-care',
     icon: 'group',
     color: 'purple',
-    image: 'shared-meal',
-    photo: 'wheelchair-friends',
+    status: 'ongoing',
+    image: 'wheelchair-friends',
+    photo: 'elders-arched-window',
     category: 'elders',
     en: {
-      title: 'Day Care',
+      title: 'Day Care & Companionship',
       card: 'Care, engagement and companionship for the elderly.',
       short: 'Company, connection and everyday care.',
       text: 'Care, engagement and companionship for the elderly through the day.',
@@ -884,7 +803,7 @@ export const programs = [
       ],
     },
     hi: {
-      title: 'डे केयर',
+      title: 'डे केयर एवं अपनापन',
       card: 'बुज़ुर्गों के लिए देखभाल, गतिविधियाँ और साथ।',
       short: 'साथ, जुड़ाव और रोज़मर्रा की देखभाल।',
       text: 'दिनभर बुज़ुर्गों के लिए देखभाल, गतिविधियाँ और अपनापन।',
@@ -899,16 +818,14 @@ export const programs = [
   },
 ];
 
-// Figures from the client-approved homepage reference; confirm with the NGO before launch.
-export const stats = [
-  { value: 500, icon: 'elder', color: 'orange' },
-  { value: 200, icon: 'child', color: 'red' },
-  { value: 1000, icon: 'heart', color: 'blue' },
-  { value: 300, icon: 'lotus', color: 'green' },
-];
-
 export type PhotoCategory =
-  'elders' | 'health' | 'wellness' | 'outreach' | 'community';
+  | 'elders'
+  | 'health'
+  | 'women'
+  | 'children'
+  | 'wellness'
+  | 'outreach'
+  | 'community';
 
 export interface Photo {
   image: string;
@@ -917,14 +834,33 @@ export interface Photo {
   hi: string;
 }
 
-// The NGO's own photographs. Last-rites images supplied by the client are
-// deliberately not published.
+// The NGO's own photographs (2025 and October 2026 batches). Last-rites images,
+// missing-person appeals and photographs of undressed or hospitalised residents
+// supplied by the client are deliberately not published.
 export const photos: Photo[] = [
+  {
+    image: 'selfie-with-resident',
+    category: 'elders',
+    en: 'A team member with a resident of the ashram',
+    hi: 'आश्रम की एक निवासी के साथ टीम की सदस्य',
+  },
   {
     image: 'president-with-resident',
     category: 'elders',
     en: 'Our National President with a resident of Shanti Dham',
     hi: 'शान्ति धाम की एक निवासी के साथ हमारी राष्ट्रीय अध्यक्ष',
+  },
+  {
+    image: 'eye-camp-team',
+    category: 'health',
+    en: 'The eye-care team at the free eye-test camp, 2 July 2024',
+    hi: 'निःशुल्क आँख जाँच शिविर में नेत्र चिकित्सा टीम, 2 जुलाई 2024',
+  },
+  {
+    image: 'mahila-diwas-group',
+    category: 'women',
+    en: 'Women’s Day Samman Samaroh on stage',
+    hi: 'मंच पर महिला दिवस सम्मान समारोह',
   },
   {
     image: 'residents-gathering',
@@ -933,10 +869,46 @@ export const photos: Photo[] = [
     hi: 'आश्रम में एक साथ बैठे निवासी',
   },
   {
+    image: 'children-education',
+    category: 'children',
+    en: 'A study session for children with books',
+    hi: 'किताबों के साथ बच्चों का पढ़ाई सत्र',
+  },
+  {
+    image: 'night-blanket',
+    category: 'outreach',
+    en: 'A new blanket on a winter night',
+    hi: 'सर्द रात में नया कंबल',
+  },
+  {
     image: 'shared-meal',
     category: 'elders',
     en: 'A warm meal at Shanti Dham Vridhashram',
     hi: 'शान्ति धाम वृद्धाश्रम में गरम भोजन',
+  },
+  {
+    image: 'window-conversation',
+    category: 'elders',
+    en: 'Conversation by the window at the ashram',
+    hi: 'आश्रम में खिड़की के पास बातचीत',
+  },
+  {
+    image: 'eye-camp-checkup',
+    category: 'health',
+    en: 'An eye check-up inside the ashram',
+    hi: 'आश्रम के अंदर आँखों की जाँच',
+  },
+  {
+    image: 'mahila-diwas-2022',
+    category: 'women',
+    en: 'International Mahila Diwas Samman Samaroh, 2022',
+    hi: 'अंतरराष्ट्रीय महिला दिवस सम्मान समारोह, 2022',
+  },
+  {
+    image: 'holi-children-2023',
+    category: 'children',
+    en: 'Holi with children, March 2023',
+    hi: 'बच्चों के साथ होली, मार्च 2023',
   },
   {
     image: 'hand-care',
@@ -951,16 +923,52 @@ export const photos: Photo[] = [
     hi: 'सुबह का योग और ध्यान सत्र',
   },
   {
+    image: 'food-distribution-winter',
+    category: 'outreach',
+    en: 'Serving hot food by the roadside in winter',
+    hi: 'सर्दियों में सड़क किनारे गरम भोजन',
+  },
+  {
+    image: 'resident-and-caregiver',
+    category: 'elders',
+    en: 'A resident with one of our caregivers',
+    hi: 'हमारी एक देखभालकर्ता के साथ एक निवासी',
+  },
+  {
     image: 'street-outreach',
     category: 'outreach',
     en: 'First aid for a man living on the street',
     hi: 'सड़क पर रहने वाले एक व्यक्ति को प्राथमिक उपचार',
   },
   {
+    image: 'volunteers-logo-wall',
+    category: 'community',
+    en: 'Volunteers in Sansthan T-shirts at our office',
+    hi: 'हमारे कार्यालय में संस्थान की टी-शर्ट में स्वयंसेवक',
+  },
+  {
+    image: 'children-class',
+    category: 'children',
+    en: 'Children at a study session',
+    hi: 'पढ़ाई के सत्र में बच्चे',
+  },
+  {
+    image: 'mahila-diwas-honourees',
+    category: 'women',
+    en: 'Women honoured with bouquets and stoles',
+    hi: 'गुलदस्ते और दुपट्टे से सम्मानित महिलाएँ',
+  },
+  {
     image: 'ashram-dormitory',
     category: 'elders',
     en: 'The residents’ dormitory at the ashram',
     hi: 'आश्रम में निवासियों का शयनकक्ष',
+  },
+  {
+    image: 'elders-arched-window',
+    category: 'elders',
+    en: 'Residents together in the ashram hall',
+    hi: 'आश्रम के हॉल में साथ बैठे निवासी',
   },
   {
     image: 'beard-grooming',
@@ -975,16 +983,22 @@ export const photos: Photo[] = [
     hi: 'राशन और गर्म कपड़ों का वितरण',
   },
   {
+    image: 'mahila-diwas-felicitation',
+    category: 'women',
+    en: 'Greeting a guest at the Women’s Day felicitation',
+    hi: 'महिला दिवस सम्मान समारोह में अतिथि का स्वागत',
+  },
+  {
+    image: 'gift-for-resident',
+    category: 'elders',
+    en: 'A gift for a resident',
+    hi: 'एक निवासी के लिए उपहार',
+  },
+  {
     image: 'yoga-group',
     category: 'wellness',
     en: 'Breathing practice together',
     hi: 'साथ मिलकर प्राणायाम',
-  },
-  {
-    image: 'night-rescue',
-    category: 'outreach',
-    en: 'Reaching out on a winter night',
-    hi: 'सर्द रात में ज़रूरतमंद तक पहुँचना',
   },
   {
     image: 'hospital-admission',
@@ -993,10 +1007,28 @@ export const photos: Photo[] = [
     hi: 'मरीज़ को अस्पताल तक पहुँचाना',
   },
   {
+    image: 'women-members',
+    category: 'women',
+    en: 'Women members in saffron stoles',
+    hi: 'भगवा दुपट्टों में महिला सदस्य',
+  },
+  {
+    image: 'office-elders',
+    category: 'elders',
+    en: 'Residents sitting together in the office',
+    hi: 'कार्यालय में साथ बैठे निवासी',
+  },
+  {
     image: 'volunteers',
     category: 'community',
     en: 'Volunteers of the Sansthan',
     hi: 'संस्थान के स्वयंसेवक',
+  },
+  {
+    image: 'kendra-women-members',
+    category: 'women',
+    en: 'Women members outside our early centre',
+    hi: 'हमारे शुरुआती केंद्र के बाहर महिला सदस्य',
   },
   {
     image: 'roadside-grooming',
@@ -1005,22 +1037,82 @@ export const photos: Photo[] = [
     hi: 'ज़रूरतमंद के लिए साफ़ कपड़े',
   },
   {
+    image: 'resident-portrait-woman',
+    category: 'elders',
+    en: 'A resident of Shanti Dham',
+    hi: 'शान्ति धाम की एक निवासी',
+  },
+  {
     image: 'wheelchair-care',
     category: 'health',
     en: 'Care for a resident who uses a wheelchair',
     hi: 'व्हीलचेयर पर रहने वाले निवासी की देखभाल',
   },
   {
-    image: 'yoga-elder',
-    category: 'wellness',
-    en: 'A resident at morning meditation',
-    hi: 'सुबह के ध्यान में एक निवासी',
+    image: 'holi-milan',
+    category: 'community',
+    en: 'Holi Milan with members',
+    hi: 'सदस्यों के साथ होली मिलन',
+  },
+  {
+    image: 'distribution-office',
+    category: 'community',
+    en: 'Distributing supplies at our office',
+    hi: 'हमारे कार्यालय में सामग्री वितरण',
+  },
+  {
+    image: 'mahila-diwas-audience',
+    category: 'women',
+    en: 'The audience at the Samman Samaroh',
+    hi: 'सम्मान समारोह में उपस्थित लोग',
+  },
+  {
+    image: 'resident-portrait-man',
+    category: 'elders',
+    en: 'A resident of Shanti Dham',
+    hi: 'शान्ति धाम के एक निवासी',
+  },
+  {
+    image: 'kendra-building',
+    category: 'community',
+    en: 'The Sansthan’s Nasha Mukti Paramarsh Kendra building',
+    hi: 'संस्थान का नशा मुक्ति परामर्श केंद्र भवन',
   },
   {
     image: 'office-celebration',
     category: 'community',
     en: 'Welcoming a well-wisher at our office',
     hi: 'कार्यालय में एक शुभचिंतक का स्वागत',
+  },
+  {
+    image: 'women-gathering',
+    category: 'women',
+    en: 'A gathering of women at our office',
+    hi: 'हमारे कार्यालय में महिलाओं की बैठक',
+  },
+  {
+    image: 'holi-elders-office',
+    category: 'elders',
+    en: 'Holi Milan with residents at the office',
+    hi: 'कार्यालय में निवासियों के साथ होली मिलन',
+  },
+  {
+    image: 'office-cake',
+    category: 'community',
+    en: 'A celebration at our office',
+    hi: 'हमारे कार्यालय में उत्सव',
+  },
+  {
+    image: 'resident-on-bed',
+    category: 'elders',
+    en: 'A resident in his room at the ashram',
+    hi: 'आश्रम में अपने कमरे में एक निवासी',
+  },
+  {
+    image: 'resident-banner',
+    category: 'elders',
+    en: 'A resident at the ashram',
+    hi: 'आश्रम में एक निवासी',
   },
   {
     image: 'wheelchair-friends',
@@ -1030,78 +1122,29 @@ export const photos: Photo[] = [
   },
 ];
 
-// People cared for by the Sansthan, shown in the two moving photo rows on the homepage.
-export const lives: { image: string; en: string; hi: string }[][] = [
-  [
-    {
-      image: 'new-resident',
-      en: 'Found a home at Shanti Dham',
-      hi: 'शान्ति धाम में मिला घर',
-    },
-    {
-      image: 'president-with-resident',
-      en: 'Family, not just care',
-      hi: 'सिर्फ़ देखभाल नहीं, परिवार',
-    },
-    {
-      image: 'night-rescue',
-      en: 'Warmth on a winter night',
-      hi: 'सर्द रात में गर्माहट',
-    },
-    { image: 'yoga-elder', en: 'Morning meditation', hi: 'सुबह का ध्यान' },
-    {
-      image: 'wheelchair-care',
-      en: 'Support at every step',
-      hi: 'हर कदम पर सहारा',
-    },
-    {
-      image: 'street-outreach',
-      en: 'Care that reaches the street',
-      hi: 'सड़क तक पहुँचती देखभाल',
-    },
-    { image: 'shared-meal', en: 'Hot meals, every day', hi: 'हर दिन गरम भोजन' },
-  ],
-  [
-    {
-      image: 'dressing-help',
-      en: 'Fresh clothes, fresh start',
-      hi: 'नए कपड़े, नई शुरुआत',
-    },
-    {
-      image: 'elder-checkup',
-      en: 'Regular health check-ups',
-      hi: 'नियमित स्वास्थ्य जाँच',
-    },
-    {
-      image: 'resident-with-mala',
-      en: 'Peace in prayer',
-      hi: 'प्रार्थना में सुकून',
-    },
-    {
-      image: 'roadside-first-aid',
-      en: 'First aid on the roadside',
-      hi: 'सड़क किनारे प्राथमिक उपचार',
-    },
-    {
-      image: 'hand-care',
-      en: 'Gentle, daily attention',
-      hi: 'रोज़ का स्नेह भरा ध्यान',
-    },
-    {
-      image: 'wheelchair-friends',
-      en: 'Friends at the ashram',
-      hi: 'आश्रम के साथी',
-    },
-    {
-      image: 'resting-resident',
-      en: 'A safe bed to rest in',
-      hi: 'आराम के लिए सुरक्षित बिस्तर',
-    },
-  ],
-];
+export const photoCaption = (image: string, lang: Lang): string =>
+  photos.find((p) => p.image === image)?.[lang] ?? '';
 
 // Reels recorded by the NGO, compressed into public/videos/ with posters in public/images/posters/.
 export const videos = [
+  {
+    file: 'ashram-beginnings',
+    duration: '0:55',
+    en: [
+      'Where Our Work Began',
+      'Our early ashram at the Nasha Mukti Kendra building, with its collapsed ceiling.',
+    ],
+    hi: [
+      'जहाँ से हमारा काम शुरू हुआ',
+      'नशा मुक्ति केंद्र भवन में हमारा शुरुआती आश्रम, जिसकी छत गिर चुकी थी।',
+    ],
+  },
+  {
+    file: 'mother-daughter-reunion',
+    duration: '0:29',
+    en: ['Maa–Beti Milan', 'A mother and daughter meet again at the ashram.'],
+    hi: ['माँ–बेटी मिलन', 'आश्रम में एक माँ और बेटी का फिर से मिलना।'],
+  },
   {
     file: 'president-message',
     duration: '1:30',
@@ -1113,6 +1156,24 @@ export const videos = [
       'अध्यक्ष का संदेश',
       'सुनीता भूषण शान्ति धाम के कार्यों के बारे में बताती हैं।',
     ],
+  },
+  {
+    file: 'resident-story',
+    duration: '1:53',
+    en: [
+      'Someone to Hold Your Hand',
+      'A resident cared for around the clock at the ashram.',
+    ],
+    hi: ['कोई जो हाथ थामे', 'आश्रम में चौबीसों घंटे देखभाल पाते एक निवासी।'],
+  },
+  {
+    file: 'supplies-distribution',
+    duration: '0:13',
+    en: [
+      'Sharing Supplies',
+      'Distributing essentials to elders at our office.',
+    ],
+    hi: ['सामग्री का वितरण', 'हमारे कार्यालय में बुज़ुर्गों को ज़रूरी सामान।'],
   },
   {
     file: 'bedside-care',
@@ -1127,21 +1188,6 @@ export const videos = [
     ],
   },
   {
-    file: 'resident-story',
-    duration: '1:53',
-    en: [
-      'Someone to Hold Your Hand',
-      'A resident cared for around the clock at the ashram.',
-    ],
-    hi: ['कोई जो हाथ थामे', 'आश्रम में चौबीसों घंटे देखभाल पाते एक निवासी।'],
-  },
-  {
-    file: 'seva-moments',
-    duration: '0:20',
-    en: ['Seva in Action', 'Health care, outreach and our team at work.'],
-    hi: ['सेवा की झलक', 'स्वास्थ्य सेवा, सड़क पर सेवा और काम करती हमारी टीम।'],
-  },
-  {
     file: 'ashram-elders-talk',
     duration: '1:34',
     en: [
@@ -1151,10 +1197,34 @@ export const videos = [
     hi: ['आश्रम से आवाज़ें', 'शान्ति धाम के निवासियों के साथ हमारी अध्यक्ष।'],
   },
   {
+    file: 'holi-with-elders',
+    duration: '0:13',
+    en: ['Holi Milan', 'Celebrating Holi with residents at our office.'],
+    hi: ['होली मिलन', 'हमारे कार्यालय में निवासियों के साथ होली।'],
+  },
+  {
     file: 'president-story',
     duration: '1:42',
     en: ['Our Story', 'How the ashram cares for elders who have no one.'],
     hi: ['हमारी कहानी', 'आश्रम कैसे बेसहारा बुज़ुर्गों की देखभाल करता है।'],
+  },
+  {
+    file: 'medicine-round',
+    duration: '0:06',
+    en: ['Medicine Round', 'Medicines for a resident who is resting in bed.'],
+    hi: ['दवा का समय', 'बिस्तर पर आराम कर रहे निवासी को दवाइयाँ।'],
+  },
+  {
+    file: 'seva-moments',
+    duration: '0:20',
+    en: ['Seva in Action', 'Health care, outreach and our team at work.'],
+    hi: ['सेवा की झलक', 'स्वास्थ्य सेवा, सड़क पर सेवा और काम करती हमारी टीम।'],
+  },
+  {
+    file: 'warm-clothes',
+    duration: '0:04',
+    en: ['Keeping Warm', 'A warm cap and shawl for a resident in winter.'],
+    hi: ['सर्दी से बचाव', 'सर्दियों में एक निवासी को गर्म टोपी और शॉल।'],
   },
   {
     file: 'resident-appeal',

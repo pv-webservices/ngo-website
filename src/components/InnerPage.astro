@@ -8,10 +8,20 @@ import {
   img,
   imgSm,
   srcset,
-  pageImages,
+  photoCaption,
   type Lang,
 } from '../data/site';
+import {
+  home,
+  causes,
+  plannedCause,
+  statusLabels,
+  mahila,
+  transparency,
+  type Status,
+} from '../data/content';
 import Icon from './Icon.astro';
+import PageHero from './PageHero.astro';
 import Gallery from './Gallery.astro';
 import DonatePanel from './DonatePanel.astro';
 import ProgramCards from './ProgramCards.astro';
@@ -41,14 +51,32 @@ const descriptions: Record<string, string> = {
   'get-involved': t.involvedText,
   donate: t.supportText,
   contact: t.contactText,
+  'mahila-diwas': home[lang].mahilaText,
+  transparency: home[lang].trustText,
 };
+const h = home[lang];
+const tr = transparency[lang];
+const status = statusLabels[lang];
+const docRequest = `mailto:${site.email}?subject=${encodeURIComponent(
+  lang === 'hi' ? 'दस्तावेज़ का अनुरोध' : 'Document request',
+)}`;
+// Extra photographs for the Events & Stories page, beyond the two on the homepage.
+const storyExtras: Record<string, string[]> = {
+  'eye-camp': [],
+  winter: ['street-outreach', 'roadside-grooming', 'roadside-first-aid'],
+  children: ['children-class'],
+};
+const festivals = [
+  'holi-milan',
+  'holi-elders-office',
+  'office-cake',
+  'distribution-office',
+];
 const description = program
   ? program[lang].text
   : policy
     ? t.policyIntro
     : descriptions[slug] || t.intro;
-const banner = program ? program.image : pageImages[slug];
-const bannerAlt = photos.find((photo) => photo.image === banner)?.[lang] ?? '';
 const involveTargets = [
   url(lang, 'contact'),
   url(lang, 'donate'),
@@ -57,52 +85,14 @@ const involveTargets = [
 ];
 ---
 
-<section class:list={['page-hero', { 'has-media': banner }]}>
-  <div class="container page-hero-inner">
-    <div class="page-hero-copy">
-      <nav
-        class="breadcrumb"
-        aria-label={lang === 'hi' ? 'पृष्ठ का रास्ता' : 'Breadcrumb'}
-      >
-        <a href={url(lang)}>{t.nav[0]}</a>
-        <Icon name="chevron-right" size={14} />
-        {program && (
-          <>
-            <a href={url(lang, 'our-work')}>{t.nav[2]}</a>
-            <Icon name="chevron-right" size={14} />
-          </>
-        )}
-        <span aria-current="page">{title}</span>
-      </nav>
-      <h1>{title}</h1>
-      <p>{description}</p>
-      {!policy && slug !== 'donate' && (
-        <div class="btn-row">
-          <a class="btn btn-primary" href={url(lang, 'donate')}>
-            {t.donate}
-            <Icon name="arrow" size={18} />
-          </a>
-          <a class="btn btn-secondary" href={url(lang, 'contact')}>
-            {t.contact}
-          </a>
-        </div>
-      )}
-    </div>
-    {banner && (
-      <figure class="page-hero-media">
-        <img
-          src={img(banner)}
-          srcset={srcset(banner)}
-          sizes="(min-width: 900px) 40vw, 100vw"
-          alt={bannerAlt}
-          width="1200"
-          height="900"
-          fetchpriority="high"
-        />
-      </figure>
-    )}
-  </div>
-</section>
+<PageHero
+  lang={lang}
+  slug={slug}
+  title={title}
+  description={description}
+  program={program}
+  policy={Boolean(policy)}
+/>
 
 {slug === 'about' && (
   <>
@@ -206,6 +196,9 @@ const involveTargets = [
             <span class="story-number">0{i + 1}</span>
           </figure>
           <div>
+            <span class:list={['status-chip', `is-${p.status}`]}>
+              {status[p.status as Status]}
+            </span>
             <h2 class="program-title">{p[lang].title}</h2>
             <p class="lead">{p[lang].short}</p>
             <p>{p[lang].why}</p>
@@ -225,6 +218,78 @@ const involveTargets = [
           </div>
         </article>
       ))}
+    </div>
+  </section>
+)}
+
+{slug === 'our-work' && (
+  <section class="section section-soft">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">{h.causesEyebrow}</p>
+          <h2>
+            {lang === 'hi'
+              ? 'हमारे कार्य के अन्य हिस्से'
+              : 'Also part of our work'}
+          </h2>
+          <p class="section-sub">{h.causesText}</p>
+        </div>
+      </div>
+      <div class="cause-grid">
+        {causes
+          .filter((c) => !programs.some((p) => p.slug === c.href))
+          .map((cause) => (
+            <article class="cause-card lift">
+              <a
+                class="cause-image"
+                href={url(lang, cause.href)}
+                tabindex="-1"
+                aria-hidden="true"
+              >
+                <img
+                  src={imgSm(cause.image)}
+                  width="640"
+                  height="480"
+                  alt=""
+                  loading="lazy"
+                />
+              </a>
+              <div class="cause-body">
+                <span class:list={['status-chip', `is-${cause.status}`]}>
+                  {status[cause.status]}
+                </span>
+                <h3>
+                  <a href={url(lang, cause.href)}>{cause[lang][0]}</a>
+                </h3>
+                <p>{cause[lang][1]}</p>
+              </div>
+            </article>
+          ))}
+        <article class="cause-card planned-mini">
+          <a
+            class="cause-image"
+            href={url(lang, plannedCause.href)}
+            tabindex="-1"
+            aria-hidden="true"
+          >
+            <img
+              src={imgSm(plannedCause.image)}
+              width="640"
+              height="480"
+              alt=""
+              loading="lazy"
+            />
+          </a>
+          <div class="cause-body">
+            <span class="status-chip is-planned">{status.planned}</span>
+            <h3>
+              <a href={url(lang, plannedCause.href)}>{plannedCause[lang][0]}</a>
+            </h3>
+            <p>{plannedCause[lang][1]}</p>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
 )}
@@ -309,6 +374,63 @@ const involveTargets = [
 
 {slug === 'our-journey' && (
   <>
+    <section
+      class="h-journey"
+      id="beginnings"
+      aria-labelledby="beginnings-title"
+    >
+      <div class="container h-journey-grid">
+        <div class="h-journey-copy">
+          <p class="eyebrow eyebrow-light">{h.journeyEyebrow}</p>
+          <h2 id="beginnings-title">{h.journeyTitle}</h2>
+          {h.journeyText.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+          <p>
+            {lang === 'hi'
+              ? 'उस भवन पर लगे बैनर में संस्थान का “नशामुक्ति परामर्श एवं पुनर्वास केंद्र” लिखा है। नशे से जूझ रहे लोगों के लिए परामर्श हम भविष्य में फिर शुरू करना चाहते हैं; यह सेवा अभी नहीं चल रही है।'
+              : 'The banner on that building names the Sansthan’s “Nasha Mukti Paramarsh evam Punarvas Kendra” (de-addiction counselling and rehabilitation centre). Counselling for people facing addiction is something we hope to offer again in future; it is not running today.'}
+          </p>
+          <div class="journey-photos">
+            {['kendra-building', 'ashram-dormitory'].map((name) => (
+              <figure>
+                <img
+                  src={imgSm(name)}
+                  width="640"
+                  height="480"
+                  alt={photoCaption(name, lang)}
+                  loading="lazy"
+                />
+                <figcaption>{photoCaption(name, lang)}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+        <article class="video-card h-journey-video">
+          <div class="video-frame">
+            <video
+              src="/videos/ashram-beginnings.mp4"
+              poster="/images/posters/ashram-beginnings.webp"
+              preload="none"
+              playsinline
+              width="478"
+              height="850"
+              aria-label={h.journeyTitle}
+            ></video>
+            <button class="video-play" type="button" data-video-play>
+              <span class="play-icon" aria-hidden="true">
+                <Icon name="play" size={26} filled />
+              </span>
+              <span class="sr-only">{h.journeyVideo}</span>
+              <span class="video-duration" aria-hidden="true">
+                0:55
+              </span>
+            </button>
+          </div>
+          <p class="h-journey-note">{h.journeyVideoNote}</p>
+        </article>
+      </div>
+    </section>
     <section class="section">
       <div class="container story-grid">
         <div>
@@ -359,45 +481,256 @@ const involveTargets = [
 )}
 
 {slug === 'activities' && (
-  <section class="section">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>{t.activityTitle}</h2>
-          <p class="section-sub">{t.photoNote}</p>
-        </div>
-        <a class="text-link" href={url(lang, 'gallery')}>
-          {t.viewPhotos}
-          <Icon name="arrow" size={16} />
-        </a>
-      </div>
-      <div class="activity-grid">
-        {photos.map((p) => (
-          <article class="activity-card lift">
-            <img
-              src={imgSm(p.image)}
-              width="640"
-              height="480"
-              alt={p[lang]}
-              loading="lazy"
-            />
-            <div>
-              <span class="tag">
-                {t.galleryFilters[p.category as keyof typeof t.galleryFilters]}
-              </span>
-              <h2>{p[lang]}</h2>
+  <>
+    <section class="section">
+      <div class="container story-list">
+        {h.stories.map((story, i) => (
+          <article
+            id={story.id}
+            class:list={[
+              'story-module',
+              'story-anchor',
+              { reversed: i % 2 === 1 },
+            ]}
+          >
+            <div class="story-pair">
+              <img
+                class="story-pair-a"
+                src={imgSm(story.images[0])}
+                width="640"
+                height="800"
+                alt={story.alts[0]}
+                loading="lazy"
+              />
+              <img
+                class="story-pair-b"
+                src={imgSm(story.images[1])}
+                width="640"
+                height="800"
+                alt={story.alts[1]}
+                loading="lazy"
+              />
+            </div>
+            <div class="story-copy">
+              <p class="story-kicker">{story.kicker}</p>
+              <h2>{story.title}</h2>
+              <p>{story.text}</p>
+              {storyExtras[story.id].length > 0 && (
+                <ul class="story-thumbs">
+                  {storyExtras[story.id].map((name) => (
+                    <li>
+                      <img
+                        src={imgSm(name)}
+                        width="640"
+                        height="640"
+                        alt={photoCaption(name, lang)}
+                        loading="lazy"
+                      />
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <a class="text-link" href={url(lang, story.href)}>
+                {story.link}
+                <Icon name="arrow" size={15} />
+              </a>
             </div>
           </article>
         ))}
       </div>
-    </div>
-  </section>
+    </section>
+    <section class="section section-soft">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">{h.mahilaEyebrow}</p>
+            <h2>{h.mahilaTitle}</h2>
+            <p class="section-sub">{h.mahilaText}</p>
+          </div>
+          <a class="btn btn-primary" href={url(lang, 'mahila-diwas')}>
+            {h.mahilaLink}
+            <Icon name="arrow" size={17} />
+          </a>
+        </div>
+        <div class="festival-strip">
+          {[
+            'mahila-diwas-2022',
+            'mahila-diwas-group',
+            'mahila-diwas-honourees',
+          ].map((name) => (
+            <img
+              src={imgSm(name)}
+              width="640"
+              height="480"
+              alt={photoCaption(name, lang)}
+              loading="lazy"
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>
+              {lang === 'hi'
+                ? 'त्योहार और साथ बिताए पल'
+                : 'Festivals and time together'}
+            </h2>
+            <p class="section-sub">{t.photoNote}</p>
+          </div>
+          <a class="text-link" href={url(lang, 'gallery')}>
+            {t.viewPhotos}
+            <Icon name="arrow" size={16} />
+          </a>
+        </div>
+        <div class="activity-grid">
+          {festivals.map((name) => (
+            <article class="activity-card lift">
+              <img
+                src={imgSm(name)}
+                width="640"
+                height="480"
+                alt=""
+                loading="lazy"
+              />
+              <div>
+                <h3>{photoCaption(name, lang)}</h3>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  </>
+)}
+
+{slug === 'mahila-diwas' && (
+  <>
+    <section class="section">
+      <div class="container">
+        <div class="mahila-intro">
+          <p class="lead">{mahila[lang].intro}</p>
+          <nav
+            class="album-nav"
+            aria-label={lang === 'hi' ? 'एल्बम' : 'Albums'}
+          >
+            {mahila.albums.map((album) => (
+              <a href={`#${album.id}`}>
+                {album[lang][0]}
+                <span>{album.photos.length}</span>
+              </a>
+            ))}
+          </nav>
+        </div>
+        {mahila.albums.map((album, i) => (
+          <section
+            class="album"
+            id={album.id}
+            aria-labelledby={`${album.id}-title`}
+          >
+            <div class="album-head">
+              <h2 id={`${album.id}-title`}>{album[lang][0]}</h2>
+              <p>{album[lang][1]}</p>
+            </div>
+            <Gallery
+              lang={lang}
+              lightbox={i === mahila.albums.length - 1}
+              items={album.photos.map((photo) => ({
+                ...photo,
+                category: 'women' as const,
+              }))}
+            />
+          </section>
+        ))}
+        <p class="fine-print">{mahila[lang].note}</p>
+      </div>
+    </section>
+    <section class="section section-soft">
+      <div class="container cta-card">
+        <h2>{h.involveTitle}</h2>
+        <p>{h.involveText}</p>
+        <div class="btn-row center">
+          <a class="btn btn-primary" href={url(lang, 'get-involved')}>
+            {h.volunteer}
+            <Icon name="arrow" size={18} />
+          </a>
+          <a class="btn btn-secondary" href={url(lang, 'donate')}>
+            {t.donate}
+          </a>
+        </div>
+      </div>
+    </section>
+  </>
+)}
+
+{slug === 'transparency' && (
+  <>
+    <section class="section">
+      <div class="container trust-layout">
+        <div>
+          <p class="eyebrow">{h.trustEyebrow}</p>
+          <h2>{tr.publishedTitle}</h2>
+          <dl class="fact-list">
+            {tr.published.map(([label, value]) => (
+              <div>
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+        <aside class="doc-panel">
+          <span class="icon-badge">
+            <Icon name="file" size={26} />
+          </span>
+          <h2>{tr.requestTitle}</h2>
+          <p>{tr.requestText}</p>
+          <ul class="check-list">
+            {tr.documents.map((doc) => (
+              <li>
+                <Icon name="check" size={17} />
+                {doc}
+              </li>
+            ))}
+          </ul>
+          <a class="btn btn-primary" href={docRequest}>
+            <Icon name="mail" size={18} />
+            {tr.requestButton}
+          </a>
+        </aside>
+      </div>
+    </section>
+    <section class="section section-soft">
+      <div class="container value-grid">
+        <article class="value-card lift">
+          <span class="icon-badge">
+            <Icon name="shield" size={26} />
+          </span>
+          <h2>{tr.taxTitle}</h2>
+          <p>{tr.taxText}</p>
+        </article>
+        <article class="value-card lift">
+          <span class="icon-badge">
+            <Icon name="heart" size={26} />
+          </span>
+          <h2>{tr.useTitle}</h2>
+          <p>{tr.useText}</p>
+          <a class="text-link" href={url(lang, 'donate')}>
+            {t.donate}
+            <Icon name="arrow" size={16} />
+          </a>
+        </article>
+      </div>
+    </section>
+  </>
 )}
 
 {slug === 'gallery' && (
   <section class="section">
     <div class="container">
-      <Gallery lang={lang} full />
+      <Gallery lang={lang} full pageSize={18} />
     </div>
   </section>
 )}
@@ -496,12 +829,44 @@ const involveTargets = [
 
 {slug === 'donate' && (
   <>
-    <section class="section">
-      <div class="container">
-        <DonatePanel lang={lang} showButton={false} />
+    <section class="section donate-why">
+      <div class="container donate-why-grid">
+        <div>
+          <p class="eyebrow">{h.whyEyebrow}</p>
+          <h2>{h.whyTitle}</h2>
+          <p class="lead">{h.whyLead}</p>
+          <p>{h.whyText}</p>
+        </div>
+        <ul class="need-cards">
+          {h.needs.map(([needTitle, text], i) => (
+            <li>
+              <span class="icon-badge">
+                <Icon
+                  name={['meal', 'stethoscope', 'sun', 'heart'][i]}
+                  size={24}
+                />
+              </span>
+              <strong>{needTitle}</strong>
+              <span>{text}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
     <section class="section section-soft">
+      <div class="container">
+        <DonatePanel lang={lang} showButton={false} />
+        <p class="donate-trust">
+          <Icon name="shield" size={18} />
+          {h.whyNote}{' '}
+          <a class="text-link" href={url(lang, 'transparency')}>
+            {h.trustLink}
+            <Icon name="arrow" size={15} />
+          </a>
+        </p>
+      </div>
+    </section>
+    <section class="section">
       <div class="container faq">
         <h2>{t.faqTitle}</h2>
         {t.faqs.map(([question, answer]) => (

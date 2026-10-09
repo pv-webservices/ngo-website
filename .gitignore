@@ -5,3 +5,4 @@ dist/
 output/
 .playwright-cli/
 media-source/*/videos/
+media-source/**/*.mp4

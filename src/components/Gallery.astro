@@ -1,5 +1,5 @@
 ---
-import { copy, photos, img, imgSm, type Lang } from '../data/site';
+import { copy, photos, img, imgSm, type Lang, type Photo } from '../data/site';
 import Icon from './Icon.astro';
 const {
   lang,
@@ -7,23 +7,34 @@ const {
   carousel = false,
   category = '',
   limit = photos.length,
+  items: customItems,
+  lightbox = true,
+  pageSize = 0,
 } = Astro.props as {
   lang: Lang;
   full?: boolean;
   carousel?: boolean;
   category?: string;
   limit?: number;
+  items?: Photo[];
+  lightbox?: boolean;
+  pageSize?: number;
 };
 const t = copy[lang];
 const filters = Object.entries(t.galleryFilters);
 // A program page leads with photographs from its own category.
-const ordered = category
-  ? [
-      ...photos.filter((p) => p.category === category),
-      ...photos.filter((p) => p.category !== category),
-    ]
-  : photos;
+const ordered = customItems
+  ? customItems
+  : category
+    ? [
+        ...photos.filter((p) => p.category === category),
+        ...photos.filter((p) => p.category !== category),
+      ]
+    : photos;
 const items = ordered.slice(0, limit);
+const hasMore = pageSize > 0 && items.length > pageSize;
+const moreLabel =
+  lang === 'hi' ? 'और तस्वीरें दिखाएँ' : 'Show more photographs';
 ---
 
 {full && (
@@ -38,7 +49,10 @@ const items = ordered.slice(0, limit);
     ))}
   </div>
 )}
-<div class:list={['gallery-wrap', { 'is-carousel': carousel }]}>
+<div
+  class:list={['gallery-wrap', { 'is-carousel': carousel }]}
+  data-gallery-wrap
+>
   {carousel && (
     <button
       class="carousel-btn prev"
@@ -51,11 +65,16 @@ const items = ordered.slice(0, limit);
   <div
     class:list={[
       'gallery-grid',
-      { 'full-gallery': full, 'carousel-track': carousel },
+      { 'full-gallery': full || customItems, 'carousel-track': carousel },
     ]}
   >
     {items.map((photo, i) => (
-      <figure data-category={photo.category} class="gallery-item lift">
+      <figure
+        data-category={photo.category}
+        data-more={hasMore && i >= pageSize ? '' : undefined}
+        hidden={hasMore && i >= pageSize}
+        class="gallery-item lift"
+      >
         <button
           class="gallery-photo"
           data-gallery={i}
@@ -81,23 +100,33 @@ const items = ordered.slice(0, limit);
       <Icon name="chevron-right" size={22} />
     </button>
   )}
+  {hasMore && (
+    <div class="gallery-more">
+      <button class="btn btn-secondary" type="button" data-gallery-more>
+        {moreLabel}
+        <span class="gallery-more-count">({items.length - pageSize})</span>
+      </button>
+    </div>
+  )}
 </div>
 {full && <p class="fine-print">{t.photoNote}</p>}
-<dialog class="lightbox" aria-label={t.titles[10]}>
-  <button class="lightbox-close" data-close aria-label={t.close}>
-    <Icon name="close" />
-  </button>
-  <div class="lightbox-content">
-    <img alt="" />
-    <p></p>
-  </div>
-  <div class="lightbox-controls">
-    <button data-prev aria-label={t.previous}>
-      <Icon name="chevron-left" size={20} />
+{lightbox && (
+  <dialog class="lightbox" aria-label={t.titles[10]}>
+    <button class="lightbox-close" data-close aria-label={t.close}>
+      <Icon name="close" />
     </button>
-    <span data-counter></span>
-    <button data-next aria-label={t.next}>
-      <Icon name="chevron-right" size={20} />
-    </button>
-  </div>
-</dialog>
+    <div class="lightbox-content">
+      <img alt="" />
+      <p></p>
+    </div>
+    <div class="lightbox-controls">
+      <button data-prev aria-label={t.previous}>
+        <Icon name="chevron-left" size={20} />
+      </button>
+      <span data-counter></span>
+      <button data-next aria-label={t.next}>
+        <Icon name="chevron-right" size={20} />
+      </button>
+    </div>
+  </dialog>
+)}

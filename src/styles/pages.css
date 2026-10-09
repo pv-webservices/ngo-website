@@ -1,0 +1,287 @@
+/* ==========================================================================
+   Inner-page pieces added in the October 2026 redesign: status labels, the
+   journey story, Events & Stories, Mahila Diwas albums, Transparency, Donate.
+   ========================================================================== */
+.page-hero-copy .status-chip {
+  margin-bottom: 18px;
+}
+.program-stories .status-chip {
+  margin-bottom: 14px;
+}
+.planned-mini {
+  border: 1.5px dashed #b9ad9e;
+  box-shadow: none;
+  background: transparent;
+}
+.planned-mini img {
+  filter: saturate(0.6);
+}
+.site-footer .footer-brand .btn {
+  margin-top: 8px;
+}
+
+/* ---------- Our Journey ---------- */
+.journey-photos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+  max-width: 36rem;
+}
+.journey-photos img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.journey-photos figcaption {
+  margin-top: 8px;
+  font-family: var(--font-hand);
+  font-size: 0.98rem;
+  line-height: 1.35;
+  color: var(--on-night);
+}
+
+/* ---------- Events & Stories ---------- */
+.story-anchor {
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+.story-copy h2 {
+  font-size: clamp(1.7rem, 2.6vw, 2.3rem);
+}
+.story-thumbs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 8px 0 24px;
+  list-style: none;
+}
+.story-thumbs img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.festival-strip {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 14px;
+}
+.festival-strip img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+/* ---------- Mahila Diwas ---------- */
+.mahila-intro {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 56px;
+  align-items: start;
+  margin-bottom: 64px;
+}
+.album-nav {
+  display: grid;
+  gap: 8px;
+}
+.album-nav a {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-weight: 600;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+}
+.album-nav a:hover {
+  border-color: var(--marigold);
+  background: var(--paper);
+}
+.album-nav span {
+  flex: none;
+  display: grid;
+  place-items: center;
+  min-width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--periodic-tint);
+  color: var(--periodic);
+  font-size: 0.85rem;
+}
+.album {
+  padding: 48px 0;
+  border-top: 1px solid var(--line);
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
+.album-head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: end;
+  margin-bottom: 32px;
+}
+.album-head h2 {
+  margin: 0;
+}
+.album-head p {
+  margin: 0;
+  color: var(--ink-3);
+}
+
+/* ---------- Gallery: show more ---------- */
+.gallery-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+.gallery-more[hidden] {
+  display: none;
+}
+.gallery-more-count {
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+/* ---------- Transparency ---------- */
+.trust-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 64px;
+  align-items: start;
+}
+.fact-list {
+  margin: 24px 0 0;
+  border-top: 2px solid var(--ink);
+}
+.fact-list div {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 24px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+.fact-list dt {
+  color: var(--ink-3);
+  font-weight: 600;
+}
+.fact-list dd {
+  margin: 0;
+  font-weight: 600;
+}
+.doc-panel {
+  padding: 36px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+.doc-panel h2 {
+  margin-top: 18px;
+  font-size: 1.6rem;
+}
+.doc-panel p {
+  color: var(--ink-2);
+}
+.doc-panel .check-list {
+  margin: 20px 0 28px;
+}
+
+/* ---------- Donate ---------- */
+.donate-why-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.donate-why-grid p {
+  color: var(--ink-2);
+}
+.need-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  list-style: none;
+}
+.need-cards li {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 24px;
+  background: var(--paper);
+  border-radius: 14px;
+}
+.need-cards strong {
+  margin-top: 8px;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+}
+.need-cards span:last-child {
+  color: var(--ink-2);
+  font-size: 0.95rem;
+}
+.donate-trust {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 28px 0 0;
+  color: var(--ink-2);
+}
+.donate-trust > svg {
+  color: var(--ok);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+  .mahila-intro,
+  .trust-layout,
+  .donate-why-grid,
+  .album-head {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .festival-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+  .festival-strip img:first-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 640px) {
+  .fact-list div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .doc-panel {
+    padding: 28px 20px;
+  }
+  .need-cards {
+    grid-template-columns: 1fr;
+  }
+  .festival-strip img {
+    height: 200px;
+  }
+  .journey-photos {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Keep the carousel arrows inside the viewport when the container nearly fills it. */
+@media (max-width: 1320px) {
+  .carousel-btn.prev {
+    left: -8px;
+  }
+  .carousel-btn.next {
+    right: -8px;
+  }
+}
+
+/* Small saffron numerals need the deeper marigold to reach 4.5:1 on white. */
+.program-number,
+.journey-steps span {
+  color: var(--periodic);
+}

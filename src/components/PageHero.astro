@@ -1,0 +1,164 @@
+---
+// Cinematic header for every inner page: dark photographic field, words of the title rising
+// in, an italic accent line, and a collage of three of the NGO's own photographs that settle
+// in and float gently (with pointer parallax on desktop; still with reduced motion).
+import {
+  copy,
+  site,
+  photos,
+  url,
+  img,
+  imgSm,
+  srcset,
+  photoCaption,
+  type Lang,
+} from '../data/site';
+import { pageHeroes, statusLabels, type Status } from '../data/content';
+import Icon from './Icon.astro';
+
+interface Program {
+  slug: string;
+  status: string;
+  image: string;
+  photo: string;
+  category: string;
+  en: { short: string };
+  hi: { short: string };
+}
+const { lang, slug, title, description, program, policy } = Astro.props as {
+  lang: Lang;
+  slug: string;
+  title: string;
+  description: string;
+  program?: Program;
+  policy: boolean;
+};
+const t = copy[lang];
+
+// Programme pages lead with their own image plus two more from the same category.
+const programImages = (p: Program): [string, string, string] => {
+  const others = photos
+    .filter((ph) => ph.category === p.category)
+    .map((ph) => ph.image)
+    .filter((name) => name !== p.image && name !== p.photo);
+  return [p.image, others[0] ?? p.photo, others[1] ?? p.photo];
+};
+const hero = program
+  ? {
+      images: programImages(program),
+      eyebrow: t.titles[2],
+      accent: program[lang].short,
+    }
+  : pageHeroes[slug]
+    ? {
+        images: pageHeroes[slug].images,
+        eyebrow: pageHeroes[slug][lang][0],
+        accent: pageHeroes[slug][lang][1],
+      }
+    : null;
+const words = title.split(' ');
+const cta =
+  slug === 'donate'
+    ? {
+        href: '#donate-methods',
+        label: lang === 'hi' ? 'बैंक और क्यूआर विवरण' : 'Bank & QR details',
+      }
+    : { href: url(lang, 'donate'), label: t.donate };
+---
+
+<section
+  class:list={['ph', { 'ph-compact': !hero }]}
+  data-ph
+  aria-labelledby="page-title"
+>
+  <div class="ph-glow" aria-hidden="true"></div>
+  {hero && (
+    <div class="ph-backdrop" aria-hidden="true">
+      <img src={imgSm(hero.images[0])} alt="" width="640" height="480" />
+    </div>
+  )}
+  <div class="container ph-grid">
+    <div class="ph-copy">
+      <nav
+        class="ph-crumbs"
+        aria-label={lang === 'hi' ? 'पृष्ठ का रास्ता' : 'Breadcrumb'}
+      >
+        <a href={url(lang)}>{t.nav[0]}</a>
+        <Icon name="chevron-right" size={13} />
+        {program && (
+          <>
+            <a href={url(lang, 'our-work')}>{t.nav[2]}</a>
+            <Icon name="chevron-right" size={13} />
+          </>
+        )}
+        <span aria-current="page">{title}</span>
+      </nav>
+      <p class="ph-eyebrow">
+        {hero ? hero.eyebrow : lang === 'hi' ? 'जानकारी' : 'Information'}
+        {program && (
+          <span class:list={['status-chip', `is-${program.status}`]}>
+            {statusLabels[lang][program.status as Status]}
+          </span>
+        )}
+      </p>
+      <h1 id="page-title">
+        {words.map((word, i) => (
+          <span class="ph-word">
+            <span style={`--i:${i}`}>{word}</span>
+          </span>
+        ))}
+      </h1>
+      {hero && <p class="ph-accent">{hero.accent}</p>}
+      <p class="ph-text">{description}</p>
+      {!policy && (
+        <div class="btn-row">
+          <a class="btn btn-primary btn-xl" href={cta.href}>
+            <Icon name="heart" size={17} filled />
+            {cta.label}
+          </a>
+          {slug === 'contact' ? (
+            <a
+              class="btn btn-ghost-light btn-xl"
+              href={`tel:${site.phones[0]}`}
+            >
+              <Icon name="phone" size={17} />
+              {site.phoneLabels[0]}
+            </a>
+          ) : (
+            <a class="btn btn-ghost-light btn-xl" href={url(lang, 'contact')}>
+              {t.contact}
+              <Icon name="arrow" size={17} />
+            </a>
+          )}
+        </div>
+      )}
+    </div>
+    {hero && (
+      <div class="ph-collage" data-parallax>
+        <figure class="ph-main">
+          <img
+            src={img(hero.images[0])}
+            srcset={srcset(hero.images[0])}
+            sizes="(min-width: 1000px) 34vw, 80vw"
+            alt={photoCaption(hero.images[0], lang)}
+            width="1200"
+            height="900"
+            fetchpriority="high"
+          />
+        </figure>
+        <figure class="ph-sat ph-sat-a" aria-hidden="true">
+          <img src={imgSm(hero.images[1])} alt="" width="640" height="640" />
+        </figure>
+        <figure class="ph-sat ph-sat-b" aria-hidden="true">
+          <img src={imgSm(hero.images[2])} alt="" width="640" height="640" />
+        </figure>
+        <p class="ph-note" aria-hidden="true">
+          {photoCaption(hero.images[0], lang)}
+        </p>
+      </div>
+    )}
+  </div>
+  <div class="ph-scroll" aria-hidden="true">
+    <span></span>
+  </div>
+</section>

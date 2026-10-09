@@ -1,0 +1,741 @@
+// Homepage, Mahila Diwas and Transparency content. Every statement here is backed by a
+// photograph, banner or video supplied by the NGO; anything still unconfirmed is listed in
+// README.md under "Confirm with the NGO before launch" and is not claimed publicly.
+import type { Lang } from './site';
+
+type Bi<T> = Record<Lang, T>;
+export type Status = 'ongoing' | 'periodic' | 'planned';
+
+export const statusLabels: Bi<Record<Status, string>> = {
+  en: { ongoing: 'Ongoing', periodic: 'Held periodically', planned: 'Planned' },
+  hi: { ongoing: 'निरंतर जारी', periodic: 'समय-समय पर', planned: 'प्रस्तावित' },
+};
+
+// Three slowly drifting columns on desktop; the first two also form the mobile rows.
+// Old (2025) and new (2026) photographs are mixed so the hero shows the whole history.
+export const heroColumns: string[][] = [
+  [
+    'selfie-with-resident',
+    'holi-milan',
+    'ration-distribution',
+    'volunteers',
+    'resident-portrait-man',
+  ],
+  [
+    'mahila-diwas-group',
+    'window-conversation',
+    'yoga-session',
+    'office-cake',
+    'residents-gathering',
+  ],
+  [
+    'volunteers-logo-wall',
+    'resident-and-caregiver',
+    'president-with-resident',
+    'women-members',
+    'distribution-office',
+  ],
+];
+
+export interface Cause {
+  href: string; // route slug, optionally with #anchor
+  image: string;
+  status: Status;
+  icon: string;
+  en: [string, string];
+  hi: [string, string];
+}
+
+export const causes: Cause[] = [
+  {
+    href: 'old-age-home',
+    image: 'shared-meal',
+    status: 'ongoing',
+    icon: 'elder',
+    en: [
+      'Elder Shelter & Daily Care',
+      'A home at Shanti Dham Ashram for elders with no one to care for them: a bed, meals, clean clothes and company.',
+    ],
+    hi: [
+      'बुज़ुर्गों को आश्रय और रोज़ की देखभाल',
+      'जिन बुज़ुर्गों का कोई सहारा नहीं, उनके लिए शान्ति धाम आश्रम में घर — बिस्तर, भोजन, साफ़ कपड़े और अपनापन।',
+    ],
+  },
+  {
+    href: 'medical-support',
+    image: 'elder-checkup',
+    status: 'ongoing',
+    icon: 'pulse',
+    en: [
+      'Medical & Eye-Care Support',
+      'Check-ups, medicines and help reaching hospital — and a free eye-test camp held at the ashram in July 2024.',
+    ],
+    hi: [
+      'चिकित्सा एवं नेत्र सहायता',
+      'स्वास्थ्य जाँच, दवाइयाँ और अस्पताल तक मदद — और जुलाई 2024 में आश्रम में निःशुल्क आँख जाँच शिविर।',
+    ],
+  },
+  {
+    href: 'mahila-diwas',
+    image: 'mahila-diwas-honourees',
+    status: 'periodic',
+    icon: 'group',
+    en: [
+      'Women & Mahila Diwas',
+      'Gatherings that honour women from the community, including our International Women’s Day Samman Samaroh.',
+    ],
+    hi: [
+      'महिलाएँ एवं महिला दिवस',
+      'समुदाय की महिलाओं को सम्मान देने वाले आयोजन, जिनमें अंतरराष्ट्रीय महिला दिवस सम्मान समारोह शामिल है।',
+    ],
+  },
+  {
+    href: 'child-welfare',
+    image: 'children-class',
+    status: 'periodic',
+    icon: 'child',
+    en: [
+      'Support for Underprivileged Children',
+      'Study sessions, books and festival days with children from nearby families.',
+    ],
+    hi: [
+      'वंचित बच्चों के लिए सहयोग',
+      'आसपास के परिवारों के बच्चों के साथ पढ़ाई, किताबें और त्योहार।',
+    ],
+  },
+  {
+    href: 'activities#winter',
+    image: 'street-outreach',
+    status: 'periodic',
+    icon: 'heart',
+    en: [
+      'Street & Winter Outreach',
+      'First aid, warm food and blankets for people living on the street, especially on cold Delhi nights.',
+    ],
+    hi: [
+      'सड़क और सर्दियों में सेवा',
+      'सड़क पर रहने वालों के लिए प्राथमिक उपचार, गरम भोजन और कंबल — ख़ासकर दिल्ली की सर्द रातों में।',
+    ],
+  },
+  {
+    href: 'yoga-meditation',
+    image: 'yoga-group',
+    status: 'periodic',
+    icon: 'lotus',
+    en: [
+      'Yoga & Meditation',
+      'Gentle yoga, breathing and meditation with residents, including International Yoga Day on 21 June.',
+    ],
+    hi: [
+      'योग एवं ध्यान',
+      'निवासियों के साथ हल्का योग, प्राणायाम और ध्यान, जिसमें 21 जून का अंतरराष्ट्रीय योग दिवस भी शामिल है।',
+    ],
+  },
+];
+
+// A future service, shown separately so it is never mistaken for current work.
+export const plannedCause = {
+  href: 'our-journey#beginnings',
+  image: 'kendra-building',
+  en: [
+    'De-addiction Counselling',
+    'Our work began at a Nasha Mukti Kendra building. Counselling for people facing addiction is a service we hope to offer again in future — it is not running today.',
+  ],
+  hi: [
+    'नशा मुक्ति परामर्श',
+    'हमारा काम एक नशा मुक्ति केंद्र के भवन से शुरू हुआ था। नशे से जूझ रहे लोगों के लिए परामर्श हम भविष्य में फिर शुरू करना चाहते हैं — यह सेवा अभी नहीं चल रही है।',
+  ],
+};
+
+export const home: Bi<{
+  heroEyebrow: string;
+  heroTitle: [string, string];
+  heroText: string;
+  heroWatch: string;
+  heroPause: string;
+  heroPlay: string;
+  heroCaption: string;
+  regd: string;
+  proofEyebrow: string;
+  proofTitle: string;
+  proof: { title: string; text: string; href: string; link: string }[];
+  whoEyebrow: string;
+  whoTitle: string;
+  whoText: string[];
+  whoCaption: string;
+  whyEyebrow: string;
+  whyTitle: string;
+  whyLead: string;
+  whyText: string;
+  needs: [string, string][];
+  whyNote: string;
+  causesEyebrow: string;
+  causesTitle: string;
+  causesText: string;
+  plannedLabel: string;
+  journeyEyebrow: string;
+  journeyTitle: string;
+  journeyText: string[];
+  journeyVideo: string;
+  journeyVideoNote: string;
+  journeyLink: string;
+  mahilaEyebrow: string;
+  mahilaTitle: string;
+  mahilaText: string;
+  mahilaLink: string;
+  storiesEyebrow: string;
+  storiesTitle: string;
+  stories: {
+    id: string;
+    kicker: string;
+    title: string;
+    text: string;
+    images: [string, string];
+    alts: [string, string];
+    href: string;
+    link: string;
+  }[];
+  trustEyebrow: string;
+  trustTitle: string;
+  trustText: string;
+  trustPoints: string[];
+  trustLink: string;
+  involveTitle: string;
+  involveText: string;
+  volunteer: string;
+}> = {
+  en: {
+    heroEyebrow: 'Shanti Dham Ashram · Delhi',
+    heroTitle: ['Compassion in action.', 'Dignity for every life.'],
+    heroText:
+      'Shanti Jan Kalyan Sansthan gives shelter, meals, medical help and company to elders who have no one — and reaches out to women, children and people on the streets of Delhi.',
+    heroWatch: 'Watch where we began',
+    heroPause: 'Pause moving photographs',
+    heroPlay: 'Play moving photographs',
+    heroCaption: 'Every photograph is from our own work',
+    regd: 'Regd. No. 323',
+    proofEyebrow: 'Real work. Real people.',
+    proofTitle: 'What we can show you, not just tell you',
+    proof: [
+      {
+        title: 'Shelter & daily care',
+        text: 'Elders without family support live, eat and are cared for at Shanti Dham Ashram.',
+        href: 'old-age-home',
+        link: 'Elder care',
+      },
+      {
+        title: 'Free eye-test camp · 2 July 2024',
+        text: 'Held at Shanti Dham Ashram from 11 am to 4 pm with a visiting eye-care team.',
+        href: 'activities#eye-camp',
+        link: 'See the camp',
+      },
+      {
+        title: 'Mahila Diwas Samman Samaroh · 2022',
+        text: 'Women from the community honoured on International Women’s Day.',
+        href: 'mahila-diwas',
+        link: 'View the album',
+      },
+      {
+        title: 'Holi with children · March 2023',
+        text: 'Colours, sweets and time together with children from neighbouring families.',
+        href: 'activities#children',
+        link: 'See the day',
+      },
+    ],
+    whoEyebrow: 'Who we are',
+    whoTitle: 'A small team that treats strangers as family.',
+    whoText: [
+      'Shanti Jan Kalyan Sansthan (Regd.) is a Delhi charity led by its National President, Sunita Bhushan. Its main work is Shanti Dham Ashram, where elders who have been left alone receive a bed, food, clean clothes, medicines and the attention of people who know their names.',
+      'Around that daily care the team takes help outside the ashram: first aid and blankets for people on the street, an eye-test camp, study sessions and festivals with children, and gatherings that honour women from the community.',
+    ],
+    whoCaption: 'Residents at the ashram office',
+    whyEyebrow: 'Why your support matters',
+    whyTitle:
+      'For many elders who come to us, nothing can be taken for granted.',
+    whyLead:
+      'Many arrive with no family support — some from hospitals, some from the roadside. Food, a clean bed, medicines and someone to sit with them do not happen by themselves.',
+    whyText:
+      'The ashram runs on the kindness of donors. Your contribution keeps everyday care going, with dignity and compassion.',
+    needs: [
+      ['Meals every day', 'Breakfast, lunch and dinner for every resident.'],
+      [
+        'Medicines & hospital visits',
+        'Check-ups, prescriptions and someone to go with them.',
+      ],
+      [
+        'Clothes, bedding & blankets',
+        'Clean clothes, and warmth through Delhi winters.',
+      ],
+      [
+        'Care & companionship',
+        'Bathing, grooming, conversation, prayer and festivals.',
+      ],
+    ],
+    whyNote:
+      'We do not publish a fixed cost per resident. Call us to hear what the ashram needs this month.',
+    causesEyebrow: 'What we do',
+    causesTitle: 'The work behind every act of care',
+    causesText:
+      'Each area is marked to show whether it runs every day, is held from time to time, or is still a plan.',
+    plannedLabel: 'For the future',
+    journeyEyebrow: 'Our journey',
+    journeyTitle: 'Where our work began',
+    journeyText: [
+      'For roughly the first three years, the team worked out of a Nasha Mukti Kendra building where part of the ceiling had collapsed and facilities were very limited.',
+      'This video was recorded there. The work with elders carried on all the same — and that persistence is what the ashram is built on today.',
+    ],
+    journeyVideo: 'Play the video from our early ashram',
+    journeyVideoNote: '55 seconds · recorded by our team · sound on',
+    journeyLink: 'Read our story',
+    mahilaEyebrow: 'Celebrating strength',
+    mahilaTitle: 'Mahila Diwas with Shanti Jan Kalyan Sansthan',
+    mahilaText:
+      'Every March, around International Women’s Day, we bring together women from the community — members, volunteers and guests — to honour their work and their strength.',
+    mahilaLink: 'Explore the Mahila Diwas album',
+    storiesEyebrow: 'On the ground',
+    storiesTitle: 'Moments from our work',
+    stories: [
+      {
+        id: 'eye-camp',
+        kicker: '2 July 2024 · Shanti Dham Ashram',
+        title: 'A free eye-test camp at the ashram',
+        text: 'A visiting eye-care team held free eye tests at the ashram from 11 am to 4 pm. The camp banner also announced free cataract (motiyabind) operations for those found to need them.',
+        images: ['eye-camp-team', 'eye-camp-checkup'],
+        alts: [
+          'The visiting eye-care team and our members under the camp banner',
+          'An eye check-up taking place inside the ashram',
+        ],
+        href: 'medical-support',
+        link: 'Medical & eye-care support',
+      },
+      {
+        id: 'winter',
+        kicker: 'Delhi winters',
+        title: 'Warm food and blankets on cold nights',
+        text: 'When the temperature drops, the team goes out with hot food and blankets for people sleeping on the street, and brings those who need care back to the ashram.',
+        images: ['night-blanket', 'food-distribution-winter'],
+        alts: [
+          'An elderly woman wrapped in a new blanket on a winter night',
+          'Serving hot food to people by the roadside',
+        ],
+        href: 'activities#winter',
+        link: 'More from our outreach',
+      },
+      {
+        id: 'children',
+        kicker: 'Holi · March 2023',
+        title: 'Festivals and study days with children',
+        text: 'Children from neighbouring families join us for Holi and for study sessions under our banner “every child has the right to be educated”.',
+        images: ['holi-children-2023', 'children-education'],
+        alts: [
+          'Children receiving Holi colours and sweets',
+          'Children with books at a study session',
+        ],
+        href: 'child-welfare',
+        link: 'Support for children',
+      },
+    ],
+    trustEyebrow: 'Our documents & accountability',
+    trustTitle: 'Give with confidence',
+    trustText:
+      'We would rather show you less than claim more. Here is what we publish, and what we will share on request.',
+    trustPoints: [
+      'Registered society — Regd. No. 323, as printed on our banners',
+      'Donations go only to the bank account in the name of Shanti Jan Kalyan Sansthan',
+      'Copies of registration and tax documents shared on request',
+      'No tax benefit is promised on this website',
+    ],
+    trustLink: 'View transparency details',
+    involveTitle: 'Give an hour, a meal, or a voice.',
+    involveText:
+      'Visit the ashram, help at a camp, bring supplies, or share our work with someone who can help.',
+    volunteer: 'Volunteer with us',
+  },
+  hi: {
+    heroEyebrow: 'शान्ति धाम आश्रम · दिल्ली',
+    heroTitle: ['सेवा में करुणा।', 'हर जीवन को सम्मान।'],
+    heroText:
+      'शांति जन कल्याण संस्थान बेसहारा बुज़ुर्गों को आश्रय, भोजन, चिकित्सा सहायता और अपनापन देता है — और दिल्ली में महिलाओं, बच्चों और सड़क पर रहने वालों तक पहुँचता है।',
+    heroWatch: 'हमारी शुरुआत देखें',
+    heroPause: 'चलती तस्वीरें रोकें',
+    heroPlay: 'चलती तस्वीरें चलाएँ',
+    heroCaption: 'सभी तस्वीरें हमारे अपने कार्यों की हैं',
+    regd: 'पंजीकरण सं. 323',
+    proofEyebrow: 'सच्चा काम। सच्चे लोग।',
+    proofTitle: 'जो हम सिर्फ़ कहते नहीं, दिखा भी सकते हैं',
+    proof: [
+      {
+        title: 'आश्रय और रोज़ की देखभाल',
+        text: 'परिवार के सहारे से वंचित बुज़ुर्ग शान्ति धाम आश्रम में रहते, खाते और देखभाल पाते हैं।',
+        href: 'old-age-home',
+        link: 'बुज़ुर्गों की देखभाल',
+      },
+      {
+        title: 'निःशुल्क आँख जाँच शिविर · 2 जुलाई 2024',
+        text: 'शान्ति धाम आश्रम में सुबह 11 से शाम 4 बजे तक नेत्र चिकित्सा टीम के साथ।',
+        href: 'activities#eye-camp',
+        link: 'शिविर देखें',
+      },
+      {
+        title: 'महिला दिवस सम्मान समारोह · 2022',
+        text: 'अंतरराष्ट्रीय महिला दिवस पर समुदाय की महिलाओं का सम्मान।',
+        href: 'mahila-diwas',
+        link: 'एल्बम देखें',
+      },
+      {
+        title: 'बच्चों के साथ होली · मार्च 2023',
+        text: 'पड़ोस के परिवारों के बच्चों के साथ रंग, मिठाई और साथ बिताया समय।',
+        href: 'activities#children',
+        link: 'वह दिन देखें',
+      },
+    ],
+    whoEyebrow: 'हम कौन हैं',
+    whoTitle: 'एक छोटी टीम, जो अजनबियों को परिवार मानती है।',
+    whoText: [
+      'शांति जन कल्याण संस्थान (रजि.) दिल्ली की एक सेवा संस्था है, जिसका नेतृत्व राष्ट्रीय अध्यक्ष सुनीता भूषण करती हैं। इसका मुख्य कार्य शान्ति धाम आश्रम है, जहाँ अकेले छोड़ दिए गए बुज़ुर्गों को बिस्तर, भोजन, साफ़ कपड़े, दवाइयाँ और ऐसे लोगों का साथ मिलता है जो उन्हें नाम से जानते हैं।',
+      'इस रोज़ की देखभाल के साथ टीम आश्रम के बाहर भी मदद पहुँचाती है: सड़क पर रहने वालों के लिए प्राथमिक उपचार और कंबल, आँख जाँच शिविर, बच्चों के साथ पढ़ाई और त्योहार, और समुदाय की महिलाओं का सम्मान।',
+    ],
+    whoCaption: 'आश्रम कार्यालय में निवासी',
+    whyEyebrow: 'आपका सहयोग क्यों ज़रूरी है',
+    whyTitle: 'हमारे पास आने वाले कई बुज़ुर्गों के लिए कुछ भी आसान नहीं होता।',
+    whyLead:
+      'कई बुज़ुर्ग बिना किसी पारिवारिक सहारे के आते हैं — कुछ अस्पताल से, कुछ सड़क किनारे से। भोजन, साफ़ बिस्तर, दवाइयाँ और पास बैठने वाला कोई — ये अपने आप नहीं होते।',
+    whyText:
+      'आश्रम दानदाताओं की दयालुता से चलता है। आपका योगदान रोज़ की देखभाल को सम्मान और करुणा के साथ जारी रखता है।',
+    needs: [
+      ['हर दिन भोजन', 'हर निवासी के लिए नाश्ता, दोपहर और रात का खाना।'],
+      ['दवाइयाँ और अस्पताल', 'जाँच, दवाइयाँ और साथ जाने वाला कोई।'],
+      [
+        'कपड़े, बिस्तर और कंबल',
+        'साफ़ कपड़े और दिल्ली की सर्दियों में गर्माहट।',
+      ],
+      ['देखभाल और अपनापन', 'नहलाना, साफ़-सफ़ाई, बातचीत, प्रार्थना और त्योहार।'],
+    ],
+    whyNote:
+      'हम प्रति निवासी कोई तय ख़र्च प्रकाशित नहीं करते। इस महीने आश्रम की ज़रूरतें जानने के लिए हमें कॉल करें।',
+    causesEyebrow: 'हम क्या करते हैं',
+    causesTitle: 'देखभाल के हर काम के पीछे का प्रयास',
+    causesText:
+      'हर कार्य के साथ लिखा है कि वह रोज़ चलता है, समय-समय पर होता है, या अभी योजना में है।',
+    plannedLabel: 'भविष्य के लिए',
+    journeyEyebrow: 'हमारी यात्रा',
+    journeyTitle: 'जहाँ से हमारा काम शुरू हुआ',
+    journeyText: [
+      'लगभग पहले तीन वर्षों तक टीम ने एक नशा मुक्ति केंद्र के भवन से काम किया, जहाँ छत का एक हिस्सा गिर चुका था और सुविधाएँ बहुत सीमित थीं।',
+      'यह वीडियो वहीं रिकॉर्ड किया गया था। फिर भी बुज़ुर्गों की सेवा जारी रही — और यही लगन आज के आश्रम की नींव है।',
+    ],
+    journeyVideo: 'हमारे शुरुआती आश्रम का वीडियो चलाएँ',
+    journeyVideoNote: '55 सेकंड · हमारी टीम द्वारा रिकॉर्ड · आवाज़ के साथ',
+    journeyLink: 'हमारी कहानी पढ़ें',
+    mahilaEyebrow: 'शक्ति का उत्सव',
+    mahilaTitle: 'शांति जन कल्याण संस्थान के साथ महिला दिवस',
+    mahilaText:
+      'हर मार्च में, अंतरराष्ट्रीय महिला दिवस के आसपास, हम समुदाय की महिलाओं — सदस्यों, स्वयंसेविकाओं और अतिथियों — को उनके काम और शक्ति के सम्मान के लिए एक साथ लाते हैं।',
+    mahilaLink: 'महिला दिवस एल्बम देखें',
+    storiesEyebrow: 'ज़मीन पर काम',
+    storiesTitle: 'हमारे कार्यों के पल',
+    stories: [
+      {
+        id: 'eye-camp',
+        kicker: '2 जुलाई 2024 · शान्ति धाम आश्रम',
+        title: 'आश्रम में निःशुल्क आँख जाँच शिविर',
+        text: 'नेत्र चिकित्सा टीम ने आश्रम में सुबह 11 से शाम 4 बजे तक निःशुल्क आँख जाँच की। शिविर के बैनर पर ज़रूरतमंदों के लिए निःशुल्क मोतियाबिंद ऑपरेशन की घोषणा भी थी।',
+        images: ['eye-camp-team', 'eye-camp-checkup'],
+        alts: [
+          'शिविर के बैनर के नीचे नेत्र चिकित्सा टीम और हमारे सदस्य',
+          'आश्रम के अंदर आँखों की जाँच',
+        ],
+        href: 'medical-support',
+        link: 'चिकित्सा एवं नेत्र सहायता',
+      },
+      {
+        id: 'winter',
+        kicker: 'दिल्ली की सर्दियाँ',
+        title: 'सर्द रातों में गरम भोजन और कंबल',
+        text: 'तापमान गिरने पर टीम सड़क पर सोने वालों के लिए गरम भोजन और कंबल लेकर निकलती है, और जिन्हें देखभाल चाहिए उन्हें आश्रम ले आती है।',
+        images: ['night-blanket', 'food-distribution-winter'],
+        alts: [
+          'सर्द रात में नए कंबल में लिपटी एक बुज़ुर्ग महिला',
+          'सड़क किनारे लोगों को गरम भोजन परोसते हुए',
+        ],
+        href: 'activities#winter',
+        link: 'हमारी सेवा के और पल',
+      },
+      {
+        id: 'children',
+        kicker: 'होली · मार्च 2023',
+        title: 'बच्चों के साथ त्योहार और पढ़ाई',
+        text: 'पड़ोस के परिवारों के बच्चे होली पर और “सभी बच्चों को शिक्षित बनने का अधिकार” बैनर के नीचे पढ़ाई के सत्रों में हमारे साथ जुड़ते हैं।',
+        images: ['holi-children-2023', 'children-education'],
+        alts: [
+          'होली के रंग और मिठाई पाते बच्चे',
+          'पढ़ाई के सत्र में किताबों के साथ बच्चे',
+        ],
+        href: 'child-welfare',
+        link: 'बच्चों के लिए सहयोग',
+      },
+    ],
+    trustEyebrow: 'हमारे दस्तावेज़ और जवाबदेही',
+    trustTitle: 'भरोसे के साथ दान करें',
+    trustText:
+      'हम ज़्यादा दावा करने के बजाय कम दिखाना पसंद करते हैं। यहाँ बताया गया है कि हम क्या प्रकाशित करते हैं और माँगने पर क्या साझा करेंगे।',
+    trustPoints: [
+      'पंजीकृत संस्था — पंजीकरण सं. 323, जैसा हमारे बैनरों पर छपा है',
+      'दान केवल शांति जन कल्याण संस्थान के नाम वाले बैंक खाते में',
+      'पंजीकरण और कर संबंधी दस्तावेज़ों की प्रतियाँ माँगने पर उपलब्ध',
+      'इस वेबसाइट पर किसी कर लाभ का वादा नहीं किया जाता',
+    ],
+    trustLink: 'पारदर्शिता की जानकारी देखें',
+    involveTitle: 'एक घंटा, एक भोजन या अपनी आवाज़ दें।',
+    involveText:
+      'आश्रम आएँ, शिविर में मदद करें, सामग्री लाएँ, या हमारा काम किसी ऐसे व्यक्ति तक पहुँचाएँ जो मदद कर सके।',
+    volunteer: 'स्वयंसेवक बनें',
+  },
+};
+
+// Mahila Diwas collection: every unique supplied photograph of these events.
+// Near-identical frames (source images 27 and 29) are kept in the archive only.
+export const mahila = {
+  albums: [
+    {
+      id: 'samman-2022',
+      en: [
+        'International Mahila Diwas Samman Samaroh · 2022',
+        'The banner reads “Antarrashtriya Mahila Diwas ke avsar par … Samman Samaroh-2022”.',
+      ],
+      hi: [
+        'अंतरराष्ट्रीय महिला दिवस सम्मान समारोह · 2022',
+        'बैनर पर लिखा है “अंतरराष्ट्रीय महिला दिवस के अवसर पर … सम्मान समारोह-2022”।',
+      ],
+      photos: [
+        {
+          image: 'mahila-diwas-2022',
+          en: 'Addressing the gathering at the 2022 Samman Samaroh',
+          hi: '2022 सम्मान समारोह में सभा को संबोधित करते हुए',
+        },
+        {
+          image: 'women-members',
+          en: 'Women members in saffron stoles',
+          hi: 'भगवा दुपट्टों में संस्थान की महिला सदस्य',
+        },
+      ],
+    },
+    {
+      id: 'samman-stage',
+      en: [
+        'Women’s Day Samman Samaroh on stage',
+        'A larger International Women’s Day felicitation held under a decorated marquee. Year to be confirmed by the NGO.',
+      ],
+      hi: [
+        'मंच पर महिला दिवस सम्मान समारोह',
+        'सजे हुए पंडाल में अंतरराष्ट्रीय महिला दिवस का बड़ा सम्मान समारोह। वर्ष की पुष्टि संस्था करेगी।',
+      ],
+      photos: [
+        {
+          image: 'mahila-diwas-group',
+          en: 'Honoured guests and members on stage',
+          hi: 'मंच पर सम्मानित अतिथि और सदस्य',
+        },
+        {
+          image: 'mahila-diwas-honourees',
+          en: 'Women honoured with bouquets and stoles',
+          hi: 'गुलदस्ते और दुपट्टे से सम्मानित महिलाएँ',
+        },
+        {
+          image: 'mahila-diwas-felicitation',
+          en: 'Greeting a guest at the felicitation',
+          hi: 'सम्मान समारोह में अतिथि का स्वागत',
+        },
+        {
+          image: 'mahila-diwas-audience',
+          en: 'The audience at the Samman Samaroh',
+          hi: 'सम्मान समारोह में उपस्थित लोग',
+        },
+      ],
+    },
+    {
+      id: 'women-gatherings',
+      en: [
+        'Women of the Sansthan',
+        'Other gatherings of our women members and volunteers.',
+      ],
+      hi: [
+        'संस्थान की महिलाएँ',
+        'हमारी महिला सदस्यों और स्वयंसेविकाओं के अन्य आयोजन।',
+      ],
+      photos: [
+        {
+          image: 'kendra-women-members',
+          en: 'Women members outside our early centre',
+          hi: 'हमारे शुरुआती केंद्र के बाहर महिला सदस्य',
+        },
+        {
+          image: 'women-gathering',
+          en: 'A gathering of women at our office',
+          hi: 'हमारे कार्यालय में महिलाओं की बैठक',
+        },
+        {
+          image: 'holi-milan',
+          en: 'Holi Milan with women members',
+          hi: 'महिला सदस्यों के साथ होली मिलन',
+        },
+      ],
+    },
+  ],
+  en: {
+    intro:
+      'Mahila Diwas is one of the recurring community events of Shanti Jan Kalyan Sansthan. Each March the Sansthan invites women members, volunteers and guests to an afternoon of speeches, felicitation and celebration.',
+    note: 'All photographs were supplied by the NGO. Where the year of an event is not printed in the photograph, we have not guessed it.',
+  },
+  hi: {
+    intro:
+      'महिला दिवस शांति जन कल्याण संस्थान के नियमित सामुदायिक आयोजनों में से एक है। हर मार्च संस्थान महिला सदस्यों, स्वयंसेविकाओं और अतिथियों को भाषण, सम्मान और उत्सव के लिए आमंत्रित करता है।',
+    note: 'सभी तस्वीरें संस्था द्वारा दी गई हैं। जहाँ तस्वीर में आयोजन का वर्ष नहीं छपा है, वहाँ हमने अनुमान नहीं लगाया है।',
+  },
+};
+
+export const transparency: Bi<{
+  publishedTitle: string;
+  published: [string, string][];
+  requestTitle: string;
+  requestText: string;
+  documents: string[];
+  requestButton: string;
+  taxTitle: string;
+  taxText: string;
+  useTitle: string;
+  useText: string;
+}> = {
+  en: {
+    publishedTitle: 'What we publish',
+    published: [
+      ['Registered name', 'Shanti Jan Kalyan Sansthan (Regd.)'],
+      [
+        'Registration number',
+        '323 — as printed on the Sansthan’s banners and posters',
+      ],
+      ['Leadership', 'Sunita Bhushan, National President'],
+      [
+        'Donation account',
+        'Union Bank of India, in the name of Shanti Jan Kalyan Sansthan',
+      ],
+      ['Main facility', 'Shanti Dham Ashram, Majnu Ka Tilla area, Delhi'],
+    ],
+    requestTitle: 'Documents available on request',
+    requestText:
+      'We will share copies of the following with donors, partners and volunteers who ask. They will be published on this page once the Sansthan has reviewed them for public display.',
+    documents: [
+      'Registration certificate',
+      '12A and 80G certificates, if applicable',
+      'NITI Aayog NGO Darpan details, if applicable',
+      'Activity reports and accounts',
+    ],
+    requestButton: 'Request a document',
+    taxTitle: 'About tax benefits',
+    taxText:
+      'This website does not promise a tax deduction. If you need a receipt for tax purposes, please ask the team before you donate so they can confirm what applies to your contribution.',
+    useTitle: 'How donations are used',
+    useText:
+      'Contributions go toward running Shanti Dham Ashram — meals, medicines, hospital visits, clothes, bedding and care — and toward outreach such as camps and winter relief. Ask us for an acknowledgement of any donation.',
+  },
+  hi: {
+    publishedTitle: 'हम क्या प्रकाशित करते हैं',
+    published: [
+      ['पंजीकृत नाम', 'शांति जन कल्याण संस्थान (रजि.)'],
+      ['पंजीकरण संख्या', '323 — जैसा संस्थान के बैनरों और पोस्टरों पर छपा है'],
+      ['नेतृत्व', 'सुनीता भूषण, राष्ट्रीय अध्यक्ष'],
+      ['दान खाता', 'यूनियन बैंक ऑफ इंडिया, शांति जन कल्याण संस्थान के नाम'],
+      ['मुख्य केंद्र', 'शान्ति धाम आश्रम, मजनू का टीला क्षेत्र, दिल्ली'],
+    ],
+    requestTitle: 'माँगने पर उपलब्ध दस्तावेज़',
+    requestText:
+      'दानदाताओं, सहयोगियों और स्वयंसेवकों के माँगने पर हम इनकी प्रतियाँ साझा करेंगे। संस्था द्वारा सार्वजनिक प्रदर्शन के लिए जाँच के बाद इन्हें इस पृष्ठ पर प्रकाशित किया जाएगा।',
+    documents: [
+      'पंजीकरण प्रमाणपत्र',
+      '12A और 80G प्रमाणपत्र, यदि लागू हों',
+      'नीति आयोग एनजीओ दर्पण विवरण, यदि लागू हो',
+      'गतिविधि रिपोर्ट और लेखा',
+    ],
+    requestButton: 'दस्तावेज़ का अनुरोध करें',
+    taxTitle: 'कर लाभ के बारे में',
+    taxText:
+      'यह वेबसाइट किसी कर छूट का वादा नहीं करती। अगर आपको कर के लिए रसीद चाहिए, तो दान से पहले टीम से पूछें ताकि वे बता सकें कि आपके योगदान पर क्या लागू होता है।',
+    useTitle: 'दान का उपयोग कैसे होता है',
+    useText:
+      'योगदान शान्ति धाम आश्रम चलाने — भोजन, दवाइयाँ, अस्पताल, कपड़े, बिस्तर और देखभाल — और शिविर व सर्दियों की राहत जैसी सेवाओं में लगता है। किसी भी दान की पावती के लिए हमसे पूछें।',
+  },
+};
+
+// Inner-page heroes: a main photograph, two floating companions and a short accent line.
+// Photographs are chosen so none repeats in the body of the same page.
+export interface PageHero {
+  images: [string, string, string];
+  en: [string, string];
+  hi: [string, string];
+}
+
+export const pageHeroes: Record<string, PageHero> = {
+  about: {
+    images: [
+      'president-with-resident',
+      'residents-gathering',
+      'volunteers-logo-wall',
+    ],
+    en: ['Who we are', 'Strangers, treated as family.'],
+    hi: ['हम कौन हैं', 'अजनबी भी, परिवार की तरह।'],
+  },
+  'our-work': {
+    images: ['window-conversation', 'eye-camp-team', 'children-class'],
+    en: ['What we do', 'The work behind every act of care.'],
+    hi: ['हम क्या करते हैं', 'देखभाल के हर काम के पीछे का प्रयास।'],
+  },
+  'our-journey': {
+    images: ['resident-banner', 'office-elders', 'holi-elders-office'],
+    en: ['Our story', 'From humble beginnings to continued service.'],
+    hi: ['हमारी कहानी', 'साधारण शुरुआत से निरंतर सेवा तक।'],
+  },
+  activities: {
+    images: ['food-distribution-winter', 'distribution-office', 'holi-milan'],
+    en: ['On the ground', 'Real people. Real moments.'],
+    hi: ['ज़मीन पर काम', 'सच्चे लोग। सच्चे पल।'],
+  },
+  'mahila-diwas': {
+    images: ['mahila-diwas-group', 'women-members', 'kendra-women-members'],
+    en: ['Celebrating strength', 'Every March, together.'],
+    hi: ['शक्ति का उत्सव', 'हर मार्च, एक साथ।'],
+  },
+  gallery: {
+    images: ['holi-milan', 'selfie-with-resident', 'yoga-session'],
+    en: ['In pictures', 'Every photograph is our own.'],
+    hi: ['तस्वीरों में', 'हर तस्वीर हमारे अपने काम की।'],
+  },
+  videos: {
+    images: ['yoga-session', 'resident-and-caregiver', 'shared-meal'],
+    en: ['Watch', 'Our work, in motion.'],
+    hi: ['देखें', 'चलती तस्वीरों में हमारा काम।'],
+  },
+  'get-involved': {
+    images: ['volunteers', 'ration-distribution', 'office-cake'],
+    en: ['Join us', 'A little time, a world of difference.'],
+    hi: ['हमसे जुड़ें', 'थोड़ा सा समय, बड़ा बदलाव।'],
+  },
+  donate: {
+    images: ['gift-for-resident', 'shared-meal', 'resident-portrait-man'],
+    en: ['Support our cause', 'Your contribution keeps care going.'],
+    hi: ['हमारे कार्य में सहयोग करें', 'आपका योगदान देखभाल को जारी रखता है।'],
+  },
+  contact: {
+    images: [
+      'office-celebration',
+      'elders-arched-window',
+      'volunteers-logo-wall',
+    ],
+    en: ['Get in touch', 'We would love to hear from you.'],
+    hi: ['संपर्क में रहें', 'हमें आपसे बात करके खुशी होगी।'],
+  },
+  transparency: {
+    images: ['distribution-office', 'volunteers', 'office-celebration'],
+    en: ['Accountability', 'Show, don’t just tell.'],
+    hi: ['जवाबदेही', 'सिर्फ़ कहें नहीं, दिखाएँ।'],
+  },
+};

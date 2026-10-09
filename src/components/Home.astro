@@ -1,71 +1,204 @@
 ---
-import { copy, stats, url, img, imgSm, srcset, type Lang } from '../data/site';
+import {
+  copy,
+  site,
+  url,
+  img,
+  imgSm,
+  srcset,
+  photoCaption,
+  type Lang,
+} from '../data/site';
+import {
+  home,
+  heroColumns,
+  causes,
+  plannedCause,
+  statusLabels,
+  mahila,
+} from '../data/content';
 import Icon from './Icon.astro';
-import ProgramCards from './ProgramCards.astro';
 import DonatePanel from './DonatePanel.astro';
-import VideoCards from './VideoCards.astro';
-import LivesStrip from './LivesStrip.astro';
 const { lang } = Astro.props as { lang: Lang };
 const t = copy[lang];
+const h = home[lang];
+const status = statusLabels[lang];
+// Representative Mahila Diwas photographs; the full collection lives on /mahila-diwas/.
+const mahilaPicks = [
+  'mahila-diwas-2022',
+  'mahila-diwas-felicitation',
+  'mahila-diwas-honourees',
+  'kendra-women-members',
+];
+const needIcons = ['meal', 'stethoscope', 'sun', 'heart'];
+const proofIcons = ['elder', 'eye', 'group', 'child'];
+const EAGER_PER_COLUMN = 2;
 ---
 
-<section class="hero">
-  <div class="hero-bg" aria-hidden="true">
-    <svg class="hero-wave" viewBox="0 0 800 900" preserveAspectRatio="none">
-      <defs>
-        <linearGradient id="hero-wave-fill" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#a42a24" />
-          <stop offset="1" stop-color="#6e1517" />
-        </linearGradient>
-      </defs>
-      <path
-        d="M330 0C250 120 300 230 230 330 150 445 40 470 60 620 78 760 200 830 150 900H800V0Z"
-        fill="url(#hero-wave-fill)"
-      ></path>
-      <path
-        d="M420 0C380 150 470 260 420 380 370 500 250 560 300 720 330 810 420 860 400 900"
-        class="hero-wave-line"
-      ></path>
-      <path
-        d="M800 640C700 650 610 720 590 820 584 850 588 880 596 900"
-        class="hero-wave-line"
-      ></path>
-    </svg>
-    <span class="hero-orb hero-orb-1"></span>
-    <span class="hero-orb hero-orb-2"></span>
-    <svg class="hero-leaves" viewBox="0 0 120 360">
-      <path class="hero-stem" d="M60 360C64 260 56 150 72 10"></path>
-      <path d="M62 300c-30-6-48-26-52-50 28 2 48 22 52 50Z"></path>
-      <path d="M63 250c26-10 44-32 46-58-26 6-44 28-46 58Z"></path>
-      <path d="M62 200c-28-8-44-30-46-56 26 4 44 26 46 56Z"></path>
-      <path d="M66 150c24-10 40-32 40-56-24 6-40 28-40 56Z"></path>
-      <path d="M67 100c-24-8-38-28-38-50 22 4 38 24 38 50Z"></path>
-      <path d="M71 52c18-10 28-26 28-44-18 6-28 22-28 44Z"></path>
-    </svg>
-  </div>
-  <div class="container hero-grid">
-    <div class="hero-copy">
-      <p class="eyebrow">{t.heroEyebrow}</p>
-      <h1>
-        {t.heroTitle[0]} <span class="hero-highlight">{t.heroTitle[1]}</span>{' '}
-        {t.heroTitle[2]}
+<section class="h-hero" aria-labelledby="hero-title">
+  <div class="h-hero-glow" aria-hidden="true"></div>
+  <div class="container h-hero-grid">
+    <div class="h-hero-copy">
+      <p class="h-kicker">
+        <span>{h.heroEyebrow}</span>
+        <span class="h-regd">{h.regd}</span>
+      </p>
+      <h1 id="hero-title">
+        {h.heroTitle[0]}
+        <em>{h.heroTitle[1]}</em>
       </h1>
-      <p class="hero-text">{t.heroText}</p>
+      <p class="h-hero-text">{h.heroText}</p>
       <div class="btn-row">
-        <a class="btn btn-primary btn-lg" href={url(lang, 'donate')}>
+        <a class="btn btn-primary btn-xl" href={url(lang, 'donate')}>
+          <Icon name="heart" size={18} filled />
           {t.donate}
-          <Icon name="arrow" size={18} />
         </a>
-        <a class="btn btn-outline-brand btn-lg" href="#impact">
-          {t.seeImpact}
+        <a class="btn btn-ghost-light btn-xl" href={url(lang, 'our-work')}>
+          {t.work}
           <Icon name="arrow" size={18} />
         </a>
       </div>
-      <ul class="hero-credentials">
-        {t.heroCredentials.map(([title, text], i) => (
+      <a class="h-watch" href="#journey">
+        <span class="h-watch-icon" aria-hidden="true">
+          <Icon name="play" size={14} filled />
+        </span>
+        {h.heroWatch}
+      </a>
+    </div>
+
+    <div class="h-reel" data-reel>
+      <div class="h-reel-cols">
+        {heroColumns.map((column, c) => (
+          <div class:list={['h-col', `h-col-${c + 1}`]}>
+            <ul class="h-track">
+              {[0, 1].map((copyIndex) =>
+                column.map((name, i) => (
+                  <li aria-hidden={copyIndex === 1 ? 'true' : undefined}>
+                    <img
+                      src={imgSm(name)}
+                      width="640"
+                      height="800"
+                      alt={copyIndex === 1 ? '' : photoCaption(name, lang)}
+                      loading={
+                        copyIndex === 0 && i < EAGER_PER_COLUMN
+                          ? 'eager'
+                          : 'lazy'
+                      }
+                      fetchpriority={
+                        c === 0 && copyIndex === 0 && i === 0
+                          ? 'high'
+                          : undefined
+                      }
+                      decoding="async"
+                    />
+                  </li>
+                )),
+              )}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <p class="h-reel-note" aria-hidden="true">
+        {h.heroCaption}
+      </p>
+      <button
+        class="h-reel-toggle"
+        type="button"
+        aria-pressed="false"
+        data-label-pause={h.heroPause}
+        data-label-play={h.heroPlay}
+      >
+        <span class="icon-pause-bars" aria-hidden="true"></span>
+        <Icon name="play" size={14} filled />
+        <span class="sr-only">{h.heroPause}</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="h-proof" aria-labelledby="proof-title">
+  <div class="container">
+    <div class="h-proof-head">
+      <p class="eyebrow">{h.proofEyebrow}</p>
+      <h2 id="proof-title">{h.proofTitle}</h2>
+    </div>
+    <ol class="h-proof-list">
+      {h.proof.map((item, i) => (
+        <li>
+          <span class="h-proof-icon" aria-hidden="true">
+            <Icon name={proofIcons[i]} size={22} />
+          </span>
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+          <a class="text-link" href={url(lang, item.href)}>
+            {item.link}
+            <Icon name="arrow" size={15} />
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<section class="section h-who" aria-labelledby="who-title">
+  <div class="container h-who-grid">
+    <div class="h-who-media">
+      <figure class="h-who-main">
+        <img
+          src={img('elders-arched-window')}
+          srcset={srcset('elders-arched-window')}
+          sizes="(min-width: 1000px) 34vw, 90vw"
+          width="1080"
+          height="1540"
+          alt={photoCaption('elders-arched-window', lang)}
+          loading="lazy"
+        />
+      </figure>
+      <figure class="h-who-portrait">
+        <img
+          src={img('president-portrait')}
+          width="400"
+          height="455"
+          alt={`${t.leader}, ${t.leaderRole}`}
+          loading="lazy"
+        />
+        <figcaption>
+          <strong>{t.leader}</strong>
+          {t.leaderRole}
+        </figcaption>
+      </figure>
+    </div>
+    <div class="h-who-copy">
+      <p class="eyebrow">{h.whoEyebrow}</p>
+      <h2 id="who-title">{h.whoTitle}</h2>
+      {h.whoText.map((paragraph, i) => (
+        <p class={i === 0 ? 'lead' : undefined}>{paragraph}</p>
+      ))}
+      <div class="btn-row">
+        <a class="btn btn-secondary" href={url(lang, 'about')}>
+          {t.titles[1]}
+          <Icon name="arrow" size={17} />
+        </a>
+        <a class="text-link" href={url(lang, 'our-journey')}>
+          {t.titles[8]}
+          <Icon name="arrow" size={15} />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="h-why" aria-labelledby="why-title">
+  <div class="container h-why-grid">
+    <div class="h-why-copy">
+      <p class="eyebrow eyebrow-light">{h.whyEyebrow}</p>
+      <h2 id="why-title">{h.whyTitle}</h2>
+      <p class="h-why-lead">{h.whyLead}</p>
+      <ul class="h-needs">
+        {h.needs.map(([title, text], i) => (
           <li>
-            <span class="hero-credential-icon">
-              <Icon name={['shield', 'file', 'group'][i]} size={22} />
+            <span class="h-need-icon" aria-hidden="true">
+              <Icon name={needIcons[i]} size={22} />
             </span>
             <span>
               <strong>{title}</strong>
@@ -74,159 +207,295 @@ const t = copy[lang];
           </li>
         ))}
       </ul>
-    </div>
-    <div class="hero-media">
-      <svg class="hero-spark" viewBox="0 0 60 60" aria-hidden="true">
-        <path d="M8 40 26 52M24 10l10 22M50 4l-4 26"></path>
-      </svg>
-      <figure class="hero-photo hero-photo-main">
-        <img
-          src={img('residents-gathering')}
-          srcset={srcset('residents-gathering')}
-          sizes="(min-width: 1000px) 30vw, 60vw"
-          width="1200"
-          height="1600"
-          alt={t.heroAlt}
-          fetchpriority="high"
-        />
-        <figcaption class="hero-place">
-          <Icon name="pin" size={18} />
-          {t.heroPlace}
-        </figcaption>
-      </figure>
-      <figure class="hero-photo hero-photo-top">
-        <img
-          src={imgSm('shared-meal')}
-          width="640"
-          height="1138"
-          alt={t.heroPhotoAlts[0]}
-        />
-      </figure>
-      <figure class="hero-photo hero-photo-bottom">
-        <img
-          src={imgSm('hand-care')}
-          width="640"
-          height="1023"
-          alt={t.heroPhotoAlts[1]}
-        />
-      </figure>
-      <p class="hero-note hero-note-meal">
-        <span class="hero-note-icon">
-          <Icon name="meal" size={20} />
-        </span>
-        {t.heroNotes[0]}
-      </p>
-      <p class="hero-note hero-note-care">
-        <span class="hero-note-icon">
-          <Icon name="stethoscope" size={20} />
-        </span>
-        {t.heroNotes[1]}
-      </p>
-      <div class="hero-promise">
-        <span class="hero-promise-icon">
-          <Icon name="heart" size={26} />
-        </span>
-        <p class="hero-promise-title">{t.heroPromise}</p>
-        <p class="hero-promise-text">{t.heroPromiseText}</p>
+      <p>{h.whyText}</p>
+      <div class="btn-row">
+        <a class="btn btn-saffron btn-xl" href={url(lang, 'donate')}>
+          <Icon name="heart" size={18} filled />
+          {t.donate}
+        </a>
+        <a class="btn btn-ghost-light" href={`tel:${site.phones[0]}`}>
+          <Icon name="phone" size={17} />
+          {site.phoneLabels[0]}
+        </a>
       </div>
+      <p class="h-why-note">{h.whyNote}</p>
     </div>
-  </div>
-</section>
-
-<section class="impact" id="impact" aria-labelledby="impact-title">
-  <div class="container impact-grid">
-    <h2 id="impact-title" class="impact-title">
-      <span>{t.impactEyebrow}</span>
-      {t.impactTitle}
-    </h2>
-    <dl class="stats">
-      {stats.map((s, i) => (
-        <div>
-          <dt>{t.stats[i]}</dt>
-          <dd data-count={s.value}>{s.value}+</dd>
-        </div>
-      ))}
-    </dl>
-  </div>
-</section>
-
-<section class="section" aria-labelledby="about-title">
-  <div class="container about-grid">
-    <figure class="leader-photo">
+    <div class="h-why-media" aria-hidden="true">
       <img
-        src={img('president-portrait')}
-        width="400"
-        height="455"
+        class="h-why-a"
+        src={imgSm('resident-portrait-woman')}
+        width="640"
+        height="937"
         alt=""
         loading="lazy"
       />
-      <figcaption>
-        <strong>{t.leader}</strong>
-        {t.leaderRole}
-      </figcaption>
-    </figure>
-    <div class="about-copy">
-      <p class="eyebrow">{t.aboutEyebrow}</p>
-      <h2 id="about-title">{t.aboutTitle}</h2>
-      <p class="lead">{t.aboutText}</p>
-      <p>{t.aboutText2}</p>
-      <a class="text-link" href={url(lang, 'about')}>
-        {t.read}
-        <Icon name="arrow" size={16} />
-      </a>
+      <img
+        class="h-why-b"
+        src={imgSm('gift-for-resident')}
+        width="640"
+        height="547"
+        alt=""
+        loading="lazy"
+      />
+      <img
+        class="h-why-c"
+        src={imgSm('office-elders')}
+        width="640"
+        height="937"
+        alt=""
+        loading="lazy"
+      />
     </div>
   </div>
 </section>
 
-<section class="section section-paper" aria-labelledby="programs-title">
+<section class="section section-paper h-causes" aria-labelledby="causes-title">
   <div class="container">
     <div class="section-head">
       <div>
-        <p class="eyebrow">{t.eyebrow}</p>
-        <h2 id="programs-title">{t.programsTitle}</h2>
+        <p class="eyebrow">{h.causesEyebrow}</p>
+        <h2 id="causes-title">{h.causesTitle}</h2>
+        <p class="section-sub">{h.causesText}</p>
       </div>
       <a class="text-link" href={url(lang, 'our-work')}>
         {t.viewPrograms}
         <Icon name="arrow" size={16} />
       </a>
     </div>
-    <ProgramCards lang={lang} featured />
-  </div>
-</section>
-
-<section class="section lives" aria-labelledby="lives-title">
-  <div class="container section-head">
-    <div>
-      <p class="eyebrow">{t.livesEyebrow}</p>
-      <h2 id="lives-title">{t.livesTitle}</h2>
-      <p class="section-sub">{t.livesText}</p>
+    <div class="cause-grid">
+      {causes.map((cause) => (
+        <article class="cause-card lift">
+          <a
+            class="cause-image"
+            href={url(lang, cause.href)}
+            tabindex="-1"
+            aria-hidden="true"
+          >
+            <img
+              src={imgSm(cause.image)}
+              width="640"
+              height="480"
+              alt=""
+              loading="lazy"
+            />
+          </a>
+          <div class="cause-body">
+            <span class:list={['status-chip', `is-${cause.status}`]}>
+              {status[cause.status]}
+            </span>
+            <h3>
+              <a href={url(lang, cause.href)}>{cause[lang][0]}</a>
+            </h3>
+            <p>{cause[lang][1]}</p>
+            <a class="text-link" href={url(lang, cause.href)}>
+              {t.more}
+              <span class="sr-only">: {cause[lang][0]}</span>
+              <Icon name="arrow" size={15} />
+            </a>
+          </div>
+        </article>
+      ))}
     </div>
-    <a class="text-link" href={url(lang, 'gallery')}>
-      {t.viewPhotos}
-      <Icon name="arrow" size={16} />
-    </a>
+    <article class="planned-card">
+      <img
+        src={imgSm(plannedCause.image)}
+        width="640"
+        height="512"
+        alt=""
+        loading="lazy"
+      />
+      <div>
+        <span class="status-chip is-planned">
+          {h.plannedLabel} · {status.planned}
+        </span>
+        <h3>{plannedCause[lang][0]}</h3>
+        <p>{plannedCause[lang][1]}</p>
+        <a class="text-link" href={url(lang, plannedCause.href)}>
+          {t.titles[8]}
+          <Icon name="arrow" size={15} />
+        </a>
+      </div>
+    </article>
   </div>
-  <LivesStrip lang={lang} />
 </section>
 
-<section class="section section-paper" aria-labelledby="videos-title">
+<section class="h-journey" id="journey" aria-labelledby="journey-title">
+  <div class="container h-journey-grid">
+    <div class="h-journey-copy">
+      <p class="eyebrow eyebrow-light">{h.journeyEyebrow}</p>
+      <h2 id="journey-title">{h.journeyTitle}</h2>
+      {h.journeyText.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+      <figure class="h-journey-still">
+        <img
+          src={imgSm('ashram-dormitory')}
+          width="640"
+          height="360"
+          alt={photoCaption('ashram-dormitory', lang)}
+          loading="lazy"
+        />
+        <figcaption>{photoCaption('ashram-dormitory', lang)}</figcaption>
+      </figure>
+      <a class="btn btn-ghost-light" href={url(lang, 'our-journey')}>
+        {h.journeyLink}
+        <Icon name="arrow" size={17} />
+      </a>
+    </div>
+    <article class="video-card h-journey-video">
+      <div class="video-frame">
+        <video
+          src="/videos/ashram-beginnings.mp4"
+          poster="/images/posters/ashram-beginnings.webp"
+          preload="none"
+          playsinline
+          width="478"
+          height="850"
+          aria-label={h.journeyTitle}
+        ></video>
+        <button class="video-play" type="button" data-video-play>
+          <span class="play-icon" aria-hidden="true">
+            <Icon name="play" size={26} filled />
+          </span>
+          <span class="sr-only">{h.journeyVideo}</span>
+          <span class="video-duration" aria-hidden="true">
+            0:55
+          </span>
+        </button>
+      </div>
+      <p class="h-journey-note">{h.journeyVideoNote}</p>
+    </article>
+  </div>
+</section>
+
+<section class="section h-mahila" aria-labelledby="mahila-title">
+  <div class="container h-mahila-grid">
+    <div class="h-mahila-copy">
+      <p class="eyebrow">{h.mahilaEyebrow}</p>
+      <h2 id="mahila-title">{h.mahilaTitle}</h2>
+      <p class="lead">{h.mahilaText}</p>
+      <p class="h-mahila-count">
+        {mahila.albums.reduce((sum, album) => sum + album.photos.length, 0)}
+        {lang === 'hi' ? ' तस्वीरें · ' : ' photographs · '}
+        {mahila.albums.length}
+        {lang === 'hi' ? ' एल्बम' : ' albums'}
+      </p>
+      <a class="btn btn-primary" href={url(lang, 'mahila-diwas')}>
+        {h.mahilaLink}
+        <Icon name="arrow" size={17} />
+      </a>
+    </div>
+    <div class="h-mahila-mosaic">
+      {mahilaPicks.map((name, i) => (
+        <figure class:list={['h-mosaic', `h-mosaic-${i + 1}`]}>
+          <img
+            src={i === 0 ? img(name) : imgSm(name)}
+            width="640"
+            height="480"
+            alt={photoCaption(name, lang)}
+            loading="lazy"
+          />
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section
+  class="section section-paper h-stories"
+  aria-labelledby="stories-title"
+>
   <div class="container">
     <div class="section-head">
       <div>
-        <p class="eyebrow">{t.videosEyebrow}</p>
-        <h2 id="videos-title">{t.videosTitle}</h2>
+        <p class="eyebrow">{h.storiesEyebrow}</p>
+        <h2 id="stories-title">{h.storiesTitle}</h2>
       </div>
-      <a class="text-link" href={url(lang, 'videos')}>
-        {t.viewVideos}
+      <a class="text-link" href={url(lang, 'activities')}>
+        {t.titles[9]}
         <Icon name="arrow" size={16} />
       </a>
     </div>
-    <VideoCards lang={lang} limit={4} />
+    <div class="story-list">
+      {h.stories.map((story, i) => (
+        <article class:list={['story-module', { reversed: i % 2 === 1 }]}>
+          <div class="story-pair">
+            <img
+              class="story-pair-a"
+              src={imgSm(story.images[0])}
+              width="640"
+              height="800"
+              alt={story.alts[0]}
+              loading="lazy"
+            />
+            <img
+              class="story-pair-b"
+              src={imgSm(story.images[1])}
+              width="640"
+              height="800"
+              alt={story.alts[1]}
+              loading="lazy"
+            />
+          </div>
+          <div class="story-copy">
+            <p class="story-kicker">{story.kicker}</p>
+            <h3>{story.title}</h3>
+            <p>{story.text}</p>
+            <a class="text-link" href={url(lang, story.href)}>
+              {story.link}
+              <Icon name="arrow" size={15} />
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
   </div>
 </section>
 
-<section class="section" id="donate">
+<section class="section h-trust" aria-labelledby="trust-title">
+  <div class="container h-trust-grid">
+    <div>
+      <p class="eyebrow">{h.trustEyebrow}</p>
+      <h2 id="trust-title">{h.trustTitle}</h2>
+      <p class="lead">{h.trustText}</p>
+      <a class="btn btn-secondary" href={url(lang, 'transparency')}>
+        {h.trustLink}
+        <Icon name="arrow" size={17} />
+      </a>
+    </div>
+    <ul class="trust-list">
+      {h.trustPoints.map((point, i) => (
+        <li>
+          <span class="trust-icon" aria-hidden="true">
+            <Icon name={['file', 'bank', 'shield', 'check'][i]} size={20} />
+          </span>
+          {point}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section class="section section-soft" id="donate">
   <div class="container">
     <DonatePanel lang={lang} />
+  </div>
+</section>
+
+<section class="h-involve" aria-labelledby="involve-title">
+  <div class="container h-involve-inner">
+    <div>
+      <h2 id="involve-title">{h.involveTitle}</h2>
+      <p>{h.involveText}</p>
+    </div>
+    <div class="btn-row">
+      <a class="btn btn-saffron" href={url(lang, 'get-involved')}>
+        {h.volunteer}
+        <Icon name="arrow" size={17} />
+      </a>
+      <a class="btn btn-ghost-light" href={url(lang, 'contact')}>
+        {t.contact}
+      </a>
+    </div>
   </div>
 </section>

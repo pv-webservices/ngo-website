@@ -1,0 +1,672 @@
+/* ==========================================================================
+   Motion & interaction layer: inner-page hero, button and link micro-interactions,
+   staggered scroll reveals and richer hover states. Everything here animates only
+   transform/opacity/clip-path, and collapses to a still page with reduced motion.
+   ========================================================================== */
+
+/* ---------- Inner-page hero ---------- */
+.ph {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--ink-night);
+  color: var(--on-night);
+}
+.ph-glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(55% 80% at 0% 0%, rgba(143, 29, 31, 0.6), transparent 70%),
+    radial-gradient(
+      40% 60% at 85% 110%,
+      rgba(227, 154, 45, 0.2),
+      transparent 70%
+    );
+}
+.ph-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* The main photograph, blurred and dimmed, slowly breathing behind everything. */
+.ph-backdrop {
+  position: absolute;
+  inset: -40px;
+  z-index: -2;
+  opacity: 0.22;
+}
+.ph-backdrop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(28px) saturate(1.2);
+  animation: ph-breathe 24s ease-in-out infinite alternate;
+}
+.ph-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 64px;
+  align-items: center;
+  min-height: 560px;
+  padding: 64px 0 96px;
+}
+.ph-compact .ph-grid {
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 0;
+  padding: 56px 0 72px;
+}
+.ph-crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 28px;
+  color: var(--on-night-2);
+  font-size: 0.86rem;
+}
+.ph-crumbs a {
+  transition: color 0.2s;
+}
+.ph-crumbs a:hover {
+  color: var(--marigold);
+}
+.ph-crumbs [aria-current] {
+  color: var(--on-night);
+  font-weight: 600;
+}
+.ph-eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  margin: 0 0 18px;
+  color: var(--marigold);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.ph-eyebrow::before {
+  content: '';
+  width: 32px;
+  height: 1.5px;
+  background: currentColor;
+}
+html[lang='hi'] .ph-eyebrow {
+  font-size: 0.95rem;
+  letter-spacing: 0;
+}
+.ph-eyebrow .status-chip {
+  letter-spacing: 0.04em;
+}
+.ph h1 {
+  margin: 0;
+  color: var(--on-night);
+  font-size: clamp(2.6rem, 5.4vw, 4.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+html[lang='hi'] .ph h1 {
+  font-size: clamp(2.2rem, 4.4vw, 3.7rem);
+  line-height: 1.3;
+}
+/* The mask is padded on every side so Devanagari matras and italic overhangs are never cut. */
+.ph-word {
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.22em 0.12em 0.12em;
+  margin: -0.22em -0.12em -0.12em;
+  vertical-align: top;
+}
+html[lang='hi'] .ph-word {
+  padding: 0.4em 0.2em 0.2em;
+  margin: -0.4em -0.2em -0.2em;
+}
+.ph-word > span {
+  display: inline-block;
+}
+.ph-word:not(:last-child) {
+  margin-right: 0.12em;
+}
+html[lang='hi'] .ph-word:not(:last-child) {
+  margin-right: 0.05em;
+}
+.ph-accent {
+  margin: 14px 0 0;
+  color: var(--marigold);
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+  font-style: italic;
+  line-height: 1.3;
+}
+html[lang='hi'] .ph-accent {
+  font-style: normal;
+}
+.ph-text {
+  max-width: 36rem;
+  margin: 22px 0 0;
+  color: var(--on-night-2);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+.ph .btn-row {
+  margin-top: 34px;
+}
+
+.ph-collage {
+  --mx: 0;
+  --my: 0;
+  position: relative;
+  height: 470px;
+}
+.ph-main {
+  position: absolute;
+  inset: 0 12% 6% 6%;
+  overflow: hidden;
+  border-radius: 22px;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.45);
+  rotate: -1.5deg;
+  translate: calc(var(--mx) * -8px) calc(var(--my) * -8px);
+  transition: translate 0.6s var(--ease);
+}
+.ph-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: ph-kenburns 22s ease-in-out infinite alternate;
+}
+.ph-sat {
+  position: absolute;
+  overflow: hidden;
+  width: 34%;
+  aspect-ratio: 1;
+  border: 6px solid var(--on-night);
+  border-radius: 16px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+  translate: calc(var(--mx) * 18px) calc(var(--my) * 18px);
+  transition: translate 0.6s var(--ease);
+}
+.ph-sat img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ph-sat-a {
+  top: -4%;
+  right: 0;
+  rotate: 5deg;
+  animation: ph-float 7s ease-in-out infinite;
+}
+.ph-sat-b {
+  bottom: -2%;
+  left: -4%;
+  width: 30%;
+  rotate: -6deg;
+  animation: ph-float 8s ease-in-out 1.2s infinite reverse;
+}
+.ph-note {
+  position: absolute;
+  right: 6%;
+  bottom: 2%;
+  max-width: 15rem;
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 4px;
+  background: var(--on-night);
+  color: var(--ink-night);
+  font-family: var(--font-hand);
+  font-size: 0.98rem;
+  line-height: 1.3;
+  rotate: 2deg;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+.ph-scroll {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  width: 1.5px;
+  height: 44px;
+  overflow: hidden;
+  background: rgba(243, 235, 223, 0.15);
+}
+.ph-scroll span {
+  display: block;
+  width: 100%;
+  height: 50%;
+  background: var(--marigold);
+  animation: ph-scroll 2.2s var(--ease) infinite;
+}
+.ph-compact .ph-scroll {
+  display: none;
+}
+
+@keyframes ph-breathe {
+  to {
+    transform: scale(1.12) translate(-2%, 1%);
+  }
+}
+@keyframes ph-kenburns {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.12) translate(-2%, -1%);
+  }
+}
+@keyframes ph-float {
+  50% {
+    transform: translateY(-12px);
+  }
+}
+@keyframes ph-scroll {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(200%);
+  }
+}
+
+/* Entrance choreography: eyebrow → words → accent → text → buttons; collage settles. */
+@media (prefers-reduced-motion: no-preference) {
+  .ph-crumbs,
+  .ph-eyebrow,
+  .ph-accent,
+  .ph-text,
+  .ph .btn-row {
+    animation: mo-rise 0.9s var(--ease) both;
+  }
+  .ph-eyebrow {
+    animation-delay: 0.05s;
+  }
+  .ph-word > span {
+    animation: mo-word 0.9s var(--ease) both;
+    animation-delay: calc(0.12s + var(--i) * 0.07s);
+  }
+  .ph-accent {
+    animation-delay: 0.45s;
+  }
+  .ph-text {
+    animation-delay: 0.55s;
+  }
+  .ph .btn-row {
+    animation-delay: 0.65s;
+  }
+  .ph-main {
+    animation: mo-unveil 1.3s var(--ease) 0.15s both;
+  }
+  .ph-sat-a {
+    animation:
+      mo-pop 0.8s var(--ease) 0.7s both,
+      ph-float 7s ease-in-out 1.5s infinite;
+  }
+  .ph-sat-b {
+    animation:
+      mo-pop 0.8s var(--ease) 0.85s both,
+      ph-float 8s ease-in-out 1.7s infinite reverse;
+  }
+  .ph-note {
+    animation: mo-pop 0.7s var(--ease) 1.1s both;
+  }
+}
+@keyframes mo-rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+@keyframes mo-word {
+  from {
+    transform: translateY(105%);
+  }
+}
+@keyframes mo-unveil {
+  from {
+    clip-path: inset(100% 0 0 0 round 22px);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 22px);
+  }
+}
+@keyframes mo-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.82) translateY(16px);
+  }
+}
+
+/* ---------- Buttons: fill sweep, lift, press ---------- */
+.btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    color 0.3s var(--ease),
+    border-color 0.3s var(--ease),
+    box-shadow 0.3s var(--ease),
+    translate 0.3s var(--ease),
+    scale 0.15s ease;
+}
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--btn-fill, var(--brand-deep));
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s var(--ease);
+}
+.btn:hover::before,
+.btn:focus-visible::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.btn:hover,
+.btn:focus-visible {
+  translate: 0 -2px;
+  box-shadow: 0 12px 26px rgba(31, 27, 23, 0.18);
+}
+.btn:active {
+  scale: 0.97;
+  translate: 0 0;
+}
+.btn-primary,
+.btn-primary:hover {
+  background: var(--brand);
+}
+.btn-primary {
+  --btn-fill: #5e1416;
+}
+.btn-saffron,
+.btn-saffron:hover {
+  background: var(--marigold);
+}
+.btn-saffron {
+  --btn-fill: #f6c26d;
+}
+.btn-secondary,
+.btn-facebook,
+.btn-instagram {
+  --btn-fill: var(--ink);
+}
+.btn-secondary:hover,
+.btn-facebook:hover,
+.btn-instagram:hover {
+  background: transparent;
+  color: var(--white);
+}
+.btn-ghost-light {
+  --btn-fill: var(--on-night);
+}
+.btn-ghost-light:hover,
+.btn-ghost-light:focus-visible {
+  background: transparent;
+  color: var(--ink-night);
+}
+.btn .icon-heart {
+  transition: transform 0.3s var(--ease);
+}
+.btn:hover .icon-heart {
+  animation: mo-beat 0.9s ease-in-out infinite;
+}
+@keyframes mo-beat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.25);
+  }
+  45% {
+    transform: scale(0.95);
+  }
+}
+.copy-button {
+  transition:
+    background-color 0.25s,
+    color 0.25s,
+    translate 0.25s var(--ease);
+}
+.copy-button:hover {
+  translate: 0 -1px;
+}
+
+/* ---------- Text links: drawn underline ---------- */
+.text-link,
+.card-link {
+  text-decoration: none;
+  background:
+    linear-gradient(currentColor, currentColor) 0 100% / 0% 1.5px no-repeat,
+    linear-gradient(rgba(143, 29, 31, 0.25), rgba(143, 29, 31, 0.25)) 0 100% /
+      100% 1.5px no-repeat;
+  padding-bottom: 3px;
+  transition: background-size 0.4s var(--ease);
+}
+.text-link:hover,
+.card-link:hover,
+.text-link:focus-visible {
+  background-size:
+    100% 1.5px,
+    100% 1.5px;
+}
+
+/* ---------- Social and small controls ---------- */
+.social-dot {
+  transition:
+    transform 0.3s var(--ease),
+    background-color 0.25s,
+    color 0.25s;
+}
+.social-dot:hover {
+  transform: translateY(-3px) rotate(-8deg);
+}
+.gallery-filters button {
+  transition:
+    background-color 0.25s,
+    color 0.25s,
+    border-color 0.25s,
+    translate 0.25s var(--ease);
+}
+.gallery-filters button:hover {
+  translate: 0 -2px;
+}
+
+/* ---------- Richer hover on media ---------- */
+.gallery-photo img,
+.story-pair img,
+.program-image img,
+.activity-card img,
+.festival-strip img,
+.journey-photos img,
+.h-why-media img,
+.story-thumbs img {
+  transition:
+    transform 0.8s var(--ease),
+    filter 0.5s;
+}
+.gallery-photo,
+.program-image,
+.story-pair,
+.festival-strip,
+.h-why-media {
+  overflow: hidden;
+}
+@media (hover: hover) {
+  .gallery-photo:hover img,
+  .program-card:hover .program-image img,
+  .activity-card:hover img,
+  .festival-strip img:hover,
+  .story-thumbs img:hover {
+    transform: scale(1.06);
+  }
+  .story-pair:hover img,
+  .h-why-media:hover img {
+    transform: scale(1.03);
+  }
+  .h-proof-list li:hover .h-proof-icon,
+  .trust-list li:hover .trust-icon,
+  .need-cards li:hover .icon-badge {
+    background: var(--brand);
+    color: var(--white);
+    transform: rotate(-8deg) scale(1.08);
+  }
+}
+.h-proof-icon,
+.trust-icon,
+.need-cards .icon-badge {
+  transition:
+    background-color 0.3s,
+    color 0.3s,
+    transform 0.4s var(--ease);
+}
+.trust-list li,
+.need-cards li,
+.album-nav a,
+.fact-list div {
+  transition:
+    translate 0.35s var(--ease),
+    box-shadow 0.35s var(--ease),
+    background-color 0.3s;
+}
+@media (hover: hover) {
+  .trust-list li:hover,
+  .need-cards li:hover {
+    translate: 0 -4px;
+    box-shadow: var(--shadow-lift);
+  }
+  .album-nav a:hover {
+    translate: 4px 0;
+  }
+}
+
+/* ---------- Mahila mosaic: full photographs, faces kept in frame ---------- */
+.h-mahila-mosaic {
+  grid-template-rows: 210px 210px auto;
+  height: auto;
+}
+.h-mosaic-1 img,
+.h-mosaic-2 img,
+.h-mosaic-3 img {
+  aspect-ratio: auto;
+}
+
+.h-mosaic-4 img {
+  height: auto;
+  aspect-ratio: 16 / 6;
+  object-position: 50% 80%;
+}
+
+/* ---------- Scroll reveals (classes added by JS; content is visible without it) ---------- */
+.rv {
+  opacity: 0;
+  translate: 0 28px;
+  transition:
+    opacity 0.8s var(--ease),
+    translate 0.9s var(--ease),
+    clip-path 1.1s var(--ease),
+    scale 1.1s var(--ease);
+  transition-delay: calc(var(--rv-i, 0) * 90ms);
+}
+.rv-left {
+  translate: -36px 0;
+}
+.rv-right {
+  translate: 36px 0;
+}
+.rv-media {
+  opacity: 1;
+  translate: none;
+  clip-path: inset(0 0 100% 0 round 14px);
+  scale: 1.04;
+}
+.rv-scale {
+  translate: none;
+  scale: 0.92;
+}
+.rv.is-in {
+  opacity: 1;
+  translate: none;
+  scale: none;
+  clip-path: inset(0 0 0 0 round 0);
+}
+.rv-line {
+  position: relative;
+}
+.eyebrow.rv-line::before {
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.8s var(--ease) 0.2s;
+}
+.eyebrow.rv-line.is-in::before {
+  transform: scaleX(1);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+  .ph-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+    min-height: 0;
+    padding: 48px 0 88px;
+  }
+  .ph-collage {
+    height: 380px;
+    max-width: 560px;
+  }
+}
+@media (max-width: 640px) {
+  .ph h1 {
+    font-size: clamp(2.2rem, 10vw, 2.8rem);
+  }
+  .ph .btn-row .btn {
+    flex: 1 1 100%;
+  }
+  .ph-collage {
+    height: 300px;
+  }
+  .ph-main {
+    inset: 0 8% 8% 4%;
+  }
+  .ph-sat {
+    border-width: 4px;
+  }
+  .ph-note {
+    font-size: 0.85rem;
+    max-width: 11rem;
+  }
+  .h-mahila-mosaic {
+    grid-template-rows: 140px 140px auto;
+  }
+}
+
+/* ---------- Reduced motion: everything still and visible ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ph-backdrop img,
+  .ph-main img,
+  .ph-sat,
+  .ph-scroll span,
+  .btn:hover .icon-heart {
+    animation: none;
+  }
+  .ph-main,
+  .ph-sat {
+    translate: none;
+  }
+  .rv,
+  .rv-media,
+  .rv-scale {
+    opacity: 1;
+    translate: none;
+    scale: none;
+    clip-path: none;
+    transition: none;
+  }
+  .btn:hover,
+  .btn:focus-visible {
+    translate: none;
+  }
+}

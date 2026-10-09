@@ -119,6 +119,27 @@ dialog?.addEventListener('keydown', (event) => {
     showPhoto(activeIndex - 1);
   }
 });
+// Gallery filters. "All" respects the "show more" state; a single category shows
+// every matching photograph.
+let galleryExpanded = false;
+let activeFilter = 'all';
+const moreButton = document.querySelector<HTMLButtonElement>(
+  '[data-gallery-more]',
+);
+function applyGalleryFilter() {
+  document.querySelectorAll<HTMLElement>('[data-category]').forEach((item) => {
+    const matches =
+      activeFilter === 'all' || item.dataset.category === activeFilter;
+    const collapsed =
+      activeFilter === 'all' &&
+      !galleryExpanded &&
+      item.dataset.more !== undefined;
+    item.hidden = !matches || collapsed;
+  });
+  if (moreButton)
+    moreButton.parentElement!.hidden =
+      galleryExpanded || activeFilter !== 'all';
+}
 document
   .querySelectorAll<HTMLButtonElement>('[data-filter]')
   .forEach((button) =>
@@ -129,15 +150,18 @@ document
       });
       button.classList.add('active');
       button.setAttribute('aria-pressed', 'true');
-      document
-        .querySelectorAll<HTMLElement>('[data-category]')
-        .forEach((item) => {
-          item.hidden =
-            button.dataset.filter !== 'all' &&
-            item.dataset.category !== button.dataset.filter;
-        });
+      activeFilter = button.dataset.filter || 'all';
+      applyGalleryFilter();
     }),
   );
+moreButton?.addEventListener('click', () => {
+  const firstHidden = document.querySelector<HTMLElement>(
+    '[data-more][hidden]',
+  );
+  galleryExpanded = true;
+  applyGalleryFilter();
+  firstHidden?.querySelector<HTMLButtonElement>('button')?.focus();
+});
 const form = document.querySelector<HTMLFormElement>('#contact-form');
 form?.addEventListener('input', () => {
   const draft = form.querySelector<HTMLAnchorElement>('.draft-link')!;
@@ -187,12 +211,18 @@ videoCards.forEach((card) => {
     }),
   );
 });
-// Moving photo rows pause on hover and focus, and with the visible toggle (WCAG 2.2.2).
-document.querySelectorAll<HTMLElement>('[data-lives]').forEach((strip) => {
-  const toggle = strip.querySelector<HTMLButtonElement>('.lives-toggle');
+// The moving hero photographs pause on hover and focus, and with the visible
+// toggle (WCAG 2.2.2). The toggle's label always describes its next action.
+document.querySelectorAll<HTMLElement>('[data-reel]').forEach((reel) => {
+  const toggle = reel.querySelector<HTMLButtonElement>('.h-reel-toggle');
+  const label = toggle?.querySelector('.sr-only');
   toggle?.addEventListener('click', () => {
-    const paused = strip.classList.toggle('is-paused');
+    const paused = reel.classList.toggle('is-paused');
     toggle.setAttribute('aria-pressed', String(paused));
+    if (label)
+      label.textContent = paused
+        ? toggle.dataset.labelPlay!
+        : toggle.dataset.labelPause!;
   });
 });
 // Touch screens get the same card lift as hover while a card is pressed.
@@ -237,40 +267,84 @@ document
       });
     }),
   );
-// Count impact figures up once they are visible; the final value is in the HTML.
-const COUNT_DURATION_MS = 1600;
-function countUp(element: HTMLElement) {
-  const target = Number(element.dataset.count);
-  const start = performance.now();
-  const tick = (now: number) => {
-    const progress = Math.min((now - start) / COUNT_DURATION_MS, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
-    element.textContent = `${Math.round(target * eased).toLocaleString('en-IN')}+`;
-    if (progress < 1) requestAnimationFrame(tick);
-  };
-  requestAnimationFrame(tick);
-}
-// Animate below-the-fold sections as they enter; content is always visible without JS.
+// Scroll reveals: elements inside each section enter one after another as they come into
+// view, with a variant suited to what they are. Content stays visible without JS and with
+// reduced motion; nothing above the fold is hidden.
+const REVEAL_GROUPS: [string, string][] = [
+  ['.eyebrow', 'rv rv-line'],
+  [
+    'h2, .lead, .section-sub, .section-head > .text-link, .section-head > .btn, .btn-row, .h-why-lead, .h-why-note, .h-mahila-count, .story-kicker, .album-head, .fine-print, .mahila-intro .lead',
+    'rv',
+  ],
+  [
+    '.cause-card, .program-card, .value-card, .involve-card, .activity-card, .contact-card, .h-proof-list li, .h-needs li, .trust-list li, .need-cards li, .journey-steps li, .faq details, .fact-list div, .album-nav a, .gallery-item, .video-card, .check-list li, .policy-content article, .bank-panel, .qr-panel, .planned-card, .doc-panel, .enquiry-form, .office-card',
+    'rv',
+  ],
+  [
+    '.story-pair img, .h-mosaic, .h-who-main, .story-image, .festival-strip img, .journey-photos figure, .h-why-media img, .donate-photo',
+    'rv rv-media',
+  ],
+  ['.h-who-portrait, .h-journey-still, .story-thumbs li', 'rv rv-scale'],
+];
 if (!reducedMotion && 'IntersectionObserver' in window) {
+  // Clip-path reveals start fully clipped, which IntersectionObserver reports as never
+  // visible, so those are observed through their parent and revealed with it.
+  const waiting = new Map<Element, HTMLElement[]>();
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        const target = entry.target as HTMLElement;
-        if (target.dataset.count) countUp(target);
-        else target.classList.add('revealed');
-        observer.unobserve(target);
+        waiting.get(entry.target)?.forEach((el) => el.classList.add('is-in'));
+        waiting.delete(entry.target);
+        observer.unobserve(entry.target);
       });
     },
-    { threshold: 0, rootMargin: '0px 0px -8% 0px' },
+    { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
   );
+  const watch = (el: HTMLElement, viaParent: boolean) => {
+    const target = (viaParent && el.parentElement) || el;
+    waiting.set(target, [...(waiting.get(target) ?? []), el]);
+    observer.observe(target);
+  };
+  const MAX_STAGGER = 6;
   document
-    .querySelectorAll('main .section, main .impact, .touch-band')
+    .querySelectorAll<HTMLElement>(
+      'main > section:not(.h-hero):not(.ph), main > section > section, .touch-band',
+    )
     .forEach((section) => {
-      section.classList.add('reveal-ready');
-      observer.observe(section);
+      REVEAL_GROUPS.forEach(([selector, classes]) => {
+        const items = Array.from(
+          section.querySelectorAll<HTMLElement>(selector),
+        ).filter(
+          (el) =>
+            !el.closest('.lightbox, .rv') &&
+            el.getBoundingClientRect().top > window.innerHeight,
+        );
+        items.forEach((el) => {
+          // Siblings stagger; the count restarts for every parent container.
+          const index = Array.from(el.parentElement?.children ?? []).indexOf(
+            el,
+          );
+          el.classList.add(...classes.split(' '));
+          el.style.setProperty('--rv-i', String(Math.min(index, MAX_STAGGER)));
+          watch(el, classes.includes('rv-media'));
+        });
+      });
     });
-  document
-    .querySelectorAll<HTMLElement>('[data-count]')
-    .forEach((counter) => observer.observe(counter));
+}
+// Inner-page hero collage follows the pointer slightly (desktop pointers only).
+const collage = document.querySelector<HTMLElement>('[data-parallax]');
+if (collage && !reducedMotion && matchMedia('(pointer: fine)').matches) {
+  const hero = collage.closest<HTMLElement>('[data-ph]')!;
+  hero.addEventListener('pointermove', (event) => {
+    const rect = hero.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    collage.style.setProperty('--mx', x.toFixed(3));
+    collage.style.setProperty('--my', y.toFixed(3));
+  });
+  hero.addEventListener('pointerleave', () => {
+    collage.style.setProperty('--mx', '0');
+    collage.style.setProperty('--my', '0');
+  });
 }

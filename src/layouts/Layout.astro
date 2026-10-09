@@ -4,10 +4,15 @@ import '@fontsource/manrope/latin-500.css';
 import '@fontsource/manrope/latin-600.css';
 import '@fontsource/manrope/latin-700.css';
 import '@fontsource/source-serif-4/latin-600.css';
+import '@fontsource/source-serif-4/latin-600-italic.css';
+import '@fontsource/kalam/latin-400.css';
 import '@fontsource/noto-serif-devanagari/devanagari-600.css';
 import '@fontsource/noto-sans-devanagari/devanagari-400.css';
 import '@fontsource/noto-sans-devanagari/devanagari-600.css';
 import '../styles/global.css';
+import '../styles/home.css';
+import '../styles/pages.css';
+import '../styles/motion.css';
 import { copy, site, url, programs, type Lang } from '../data/site';
 import Icon from '../components/Icon.astro';
 const {
@@ -22,24 +27,48 @@ const {
   description?: string;
 };
 const t = copy[lang];
+// Header navigation, labelled with each page's title.
 const navSlugs = [
-  '',
   'about',
   'our-work',
+  'activities',
+  'mahila-diwas',
   'gallery',
-  'videos',
-  'get-involved',
+  'transparency',
   'contact',
 ];
+const navLabels: Record<string, string> =
+  lang === 'hi'
+    ? {
+        about: 'हमारे बारे में',
+        'our-work': 'हमारे कार्य',
+        activities: 'कहानियाँ',
+        'mahila-diwas': 'महिला दिवस',
+        gallery: 'गैलरी',
+        transparency: 'पारदर्शिता',
+        contact: 'संपर्क',
+      }
+    : {
+        about: 'About',
+        'our-work': 'Our Work',
+        activities: 'Stories',
+        'mahila-diwas': 'Mahila Diwas',
+        gallery: 'Gallery',
+        transparency: 'Transparency',
+        contact: 'Contact',
+      };
 const quickLinks = [
-  ['', t.nav[0]],
-  ['about', t.nav[1]],
-  ['our-work', t.nav[2]],
-  ['gallery', t.nav[3]],
-  ['videos', t.nav[4]],
-  ['get-involved', t.nav[5]],
+  ['about', t.titles[1]],
+  ['our-journey', t.titles[8]],
+  ['our-work', t.titles[2]],
+  ['activities', t.titles[9]],
+  ['mahila-diwas', t.titles[18]],
+  ['gallery', t.titles[10]],
+  ['videos', t.titles[11]],
+  ['get-involved', t.titles[12]],
+  ['transparency', t.titles[19]],
   ['donate', t.donate],
-  ['contact', t.nav[6]],
+  ['contact', t.titles[14]],
 ];
 const canonical = `https://${site.domain}${url(lang, slug)}`;
 const social = [
@@ -56,6 +85,7 @@ const social = [
     <meta name="theme-color" content="#8f1d1f" />
     <title>{title} | {t.name}</title>
     <meta name="description" content={description || t.heroText} />
+    <meta property="og:site_name" content={t.name} />
     <link rel="canonical" href={canonical} />
     <link
       rel="alternate"
@@ -179,13 +209,13 @@ const social = [
           aria-label={lang === 'hi' ? 'मुख्य नेविगेशन' : 'Main navigation'}
         >
           <ul class="nav-links">
-            {navSlugs.map((s, i) => (
+            {navSlugs.map((s) => (
               <li>
                 <a
                   href={url(lang, s)}
                   aria-current={slug === s ? 'page' : undefined}
                 >
-                  {t.nav[i]}
+                  {navLabels[s]}
                 </a>
               </li>
             ))}
@@ -278,6 +308,10 @@ const social = [
             </span>
           </a>
           <p>{t.footerText}</p>
+          <a class="btn btn-saffron" href={url(lang, 'donate')}>
+            <Icon name="heart" size={16} filled />
+            {t.donate}
+          </a>
         </div>
         <div>
           <h3>{t.quickLinks}</h3>
