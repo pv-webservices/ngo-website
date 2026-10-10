@@ -22,6 +22,7 @@ export const chrome: Bi<{
   loaderTag: string;
   qrTitle: string;
   qrText: string;
+  indiaOnly: string;
   slidesLabel: string;
   goToSlide: string;
   pauseSlides: string;
@@ -37,6 +38,8 @@ export const chrome: Bi<{
     loaderTag: 'Joining hands in care',
     qrTitle: 'Scan & Donate',
     qrText: 'Use any UPI app. Check the name “Shanti Jan Kalyan Sansthan” before you pay.',
+    indiaOnly:
+      'Indian donors only. The Sansthan is not registered under FCRA, so it cannot accept donations from abroad.',
     slidesLabel: 'Photographs of our work',
     goToSlide: 'Show photograph',
     pauseSlides: 'Pause the slideshow',
@@ -52,6 +55,8 @@ export const chrome: Bi<{
     loaderTag: 'सेवा में जुड़ते हाथ',
     qrTitle: 'स्कैन करें और दान दें',
     qrText: 'किसी भी यूपीआई ऐप से। भुगतान से पहले नाम “शांति जन कल्याण संस्थान” जाँच लें।',
+    indiaOnly:
+      'केवल भारतीय दानदाता। संस्थान एफसीआरए में पंजीकृत नहीं है, इसलिए विदेश से दान स्वीकार नहीं कर सकता।',
     slidesLabel: 'हमारे कार्यों की तस्वीरें',
     goToSlide: 'तस्वीर दिखाएँ',
     pauseSlides: 'स्लाइड शो रोकें',
@@ -193,17 +198,17 @@ export const causes: Cause[] = [
   },
 ];
 
-// A future service, shown separately so it is never mistaken for current work.
+// Nasha Mukti awareness is current work; the counselling centre it grew from has closed.
 export const plannedCause = {
   href: 'our-journey#beginnings',
   image: 'kendra-building',
   en: [
-    'De-addiction Counselling',
-    'Our work began at a Nasha Mukti Kendra building. Counselling for people facing addiction is a service we hope to offer again in future — it is not running today.',
+    'Nasha Mukti Awareness',
+    'We run awareness programmes on staying free from addiction. Our early centre, a Nasha Mukti Kendra, closed around 2024, so we no longer offer counselling or treatment there.',
   ],
   hi: [
-    'नशा मुक्ति परामर्श',
-    'हमारा काम एक नशा मुक्ति केंद्र के भवन से शुरू हुआ था। नशे से जूझ रहे लोगों के लिए परामर्श हम भविष्य में फिर शुरू करना चाहते हैं — यह सेवा अभी नहीं चल रही है।',
+    'नशा मुक्ति जागरूकता',
+    'हम नशे से दूर रहने के लिए जागरूकता कार्यक्रम चलाते हैं। हमारा शुरुआती नशा मुक्ति केंद्र लगभग 2024 में बंद हो गया, इसलिए वहाँ अब परामर्श या इलाज नहीं दिया जाता।',
   ],
 };
 
@@ -337,7 +342,7 @@ export const home: Bi<{
     causesTitle: 'The work behind every act of care',
     causesText:
       'Each area is marked to show whether it runs every day, is held from time to time, or is still a plan.',
-    plannedLabel: 'For the future',
+    plannedLabel: 'Awareness drive',
     journeyEyebrow: 'Our journey',
     journeyTitle: 'Where our work began',
     journeyText: [
@@ -359,7 +364,7 @@ export const home: Bi<{
         id: 'eye-camp',
         kicker: '2 July 2024 · Shanti Dham Ashram',
         title: 'A free eye-test camp at the ashram',
-        text: 'A visiting eye-care team held free eye tests at the ashram from 11 am to 4 pm. The camp banner also announced free cataract (motiyabind) operations for those found to need them.',
+        text: 'A visiting eye-care team held free eye tests at the ashram from 11 am to 4 pm. The camp banner also announced free cataract (motiyabind) operations for those found to need them; these are carried out by Dr Shroff’s Eye Hospital, Noida.',
         images: ['eye-camp-team', 'eye-camp-checkup'],
         alts: [
           'The visiting eye-care team and our members under the camp banner',
@@ -400,10 +405,10 @@ export const home: Bi<{
     trustText:
       'We would rather show you less than claim more. Here is what we publish, and what we will share on request.',
     trustPoints: [
-      'Registered society — Regd. No. 323, as printed on our banners',
+      'Registered — Regd. No. 323; trust deed on Delhi e-stamp paper, March 2022',
       'Donations go only to the bank account in the name of Shanti Jan Kalyan Sansthan',
-      'Copies of registration and tax documents shared on request',
-      'No tax benefit is promised on this website',
+      '12A and 80G registration documents are published on the Transparency page',
+      'Indian donors only: not registered under FCRA',
     ],
     trustLink: 'View transparency details',
     involveTitle: 'Give an hour, a meal, or a voice.',
@@ -477,7 +482,7 @@ export const home: Bi<{
     causesTitle: 'देखभाल के हर काम के पीछे का प्रयास',
     causesText:
       'हर कार्य के साथ लिखा है कि वह रोज़ चलता है, समय-समय पर होता है, या अभी योजना में है।',
-    plannedLabel: 'भविष्य के लिए',
+    plannedLabel: 'जागरूकता अभियान',
     journeyEyebrow: 'हमारी यात्रा',
     journeyTitle: 'जहाँ से हमारा काम शुरू हुआ',
     journeyText: [
@@ -499,7 +504,7 @@ export const home: Bi<{
         id: 'eye-camp',
         kicker: '2 जुलाई 2024 · शान्ति धाम आश्रम',
         title: 'आश्रम में निःशुल्क आँख जाँच शिविर',
-        text: 'नेत्र चिकित्सा टीम ने आश्रम में सुबह 11 से शाम 4 बजे तक निःशुल्क आँख जाँच की। शिविर के बैनर पर ज़रूरतमंदों के लिए निःशुल्क मोतियाबिंद ऑपरेशन की घोषणा भी थी।',
+        text: 'नेत्र चिकित्सा टीम ने आश्रम में सुबह 11 से शाम 4 बजे तक निःशुल्क आँख जाँच की। शिविर के बैनर पर ज़रूरतमंदों के लिए निःशुल्क मोतियाबिंद ऑपरेशन की घोषणा भी थी; ये ऑपरेशन डॉ. श्रॉफ आई हॉस्पिटल, नोएडा द्वारा किए जाते हैं।',
         images: ['eye-camp-team', 'eye-camp-checkup'],
         alts: [
           'शिविर के बैनर के नीचे नेत्र चिकित्सा टीम और हमारे सदस्य',
@@ -540,10 +545,10 @@ export const home: Bi<{
     trustText:
       'हम ज़्यादा दावा करने के बजाय कम दिखाना पसंद करते हैं। यहाँ बताया गया है कि हम क्या प्रकाशित करते हैं और माँगने पर क्या साझा करेंगे।',
     trustPoints: [
-      'पंजीकृत संस्था — पंजीकरण सं. 323, जैसा हमारे बैनरों पर छपा है',
+      'पंजीकृत — पंजीकरण सं. 323; दिल्ली ई-स्टाम्प पेपर पर ट्रस्ट डीड, मार्च 2022',
       'दान केवल शांति जन कल्याण संस्थान के नाम वाले बैंक खाते में',
-      'पंजीकरण और कर संबंधी दस्तावेज़ों की प्रतियाँ माँगने पर उपलब्ध',
-      'इस वेबसाइट पर किसी कर लाभ का वादा नहीं किया जाता',
+      '12A और 80G पंजीकरण दस्तावेज़ पारदर्शिता पृष्ठ पर उपलब्ध हैं',
+      'केवल भारतीय दानदाता: संस्थान एफसीआरए में पंजीकृत नहीं है',
     ],
     trustLink: 'पारदर्शिता की जानकारी देखें',
     involveTitle: 'एक घंटा, एक भोजन या अपनी आवाज़ दें।',
@@ -682,6 +687,9 @@ export const transparency: Bi<{
   published: [string, string][];
   requestTitle: string;
   requestText: string;
+  viewTitle: string;
+  viewText: string;
+  files: [string, string][];
   documents: string[];
   requestButton: string;
   taxTitle: string;
@@ -697,26 +705,54 @@ export const transparency: Bi<{
         'Registration number',
         '323 — as printed on the Sansthan’s banners and posters',
       ],
+      [
+        'Legal form',
+        'Trust — trust deed on Delhi e-stamp paper dated 2 March 2022, with the Sub-Registrar’s stamp of 4 March 2022',
+      ],
+      [
+        'Registered office (as on the registration documents)',
+        'H-11, Ground Floor, West Patel Nagar, Delhi – 110008',
+      ],
+      [
+        'Income-tax registration',
+        'Sections 12A and 80G. PAN ABDTS7521E, URN ABDTS7521EE20216, order dated 12-06-2023, valid from AY 2022-23 to AY 2026-27',
+      ],
       ['Leadership', 'Sunita Bhushan, National President'],
       [
         'Donation account',
         'Union Bank of India, in the name of Shanti Jan Kalyan Sansthan',
       ],
-      ['Main facility', 'Shanti Dham Ashram, Majnu Ka Tilla area, Delhi'],
+      [
+        'Donations',
+        'From Indian donors only. The Sansthan is not registered under FCRA',
+      ],
+      [
+        'Main facility',
+        'Shanti Dham Vridh Ashram, Anathalaya & Day-Care, Majnu Ka Tilla area, Delhi: stay, food, medical care, bhajan-kirtan, yoga and meditation, all free',
+      ],
     ],
-    requestTitle: 'Documents available on request',
+    viewTitle: 'Documents you can read now',
+    viewText:
+      'Copies supplied by the Sansthan. On the trust deed page, personal details (ID number, photograph and fingerprint) have been covered.',
+    files: [
+      ['12A registration order (PDF)', '/documents/12A-registration.pdf'],
+      ['80G registration order (PDF)', '/documents/80G-registration.pdf'],
+      [
+        'Trust deed, first page (image)',
+        '/documents/trust-deed-first-page-redacted.webp',
+      ],
+    ],
+    requestTitle: 'More documents on request',
     requestText:
-      'We will share copies of the following with donors, partners and volunteers who ask. They will be published on this page once the Sansthan has reviewed them for public display.',
+      'We will share copies of the following with donors, partners and volunteers who ask. They will be published here once the Sansthan has reviewed them for public display.',
     documents: [
-      'Registration certificate',
-      '12A and 80G certificates, if applicable',
-      'NITI Aayog NGO Darpan details, if applicable',
+      'The full registered trust deed',
       'Activity reports and accounts',
     ],
     requestButton: 'Request a document',
     taxTitle: 'About tax benefits',
     taxText:
-      'This website does not promise a tax deduction. If you need a receipt for tax purposes, please ask the team before you donate so they can confirm what applies to your contribution.',
+      'The Sansthan holds 12A and 80G registration (copies above). A donor can claim a deduction under section 80G only if the registration covers the year of the donation, and subject to the Income Tax Act (for example, cash donations above ₹2,000 do not qualify). The registration shown here is valid from AY 2022-23 to AY 2026-27. Please ask the team to confirm the current position and to issue a receipt before you rely on it.',
     useTitle: 'How donations are used',
     useText:
       'Contributions go toward running Shanti Dham Ashram — meals, medicines, hospital visits, clothes, bedding and care — and toward outreach such as camps and winter relief. Ask us for an acknowledgement of any donation.',
@@ -726,23 +762,48 @@ export const transparency: Bi<{
     published: [
       ['पंजीकृत नाम', 'शांति जन कल्याण संस्थान (रजि.)'],
       ['पंजीकरण संख्या', '323 — जैसा संस्थान के बैनरों और पोस्टरों पर छपा है'],
+      [
+        'कानूनी स्वरूप',
+        'ट्रस्ट — 2 मार्च 2022 के दिल्ली ई-स्टाम्प पेपर पर ट्रस्ट डीड, 4 मार्च 2022 की सब-रजिस्ट्रार की मुहर के साथ',
+      ],
+      [
+        'पंजीकृत कार्यालय (पंजीकरण दस्तावेज़ों के अनुसार)',
+        'एच-11, भूतल, वेस्ट पटेल नगर, दिल्ली – 110008',
+      ],
+      [
+        'आयकर पंजीकरण',
+        'धारा 12A और 80G। पैन ABDTS7521E, यूआरएन ABDTS7521EE20216, आदेश दिनांक 12-06-2023, निर्धारण वर्ष 2022-23 से 2026-27 तक मान्य',
+      ],
       ['नेतृत्व', 'सुनीता भूषण, राष्ट्रीय अध्यक्ष'],
       ['दान खाता', 'यूनियन बैंक ऑफ इंडिया, शांति जन कल्याण संस्थान के नाम'],
-      ['मुख्य केंद्र', 'शान्ति धाम आश्रम, मजनू का टीला क्षेत्र, दिल्ली'],
+      [
+        'दान',
+        'केवल भारतीय दानदाताओं से। संस्थान एफसीआरए में पंजीकृत नहीं है',
+      ],
+      [
+        'मुख्य केंद्र',
+        'शान्ति धाम वृद्ध आश्रम, अनाथालय एवं डे-केयर, मजनू का टीला क्षेत्र, दिल्ली: रहना, खाना, चिकित्सा, भजन-कीर्तन, योग और ध्यान, सब निःशुल्क',
+      ],
     ],
-    requestTitle: 'माँगने पर उपलब्ध दस्तावेज़',
+    viewTitle: 'अभी पढ़ने योग्य दस्तावेज़',
+    viewText:
+      'संस्थान द्वारा दी गई प्रतियाँ। ट्रस्ट डीड के पृष्ठ पर व्यक्तिगत जानकारी (पहचान संख्या, फोटो और अंगूठे का निशान) ढँक दी गई है।',
+    files: [
+      ['12A पंजीकरण आदेश (PDF)', '/documents/12A-registration.pdf'],
+      ['80G पंजीकरण आदेश (PDF)', '/documents/80G-registration.pdf'],
+      [
+        'ट्रस्ट डीड, पहला पृष्ठ (चित्र)',
+        '/documents/trust-deed-first-page-redacted.webp',
+      ],
+    ],
+    requestTitle: 'और दस्तावेज़ माँगने पर',
     requestText:
-      'दानदाताओं, सहयोगियों और स्वयंसेवकों के माँगने पर हम इनकी प्रतियाँ साझा करेंगे। संस्था द्वारा सार्वजनिक प्रदर्शन के लिए जाँच के बाद इन्हें इस पृष्ठ पर प्रकाशित किया जाएगा।',
-    documents: [
-      'पंजीकरण प्रमाणपत्र',
-      '12A और 80G प्रमाणपत्र, यदि लागू हों',
-      'नीति आयोग एनजीओ दर्पण विवरण, यदि लागू हो',
-      'गतिविधि रिपोर्ट और लेखा',
-    ],
+      'दानदाताओं, सहयोगियों और स्वयंसेवकों के माँगने पर हम इनकी प्रतियाँ साझा करेंगे। संस्था द्वारा सार्वजनिक प्रदर्शन के लिए जाँच के बाद इन्हें यहाँ प्रकाशित किया जाएगा।',
+    documents: ['पूरी पंजीकृत ट्रस्ट डीड', 'गतिविधि रिपोर्ट और लेखा'],
     requestButton: 'दस्तावेज़ का अनुरोध करें',
     taxTitle: 'कर लाभ के बारे में',
     taxText:
-      'यह वेबसाइट किसी कर छूट का वादा नहीं करती। अगर आपको कर के लिए रसीद चाहिए, तो दान से पहले टीम से पूछें ताकि वे बता सकें कि आपके योगदान पर क्या लागू होता है।',
+      'संस्थान के पास 12A और 80G पंजीकरण है (प्रतियाँ ऊपर)। दानदाता धारा 80G के तहत कटौती तभी ले सकता है जब पंजीकरण दान के वर्ष को कवर करे, और आयकर अधिनियम की शर्तों के अधीन (जैसे ₹2,000 से अधिक नकद दान पर छूट नहीं)। यहाँ दिखाया गया पंजीकरण निर्धारण वर्ष 2022-23 से 2026-27 तक मान्य है। कृपया भरोसा करने से पहले टीम से वर्तमान स्थिति की पुष्टि और रसीद ले लें।',
     useTitle: 'दान का उपयोग कैसे होता है',
     useText:
       'योगदान शान्ति धाम आश्रम चलाने — भोजन, दवाइयाँ, अस्पताल, कपड़े, बिस्तर और देखभाल — और शिविर व सर्दियों की राहत जैसी सेवाओं में लगता है। किसी भी दान की पावती के लिए हमसे पूछें।',

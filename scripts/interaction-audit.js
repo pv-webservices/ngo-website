@@ -102,7 +102,7 @@ async (page) => {
     'Bank account keeps its leading zero',
   );
   assert(
-    (await page.locator('dd').allTextContents()).includes('UBINO906379'),
+    (await page.locator('dd').allTextContents()).includes('UBIN0906379'),
     'Client-confirmed IFSC is displayed exactly',
   );
   await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);

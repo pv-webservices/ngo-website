@@ -21,7 +21,13 @@ export const site = {
     name: 'UNION BANK OF INDIA',
     accountName: 'SHANTI JAN KALYAN SANSTHAN',
     account: '063721010000024',
-    ifsc: 'UBINO906379',
+    ifsc: 'UBIN0906379',
+  },
+  // From the 12A / 80G registration orders supplied by the client (public/documents/).
+  tax: {
+    pan: 'ABDTS7521E',
+    urn: 'ABDTS7521EE20216',
+    validity: 'AY 2022-23 to AY 2026-27',
   },
 };
 export const routes = [
@@ -290,7 +296,11 @@ export const copy = {
       ],
       [
         'Is my donation tax-deductible?',
-        'This website does not promise a tax deduction. If you need a receipt for tax purposes, ask the team before you donate so they can confirm what applies.',
+        'The Sansthan holds 12A and 80G registration (URN ABDTS7521EE20216, valid from AY 2022-23 to AY 2026-27; copies are on the Transparency page). Whether you can claim a deduction depends on the registration covering the year of your donation, the mode of payment (cash above ₹2,000 does not qualify) and your own tax position. Please ask the team for a receipt and confirm before you rely on it.',
+      ],
+      [
+        'Can I donate from outside India?',
+        'Not at present. The Sansthan is not registered under FCRA, so it can accept donations from Indian donors only, by bank transfer or UPI from an Indian bank account.',
       ],
     ],
     policyIntro:
@@ -342,7 +352,7 @@ export const copy = {
       ],
       [
         'Receipts and tax questions',
-        'This website does not promise tax benefits or automatic receipts. Ask the team for any applicable documentation before contributing.',
+        'The Sansthan holds 12A and 80G registration (see the Transparency page). This website does not itself issue receipts or promise a deduction: ask the team for a receipt, and confirm that the registration covers the year of your donation before you claim it.',
       ],
       [
         'Payment processing',
@@ -578,7 +588,11 @@ export const copy = {
       ],
       [
         'क्या मेरे दान पर कर छूट मिलेगी?',
-        'यह वेबसाइट किसी कर छूट का वादा नहीं करती। कर के लिए रसीद चाहिए तो दान से पहले टीम से पूछें ताकि वे बता सकें कि क्या लागू होता है।',
+        'संस्थान के पास 12A और 80G पंजीकरण है (यूआरएन ABDTS7521EE20216, निर्धारण वर्ष 2022-23 से 2026-27 तक मान्य; प्रतियाँ पारदर्शिता पृष्ठ पर हैं)। कटौती मिलेगी या नहीं, यह इस पर निर्भर है कि आपके दान के वर्ष में पंजीकरण मान्य हो, भुगतान का तरीका (₹2,000 से अधिक नकद पर छूट नहीं) और आपकी अपनी कर स्थिति। कृपया टीम से रसीद लें और भरोसा करने से पहले पुष्टि कर लें।',
+      ],
+      [
+        'क्या मैं भारत से बाहर से दान दे सकता/सकती हूँ?',
+        'अभी नहीं। संस्थान एफसीआरए में पंजीकृत नहीं है, इसलिए वह केवल भारतीय दानदाताओं से, भारतीय बैंक खाते से बैंक ट्रांसफर या यूपीआई द्वारा, दान स्वीकार कर सकता है।',
       ],
     ],
     policyIntro:
@@ -630,7 +644,7 @@ export const copy = {
       ],
       [
         'रसीद और कर संबंधी प्रश्न',
-        'यह वेबसाइट कर लाभ या स्वचालित रसीद का वादा नहीं करती। योगदान से पहले आवश्यक दस्तावेज़ों के बारे में टीम से पूछें।',
+        'संस्थान के पास 12A और 80G पंजीकरण है (पारदर्शिता पृष्ठ देखें)। यह वेबसाइट स्वयं रसीद जारी नहीं करती और न कर छूट का वादा करती है: टीम से रसीद लें, और छूट का दावा करने से पहले पुष्टि कर लें कि पंजीकरण आपके दान के वर्ष को कवर करता है।',
       ],
       [
         'भुगतान की प्रक्रिया',
@@ -661,7 +675,7 @@ export const programs = [
         'Free shelter and nutritious meals',
         'Bathing, grooming and clean clothes',
         'Medical check-ups and medicines',
-        'Prayer, yoga and festivals together',
+        'Bhajan-kirtan, yoga, meditation and festivals together',
       ],
     },
     hi: {
@@ -674,7 +688,7 @@ export const programs = [
         'निःशुल्क आश्रय और पौष्टिक भोजन',
         'नहलाना, साफ़-सफ़ाई और साफ़ कपड़े',
         'स्वास्थ्य जाँच और दवाइयाँ',
-        'साथ में प्रार्थना, योग और त्योहार',
+        'भजन-कीर्तन, योग, ध्यान और त्योहार साथ में',
       ],
     },
   },
@@ -691,11 +705,11 @@ export const programs = [
       card: 'Check-ups, medicines, hospital visits and eye-care camps.',
       short: 'Helping care reach those in need.',
       text: 'Check-ups and medicines for residents, help reaching hospital, and free eye-test camps.',
-      why: 'Illness is a heavy burden for someone with no one beside them. We arrange check-ups and medicines for residents, go with them to hospital, and bring care to the ashram — such as the free eye-test camp held there on 2 July 2024.',
+      why: 'Illness is a heavy burden for someone with no one beside them. We arrange check-ups and medicines for residents, go with them to hospital, and bring care to the ashram — such as the free eye-test camp held there on 2 July 2024 with Dr Shroff’s Eye Hospital, Noida, which also carries out the cataract operations.',
       focus: [
         'Health check-ups and medicines for residents',
         'Going with residents to hospital',
-        'Free eye-test camp at the ashram, 2 July 2024',
+        'Free eye-test camp at the ashram with Dr Shroff’s Eye Hospital, Noida (2 July 2024)',
         'First aid for people on the street',
       ],
     },
@@ -704,11 +718,11 @@ export const programs = [
       card: 'स्वास्थ्य जाँच, दवाइयाँ, अस्पताल तक मदद और आँख जाँच शिविर।',
       short: 'ज़रूरतमंद लोगों तक सहायता।',
       text: 'निवासियों के लिए जाँच और दवाइयाँ, अस्पताल तक मदद, और निःशुल्क आँख जाँच शिविर।',
-      why: 'जिसके साथ कोई नहीं, उसके लिए बीमारी बड़ा बोझ है। हम निवासियों की जाँच और दवाइयों की व्यवस्था करते हैं, उनके साथ अस्पताल जाते हैं, और आश्रम तक देखभाल लाते हैं — जैसे 2 जुलाई 2024 को वहाँ लगा निःशुल्क आँख जाँच शिविर।',
+      why: 'जिसके साथ कोई नहीं, उसके लिए बीमारी बड़ा बोझ है। हम निवासियों की जाँच और दवाइयों की व्यवस्था करते हैं, उनके साथ अस्पताल जाते हैं, और आश्रम तक देखभाल लाते हैं — जैसे 2 जुलाई 2024 को डॉ. श्रॉफ आई हॉस्पिटल, नोएडा के साथ वहाँ लगा निःशुल्क आँख जाँच शिविर, जो मोतियाबिंद के ऑपरेशन भी करता है।',
       focus: [
         'निवासियों के लिए स्वास्थ्य जाँच और दवाइयाँ',
         'निवासियों के साथ अस्पताल जाना',
-        'आश्रम में निःशुल्क आँख जाँच शिविर, 2 जुलाई 2024',
+        'डॉ. श्रॉफ आई हॉस्पिटल, नोएडा के साथ आश्रम में निःशुल्क आँख जाँच शिविर (2 जुलाई 2024)',
         'सड़क पर रहने वालों को प्राथमिक उपचार',
       ],
     },

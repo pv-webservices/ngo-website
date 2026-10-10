@@ -282,7 +282,7 @@ const involveTargets = [
             />
           </a>
           <div class="cause-body">
-            <span class="status-chip is-planned">{status.planned}</span>
+            <span class="status-chip is-ongoing">{status.ongoing}</span>
             <h3>
               <a href={url(lang, plannedCause.href)}>{plannedCause[lang][0]}</a>
             </h3>
@@ -389,8 +389,8 @@ const involveTargets = [
           ))}
           <p>
             {lang === 'hi'
-              ? 'उस भवन पर लगे बैनर में संस्थान का “नशामुक्ति परामर्श एवं पुनर्वास केंद्र” लिखा है। नशे से जूझ रहे लोगों के लिए परामर्श हम भविष्य में फिर शुरू करना चाहते हैं; यह सेवा अभी नहीं चल रही है।'
-              : 'The banner on that building names the Sansthan’s “Nasha Mukti Paramarsh evam Punarvas Kendra” (de-addiction counselling and rehabilitation centre). Counselling for people facing addiction is something we hope to offer again in future; it is not running today.'}
+              ? 'उस भवन पर लगे बैनर में संस्थान का “नशामुक्ति परामर्श एवं पुनर्वास केंद्र” लिखा है। यह केंद्र लगभग 2024 में बंद हो गया; अब हम नशे के विरुद्ध जागरूकता कार्यक्रम चलाते हैं, परामर्श या इलाज नहीं देते।'
+              : 'The banner on that building names the Sansthan’s “Nasha Mukti Paramarsh evam Punarvas Kendra” (de-addiction counselling and rehabilitation centre). That centre closed around 2024. Today we run awareness programmes against addiction; we do not offer counselling or treatment.'}
           </p>
           <div class="journey-photos">
             {['kendra-building', 'ashram-dormitory'].map((name) => (
@@ -687,7 +687,20 @@ const involveTargets = [
           <span class="icon-badge">
             <Icon name="file" size={26} />
           </span>
-          <h2>{tr.requestTitle}</h2>
+          <h2>{tr.viewTitle}</h2>
+          <p>{tr.viewText}</p>
+          <ul class="doc-files">
+            {tr.files.map(([label, href]) => (
+              <li>
+                <a href={href} target="_blank" rel="noopener noreferrer">
+                  <Icon name="file" size={18} />
+                  {label}
+                  <Icon name="external" size={14} />
+                </a>
+              </li>
+            ))}
+          </ul>
+          <h3>{tr.requestTitle}</h3>
           <p>{tr.requestText}</p>
           <ul class="check-list">
             {tr.documents.map((doc) => (

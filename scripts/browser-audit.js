@@ -73,7 +73,7 @@ async (page) => {
                   (el) =>
                     !el.closest('[lang="en"]') &&
                     /[A-Za-z]{4}/.test(el.textContent) &&
-                    !/@|UNION|SHANTI|UBINO|English/.test(el.textContent),
+                    !/@|UNION|SHANTI|UBIN0|English/.test(el.textContent),
                 )
                 .map((el) => el.textContent.trim())
             : [],

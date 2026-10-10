@@ -2,6 +2,7 @@
 import { copy, url, imgSm, type Lang } from '../data/site';
 import Icon from './Icon.astro';
 import BankDetails from './BankDetails.astro';
+import { chrome } from '../data/content';
 const { lang, showButton = true } = Astro.props as {
   lang: Lang;
   showButton?: boolean;
@@ -40,6 +41,10 @@ const t = copy[lang];
   </div>
   <div class="donate-methods" id="donate-methods">
     <BankDetails lang={lang} />
+    <p class="india-only">
+      <Icon name="globe" size={18} />
+      {chrome[lang].indiaOnly}
+    </p>
     <div class="qr-panel lift">
       <img
         src="/images/donation-qr.png"

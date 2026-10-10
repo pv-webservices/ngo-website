@@ -6,3 +6,6 @@ output/
 .playwright-cli/
 media-source/*/videos/
 media-source/**/*.mp4
+
+# Raw client documents (contain Aadhaar/ID data); never publish
+media-source/documents-private/
