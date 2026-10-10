@@ -188,10 +188,24 @@ html[lang='hi'] .status-chip {
   height: 100%;
   object-fit: cover;
   transform: scale(1.1);
-  transition: transform 6.6s linear;
+  transition: transform 5.3s linear;
 }
 .hero-slide.is-active img {
   transform: scale(1);
+}
+/* Soft white fade in the top-right corner of a photograph (calms text burnt into it). */
+.hero-slide.fade-top-right::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(
+    55% 42% at 100% 0%,
+    rgba(255, 250, 240, 0.92) 0%,
+    rgba(255, 250, 240, 0.7) 35%,
+    rgba(255, 250, 240, 0) 100%
+  );
+  pointer-events: none;
 }
 .hero-caption {
   position: absolute;

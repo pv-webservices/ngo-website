@@ -71,16 +71,18 @@ export const splitLast = (text: string): [string, string] => {
 export interface HeroSlide {
   image: string;
   focus: string;
+  /** Soft white fade over the top-right corner, to calm text burnt into the photograph. */
+  fadeTopRight?: boolean;
 }
 export const heroSlides: HeroSlide[] = [
-  { image: 'hair-care', focus: '50% 0%' },
+  { image: 'hand-care', focus: '50% 55%' },
   { image: 'beard-grooming', focus: '50% 40%' },
   { image: 'gift-for-resident', focus: '55% 40%' },
   { image: 'hospital-admission', focus: '50% 35%' },
   { image: 'eye-camp-team', focus: '62% 45%' },
   { image: 'street-outreach', focus: '50% 40%' },
   { image: 'president-with-elder', focus: '62% 55%' },
-  { image: 'hand-care', focus: '50% 55%' },
+  { image: 'hair-care', focus: '50% 0%', fadeTopRight: true },
   { image: 'eye-checkup-ashram', focus: '38% 55%' },
   { image: 'winter-fire', focus: '62% 55%' },
   { image: 'food-distribution-winter', focus: '35% 45%' },

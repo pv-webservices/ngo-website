@@ -211,11 +211,11 @@ videoCards.forEach((card) => {
     }),
   );
 });
-// Hero slideshow: crossfades every few seconds, pauses on hover and focus and with the
-// visible toggle (WCAG 2.2.2), and starts paused with reduced motion. Dots and swipes
-// move between photographs. The toggle's label always describes its next action.
-// 20% faster than the original 6 s (client request, 10 October 2026).
-const SLIDE_MS = 5000;
+// Hero slideshow: crossfades constantly (no pause on hover or focus, per the client); the
+// visible toggle (WCAG 2.2.2) is the only way to stop it, and it starts paused with reduced
+// motion. Dots and swipes move between photographs. The toggle's label describes its next action.
+// Auto-advance every 4 s (client request, 10 October 2026).
+const SLIDE_MS = 4000;
 const CAPTION_FADE_MS = 400;
 const SWIPE_PX = 40;
 document.querySelectorAll<HTMLElement>('[data-hero]').forEach((hero) => {
@@ -231,7 +231,6 @@ document.querySelectorAll<HTMLElement>('[data-hero]').forEach((hero) => {
   let current = 0;
   let timer = 0;
   let userPaused = reducedMotion;
-  let holdPaused = false;
   const show = (index: number) => {
     const next = (index + slides.length) % slides.length;
     if (next === current) return;
@@ -252,7 +251,7 @@ document.querySelectorAll<HTMLElement>('[data-hero]').forEach((hero) => {
   };
   const schedule = () => {
     window.clearInterval(timer);
-    if (!userPaused && !holdPaused && !document.hidden)
+    if (!userPaused && !document.hidden)
       timer = window.setInterval(() => show(current + 1), SLIDE_MS);
   };
   const setPaused = (paused: boolean) => {
@@ -272,24 +271,6 @@ document.querySelectorAll<HTMLElement>('[data-hero]').forEach((hero) => {
     }),
   );
   toggle?.addEventListener('click', () => setPaused(!userPaused));
-  if (matchMedia('(hover: hover)').matches) {
-    stage?.addEventListener('pointerenter', () => {
-      holdPaused = true;
-      schedule();
-    });
-    stage?.addEventListener('pointerleave', () => {
-      holdPaused = false;
-      schedule();
-    });
-  }
-  hero.addEventListener('focusin', () => {
-    holdPaused = true;
-    schedule();
-  });
-  hero.addEventListener('focusout', () => {
-    holdPaused = false;
-    schedule();
-  });
   let touchX = 0;
   stage?.addEventListener(
     'touchstart',

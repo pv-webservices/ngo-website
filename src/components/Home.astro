@@ -67,7 +67,7 @@ const [storiesLead, storiesLast] = splitLast(h.storiesTitle);
     <div class="hero-slides">
       {heroSlides.map((slide, i) => (
         <figure
-          class:list={['hero-slide', { 'is-active': i === 0 }]}
+          class:list={['hero-slide', { 'is-active': i === 0, 'fade-top-right': slide.fadeTopRight }]}
           data-slide
           data-caption={photoCaption(slide.image, lang)}
           aria-hidden={i === 0 ? undefined : 'true'}

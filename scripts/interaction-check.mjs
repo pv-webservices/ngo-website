@@ -21,8 +21,10 @@ const activeSlide = () =>
     slides.findIndex((el) => el.classList.contains('is-active')),
   );
 await page.mouse.move(5, 5);
-await page.waitForTimeout(6600);
-check('hero slideshow advances', (await activeSlide()) === 1);
+const before = await activeSlide();
+await page.mouse.move(700, 400); // hovering the photograph must not stop it
+await page.waitForTimeout(4600);
+check('hero slideshow advances (4 s, even while hovered)', (await activeSlide()) !== before);
 await page.click('.hero-dot[data-goto="3"]');
 await page.mouse.move(5, 5);
 check(
