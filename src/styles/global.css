@@ -1,35 +1,70 @@
 /* ==========================================================================
    Shanti Jan Kalyan Sansthan — design system
-   One brand red used sparingly, warm paper neutrals, a serif display face and
-   the NGO's own photography doing the emotional work.
+   The six colours of the logo's joined hands (saffron, green, red, blue, purple,
+   sky) with sunshine yellow, used over light cream paper with faint hand-drawn
+   sketches. Rounded Quicksand headings; the NGO's own photographs carry the story.
    ========================================================================== */
 :root {
-  --brand: #8f1d1f;
-  --brand-hover: #731618;
-  --brand-deep: #5e1416;
-  --brand-tint: #f5e8e3;
-  --saffron: #c97a12;
-  --saffron-light: #f1c27f;
-  --ink: #1f1b17;
-  --ink-2: #4d463f;
-  --ink-3: #6b6258;
-  --paper: #f8f4ec;
-  --paper-2: #efe7da;
-  --line: #e3d9ca;
+  /* Logo palette */
+  --red: #c8202a;
+  --red-deep: #9c1720;
+  --red-tint: #fdeceb;
+  --saffron-hue: #f08a24;
+  --saffron-deep: #a8560a;
+  --saffron-tint: #fff1e0;
+  --sun: #ffd84d;
+  --sun-soft: #ffe88f;
+  --sun-tint: #fff8d9;
+  --green: #2e9e4f;
+  --green-deep: #1d7438;
+  --green-tint: #e7f6eb;
+  --blue: #1f5fad;
+  --blue-tint: #e8f0fb;
+  --sky: #1a9fd6;
+  --sky-deep: #0b6f99;
+  --sky-tint: #e4f5fc;
+  --purple: #7a3fa0;
+  --purple-tint: #f3eaf9;
+  --rainbow: linear-gradient(
+    90deg,
+    #f08a24 0 16.66%,
+    #2e9e4f 0 33.33%,
+    #c8202a 0 50%,
+    #1f5fad 0 66.66%,
+    #7a3fa0 0 83.33%,
+    #1a9fd6 0
+  );
+  /* Roles (older component names map onto the palette) */
+  --brand: var(--red);
+  --brand-hover: var(--red-deep);
+  --brand-deep: #7d121a;
+  --brand-tint: var(--red-tint);
+  --saffron: var(--saffron-hue);
+  --saffron-light: var(--sun-soft);
+  --ink: #24202a;
+  --ink-2: #4d4853;
+  --ink-3: #696370;
+  --paper: #fffaf0;
+  --paper-2: #fdf1dc;
+  --line: #f0e3cc;
   --white: #fff;
-  --night: #1f1a16;
-  --night-text: #d8cfc3;
-  --success: #2e6a3a;
-  --radius: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --shadow-lift: 0 18px 40px rgba(31, 27, 23, 0.13);
-  --shadow: 0 1px 2px rgba(31, 27, 23, 0.05), 0 8px 24px rgba(31, 27, 23, 0.07);
+  --night: #24202a;
+  --night-text: #e9e3d8;
+  --success: #1d7438;
+  --radius: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --shadow-lift: 0 22px 44px rgba(84, 52, 18, 0.14);
+  --shadow: 0 1px 2px rgba(84, 52, 18, 0.05), 0 10px 28px rgba(84, 52, 18, 0.08);
   --font-body: 'Manrope', 'Noto Sans Devanagari', system-ui, sans-serif;
-  --font-display: 'Source Serif 4', 'Noto Serif Devanagari', Georgia, serif;
+  --font-display: 'Quicksand', 'Noto Sans Devanagari', system-ui, sans-serif;
+  --font-hand: 'Kalam', 'Noto Sans Devanagari', cursive;
+  --sketch: url('/images/sketch/doodles.svg');
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   --header-h: 84px;
-  --gutter: 20px;
+  /* Wide layout: ~92% of a laptop screen, ~80% of a 1920px monitor. */
+  --gutter: clamp(16px, 4vw, 72px);
+  --page-max: 1560px;
   color-scheme: light;
 }
 
@@ -77,27 +112,78 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--ink);
-  line-height: 1.15;
+  line-height: 1.18;
   letter-spacing: -0.01em;
   margin: 0 0 0.55em;
   text-wrap: balance;
 }
 html[lang='hi'] :is(h1, h2, h3) {
-  font-family: 'Noto Serif Devanagari', var(--font-display);
-  line-height: 1.4;
+  font-family: 'Noto Sans Devanagari', var(--font-display);
+  font-weight: 600;
+  line-height: 1.45;
   letter-spacing: 0;
 }
 h1 {
-  font-size: clamp(2.3rem, 4.4vw, 3.75rem);
-  line-height: 1.07;
+  font-size: clamp(2.1rem, 3.8vw, 3.4rem);
+  line-height: 1.1;
 }
 h2 {
-  font-size: clamp(1.75rem, 2.8vw, 2.5rem);
+  font-size: clamp(1.7rem, 2.6vw, 2.4rem);
 }
 h3 {
-  font-size: 1.25rem;
+  font-size: 1.22rem;
+}
+/* A marker stroke behind a highlighted word, as on hand-made posters. */
+.hl {
+  position: relative;
+  z-index: 0;
+  white-space: nowrap;
+}
+.hl::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: -0.12em;
+  right: -0.12em;
+  bottom: 0.02em;
+  height: 0.62em;
+  background: url('/images/sketch/brush.svg') center / 100% 100% no-repeat;
+}
+.hl-red {
+  color: var(--red);
+}
+/* Faint hand-drawn sketch layer for any section (sits behind its content). */
+.sketch {
+  position: relative;
+  isolation: isolate;
+}
+.sketch::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--sketch);
+  background-size: 420px;
+  opacity: 0.32;
+  pointer-events: none;
+}
+/* A section photograph shown faintly behind the content (set --bg inline). */
+.photo-wash {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.photo-wash::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: var(--bg) center / cover no-repeat;
+  opacity: 0.07;
+  filter: grayscale(0.4) sepia(0.3);
+  pointer-events: none;
 }
 p {
   margin: 0 0 1em;
@@ -122,8 +208,15 @@ figure {
   scroll-margin-top: calc(var(--header-h) + 24px);
 }
 .container {
-  width: min(1240px, 100% - var(--gutter) * 2);
+  width: min(var(--page-max), 100% - var(--gutter) * 2);
   margin-inline: auto;
+}
+/* Long-form reading stays at a comfortable measure inside the wide layout. */
+.container.narrow {
+  width: min(1100px, 100% - var(--gutter) * 2);
+}
+[hidden] {
+  display: none !important;
 }
 .sr-only {
   position: absolute;
@@ -172,9 +265,10 @@ body.modal-open {
 }
 .eyebrow::before {
   content: '';
-  width: 28px;
-  height: 2px;
-  background: var(--saffron);
+  width: 30px;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--rainbow);
   flex: none;
 }
 html[lang='hi'] .eyebrow {
@@ -197,8 +291,8 @@ html[lang='hi'] .eyebrow {
   font-size: 0.875rem;
 }
 .values-line {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
   color: var(--brand);
 }
 
@@ -283,95 +377,135 @@ html[lang='hi'] .eyebrow {
   transform: translateX(3px);
 }
 
-/* ---------- Top bar ---------- */
+/* ---------- Top strip (sunshine yellow, as on the reference) ---------- */
 .topbar {
-  background: var(--night);
-  color: var(--night-text);
-  font-size: 0.8125rem;
+  position: relative;
+  padding-bottom: 26px;
+  background:
+    var(--sketch) 0 0 / 420px,
+    linear-gradient(100deg, var(--sun) 0%, #ffe274 55%, var(--sun-soft) 100%);
+  color: var(--ink);
+  font-size: 0.84rem;
 }
 .topbar-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  min-height: 40px;
+  gap: 12px 24px;
+  min-height: 44px;
+}
+.top-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-weight: 700;
+}
+.top-note svg {
+  flex: none;
+  color: var(--red);
 }
 .topbar-contact,
 .top-social {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
 }
-.topbar a:not(.social-dot) {
+.top-chip {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  transition: color 0.2s;
-}
-.topbar a:hover {
+  padding: 4px 13px;
+  border-radius: 999px;
   color: var(--white);
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    transform 0.25s var(--ease),
+    box-shadow 0.25s;
 }
-.divider {
-  width: 1px;
-  height: 14px;
-  background: rgba(255, 255, 255, 0.2);
+.top-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(36, 32, 42, 0.18);
+}
+.top-chip.is-blue {
+  background: var(--blue);
+}
+.top-chip.is-green {
+  background: var(--green-deep);
+}
+.top-chip.is-purple {
+  background: var(--purple);
 }
 .language-switch {
   display: flex;
   gap: 2px;
   padding: 2px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 999px;
+  background: rgba(255, 255, 255, 0.65);
 }
 .language-switch a {
-  padding: 2px 10px;
+  padding: 2px 11px;
   border-radius: 999px;
-  font-weight: 600;
+  font-weight: 700;
 }
 .language-switch a[aria-current='true'] {
-  background: var(--white);
-  color: var(--ink);
+  background: var(--ink);
+  color: var(--white);
 }
 .social-dot {
   display: inline-grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  border: 1px solid currentColor;
-  opacity: 0.85;
+  background: var(--white);
+  color: var(--ink);
   transition:
-    opacity 0.2s,
     background-color 0.2s,
     color 0.2s;
 }
-.social-dot:hover {
-  opacity: 1;
+.social-dot.facebook:hover {
+  background: #1877f2;
+  color: var(--white);
+}
+.social-dot.instagram:hover {
+  background: #d62976;
+  color: var(--white);
 }
 .social-dot.large {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
+  box-shadow: inset 0 0 0 1px var(--line);
 }
 
-/* ---------- Header ---------- */
+/* ---------- Header: a white card that floats over the strip and stays in view ---------- */
 .site-header {
   position: sticky;
-  top: 0;
+  top: 8px;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.97);
-  border-bottom: 1px solid var(--line);
-  transition: box-shadow 0.3s;
-}
-.site-header.scrolled {
-  box-shadow: 0 6px 24px rgba(31, 27, 23, 0.08);
+  margin-top: -26px;
 }
 .header-inner {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 18px;
   min-height: var(--header-h);
+  padding: 0 10px 0 18px;
+  background: rgba(255, 255, 255, 0.97);
+  border-radius: 20px;
+  box-shadow:
+    0 1px 0 rgba(84, 52, 18, 0.04),
+    0 14px 34px rgba(84, 52, 18, 0.1);
+  backdrop-filter: blur(8px);
+  transition: box-shadow 0.3s;
+}
+.site-header.scrolled .header-inner {
+  box-shadow:
+    0 1px 0 rgba(84, 52, 18, 0.05),
+    0 18px 40px rgba(84, 52, 18, 0.16);
 }
 .brand {
   display: flex;
@@ -380,81 +514,160 @@ html[lang='hi'] .eyebrow {
   min-width: 0;
 }
 .brand img {
-  width: 54px;
-  height: 54px;
+  width: 60px;
+  height: 60px;
   flex: none;
 }
-.brand span {
-  display: grid;
-  min-width: 0;
-}
 .brand strong {
+  max-width: 12.5em;
   font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 600;
-  line-height: 1.2;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.22;
   color: var(--ink);
 }
 html[lang='hi'] .brand strong {
-  font-family: 'Noto Serif Devanagari', var(--font-display);
-}
-.brand small {
-  color: var(--ink-3);
-  font-size: 0.78rem;
-  line-height: 1.4;
+  font-family: 'Noto Sans Devanagari', var(--font-display);
+  font-weight: 600;
+  max-width: 11em;
 }
 #navigation {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 18px;
 }
 .nav-links {
   display: flex;
-  gap: 4px;
+  gap: 2px;
   list-style: none;
 }
 .nav-links a {
   position: relative;
   display: block;
-  padding: 8px 12px;
+  padding: 10px 9px;
   color: var(--ink-2);
-  font-size: 0.94rem;
-  font-weight: 600;
+  font-size: 0.93rem;
+  font-weight: 700;
+  white-space: nowrap;
   transition: color 0.2s;
 }
 .nav-links a:hover,
 .nav-links a[aria-current='page'] {
-  color: var(--ink);
+  color: var(--red);
 }
 .nav-links a::after {
   content: '';
   position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 2px;
-  height: 2px;
-  background: var(--brand);
+  left: 9px;
+  right: 9px;
+  bottom: 3px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--rainbow);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.25s var(--ease);
+  transition: transform 0.3s var(--ease);
 }
 .nav-links a:hover::after,
 .nav-links a[aria-current='page']::after {
   transform: scaleX(1);
 }
 .btn-donate {
-  min-height: 44px;
-  padding: 10px 20px;
+  min-height: 60px;
+  padding: 12px 22px;
+  border-radius: 14px;
+  white-space: nowrap;
 }
 .menu-toggle {
   display: none;
   place-items: center;
-  width: 46px;
-  height: 46px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--white);
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--sun-tint);
+  color: var(--ink);
   cursor: pointer;
+}
+.menu-toggle .icon-close,
+.menu-toggle[aria-expanded='true'] .icon-menu {
+  display: none;
+}
+.menu-toggle[aria-expanded='true'] .icon-close {
+  display: block;
+}
+@media (min-width: 1440px) {
+  .nav-links a {
+    padding-inline: 12px;
+  }
+  .nav-links a::after {
+    left: 12px;
+    right: 12px;
+  }
+}
+
+/* ---------- Floating WhatsApp button ---------- */
+.whatsapp-float {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.whatsapp-float a {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #25d366;
+  color: var(--white);
+  box-shadow: 0 12px 28px rgba(18, 140, 70, 0.4);
+  transition: transform 0.3s var(--ease);
+}
+.whatsapp-float a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid #25d366;
+  animation: wa-ring 2.4s ease-out infinite;
+}
+.whatsapp-float a:hover {
+  transform: scale(1.08);
+}
+.whatsapp-float .wa-label {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--ink);
+  font-size: 0.86rem;
+  font-weight: 700;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateX(8px);
+  transition:
+    opacity 0.25s,
+    transform 0.25s var(--ease);
+  pointer-events: none;
+}
+.whatsapp-float:hover .wa-label,
+.whatsapp-float:focus-within .wa-label {
+  opacity: 1;
+  transform: none;
+}
+@keyframes wa-ring {
+  from {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
 }
 
 /* ---------- Sections ---------- */
@@ -533,8 +746,8 @@ html[lang='hi'] .brand strong {
 /* ---------- Program cards ---------- */
 .program-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 20px;
 }
 .program-grid.is-featured {
   grid-template-columns: repeat(6, 1fr);
@@ -696,7 +909,7 @@ html[lang='hi'] .brand strong {
 .donate-photo {
   margin-top: 36px;
   overflow: hidden;
-  border-radius: var(--radius-md);
+  border-radius: 26px 26px 26px 110px;
   aspect-ratio: 16 / 9;
 }
 .donate-photo img {
@@ -809,11 +1022,13 @@ html[lang='hi'] .brand strong {
   margin-bottom: 24px;
 }
 
-/* ---------- Contact band and footer ---------- */
+/* ---------- Contact band and footer (light, with the logo's colour strip) ---------- */
 .touch-band {
   padding: 72px 0;
-  background: var(--paper);
-  border-top: 1px solid var(--line);
+  background: var(--sky-tint);
+}
+.touch-band::before {
+  opacity: 0.25;
 }
 .touch-grid {
   display: grid;
@@ -846,68 +1061,76 @@ html[lang='hi'] .brand strong {
 .touch-icon {
   display: grid;
   place-items: center;
-  width: 42px;
-  height: 42px;
+  width: 46px;
+  height: 46px;
   flex: none;
-  border: 1px solid var(--line);
   border-radius: 50%;
-  background: var(--white);
-  color: var(--brand);
+  background: var(--blue);
+  color: var(--white);
+}
+.touch-item:nth-child(2) .touch-icon {
+  background: var(--green-deep);
+}
+.touch-item:nth-child(3) .touch-icon {
+  background: var(--purple);
 }
 .touch-social {
   display: flex;
   gap: 10px;
-  color: var(--ink-2);
 }
 .touch-social .social-dot {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
 }
 .office-card {
   padding: 30px;
   background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
 }
 .office-card address {
   margin-bottom: 18px;
   color: var(--ink-2);
 }
 .site-footer {
-  background: var(--night);
-  color: var(--night-text);
+  position: relative;
+  background: var(--paper);
+  color: var(--ink-2);
   font-size: 0.94rem;
+}
+.site-footer::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 6px;
+  background: var(--rainbow);
 }
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 0.8fr;
+  grid-template-columns: 1.5fr 1.15fr 1fr 1.1fr;
   gap: 48px;
-  padding: 72px 0 56px;
+  padding: 80px 0 56px;
 }
-.site-footer .brand strong {
-  color: var(--white);
-}
-.site-footer .brand small {
-  color: #ab9f91;
+.footer-brand .brand strong {
+  max-width: none;
 }
 .footer-brand p {
   max-width: 30em;
   margin-top: 20px;
-  color: #b9ad9f;
 }
 .site-footer h3 {
   margin-bottom: 18px;
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  color: var(--ink);
+  font-size: 1.05rem;
 }
-html[lang='hi'] .site-footer h3 {
-  font-family: 'Noto Sans Devanagari', var(--font-body);
-  font-size: 0.95rem;
-  letter-spacing: 0;
+.site-footer h3::after {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 4px;
+  margin-top: 10px;
+  border-radius: 4px;
+  background: var(--sun);
 }
 .footer-links {
   display: grid;
@@ -926,20 +1149,47 @@ html[lang='hi'] .site-footer h3 {
 .footer-links a:hover,
 .footer-language a:hover,
 .policy-links a:hover {
-  color: var(--white);
+  color: var(--red);
 }
 .footer-social {
   display: flex;
   gap: 10px;
+  margin-top: 22px;
 }
 .footer-language {
   display: flex;
   gap: 10px;
-  margin-top: 20px;
-  color: #ab9f91;
+  margin-top: 16px;
+  font-weight: 600;
+}
+.footer-qr {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  padding: 20px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+.footer-qr img {
+  width: 150px;
+  height: 150px;
+  padding: 8px;
+  border: 2px dashed var(--sun);
+  border-radius: 14px;
+}
+.footer-qr strong {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+}
+.footer-qr p {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.5;
 }
 .footer-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid var(--line);
 }
 .footer-bottom-inner {
   display: flex;
@@ -948,8 +1198,8 @@ html[lang='hi'] .site-footer h3 {
   justify-content: space-between;
   gap: 12px 24px;
   padding: 22px 0;
-  color: #ab9f91;
-  font-size: 0.8125rem;
+  color: var(--ink-3);
+  font-size: 0.84rem;
 }
 .policy-links {
   display: flex;
@@ -1535,24 +1785,25 @@ html[lang='hi'] .tag {
 /* ==========================================================================
    Responsive
    ========================================================================== */
-@media (max-width: 1199px) {
+@media (max-width: 1279px) {
   .menu-toggle {
     display: grid;
   }
   #navigation {
     position: absolute;
-    top: 100%;
-    left: calc(var(--gutter) * -1);
-    right: calc(var(--gutter) * -1);
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
     display: none;
     flex-direction: column;
     align-items: stretch;
-    gap: 16px;
-    padding: 12px var(--gutter) 24px;
+    gap: 14px;
+    padding: 10px 18px 20px;
     background: var(--white);
-    border-top: 1px solid var(--line);
-    box-shadow: 0 18px 30px rgba(31, 27, 23, 0.1);
-    max-height: calc(100vh - var(--header-h));
+    border-radius: 20px;
+    box-shadow: 0 24px 48px rgba(84, 52, 18, 0.18);
+    max-height: calc(100vh - var(--header-h) - 48px);
+    max-height: calc(100dvh - var(--header-h) - 48px);
     overflow-y: auto;
   }
   #navigation.is-open {
@@ -1563,23 +1814,23 @@ html[lang='hi'] .tag {
     flex-direction: column;
   }
   .nav-links a {
-    padding: 14px 4px;
+    padding: 13px 6px;
     font-size: 1rem;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px dashed var(--line);
   }
   .nav-links a::after {
     display: none;
   }
-  .nav-links a[aria-current='page'] {
-    color: var(--brand);
+  .btn-donate {
+    min-height: 52px;
   }
   .involvement-grid {
     grid-template-columns: repeat(2, 1fr);
   }
   .footer-grid {
-    grid-template-columns: 1.4fr 1fr 1fr;
+    grid-template-columns: 1.3fr 1fr 1fr;
   }
-  .footer-grid > div:last-child {
+  .footer-grid > .footer-qr-col {
     grid-column: 1 / -1;
   }
 }
@@ -1662,18 +1913,26 @@ html[lang='hi'] .tag {
   :root {
     --header-h: 70px;
   }
-  .topbar .divider,
-  .topbar a.top-phone-2,
-  .topbar a.top-email,
+  .topbar {
+    font-size: 0.8rem;
+  }
+  .topbar-contact,
   .topbar a.social-dot {
     display: none;
   }
+  .header-inner {
+    padding: 0 8px 0 12px;
+    border-radius: 16px;
+  }
+  .brand {
+    gap: 10px;
+  }
   .brand img {
-    width: 46px;
-    height: 46px;
+    width: 48px;
+    height: 48px;
   }
   .brand strong {
-    font-size: 1rem;
+    font-size: 0.98rem;
   }
   .section {
     padding: 64px 0;
@@ -1727,8 +1986,34 @@ html[lang='hi'] .tag {
   :root {
     --gutter: 16px;
   }
-  .brand small {
-    display: none;
+  /* The note shrinks with the screen so the whole line always fits beside the
+     language switch (a second line only on the narrowest phones). */
+  .topbar-inner {
+    gap: 8px;
+  }
+  .top-note {
+    min-width: 0;
+    gap: 5px;
+    font-size: clamp(0.62rem, 2.8vw, 0.8rem);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+  html[lang='hi'] .top-note {
+    font-size: 0.82rem;
+  }
+  .top-note svg {
+    width: 12px;
+    height: 12px;
+  }
+  .language-switch a {
+    padding: 2px 8px;
+  }
+  .brand strong {
+    font-size: 0.92rem;
+  }
+  .whatsapp-float a {
+    width: 52px;
+    height: 52px;
   }
   .leader-photo::before {
     inset: 14px -10px 70px 14px;
@@ -1760,6 +2045,10 @@ html[lang='hi'] .tag {
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 36px;
+    padding: 64px 0 44px;
+  }
+  .footer-links {
+    gap: 12px 16px;
   }
   .btn-row .btn {
     flex: 1 1 auto;

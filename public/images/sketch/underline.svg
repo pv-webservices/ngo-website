@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="20" viewBox="0 0 240 20" preserveAspectRatio="none" fill="none" stroke="#f08a24" stroke-width="4" stroke-linecap="round">
+  <!-- Hand-drawn underline for accent words. -->
+  <path d="M4 13c40-7 92-10 150-8 30 1 56 3 82 6"/>
+  <path d="M30 17c50-4 110-5 170-2" stroke-width="2.4" opacity=".7"/>
+</svg>

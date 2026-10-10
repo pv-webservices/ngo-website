@@ -211,19 +211,103 @@ videoCards.forEach((card) => {
     }),
   );
 });
-// The moving hero photographs pause on hover and focus, and with the visible
-// toggle (WCAG 2.2.2). The toggle's label always describes its next action.
-document.querySelectorAll<HTMLElement>('[data-reel]').forEach((reel) => {
-  const toggle = reel.querySelector<HTMLButtonElement>('.h-reel-toggle');
+// Hero slideshow: crossfades every few seconds, pauses on hover and focus and with the
+// visible toggle (WCAG 2.2.2), and starts paused with reduced motion. Dots and swipes
+// move between photographs. The toggle's label always describes its next action.
+// 20% faster than the original 6 s (client request, 10 October 2026).
+const SLIDE_MS = 5000;
+const CAPTION_FADE_MS = 400;
+const SWIPE_PX = 40;
+document.querySelectorAll<HTMLElement>('[data-hero]').forEach((hero) => {
+  const slides = Array.from(hero.querySelectorAll<HTMLElement>('[data-slide]'));
+  const dots = Array.from(
+    hero.querySelectorAll<HTMLButtonElement>('[data-goto]'),
+  );
+  const caption = hero.querySelector<HTMLElement>('[data-hero-caption]');
+  const stage = hero.querySelector<HTMLElement>('.hero-stage');
+  const toggle = hero.querySelector<HTMLButtonElement>('.hero-toggle');
   const label = toggle?.querySelector('.sr-only');
-  toggle?.addEventListener('click', () => {
-    const paused = reel.classList.toggle('is-paused');
-    toggle.setAttribute('aria-pressed', String(paused));
-    if (label)
+  if (slides.length < 2) return;
+  let current = 0;
+  let timer = 0;
+  let userPaused = reducedMotion;
+  let holdPaused = false;
+  const show = (index: number) => {
+    const next = (index + slides.length) % slides.length;
+    if (next === current) return;
+    slides[current].classList.remove('is-active');
+    slides[current].setAttribute('aria-hidden', 'true');
+    slides[next].classList.add('is-active');
+    slides[next].removeAttribute('aria-hidden');
+    dots[current]?.removeAttribute('aria-current');
+    dots[next]?.setAttribute('aria-current', 'true');
+    if (caption) {
+      caption.classList.add('is-changing');
+      window.setTimeout(() => {
+        caption.textContent = slides[next].dataset.caption ?? '';
+        caption.classList.remove('is-changing');
+      }, CAPTION_FADE_MS);
+    }
+    current = next;
+  };
+  const schedule = () => {
+    window.clearInterval(timer);
+    if (!userPaused && !holdPaused && !document.hidden)
+      timer = window.setInterval(() => show(current + 1), SLIDE_MS);
+  };
+  const setPaused = (paused: boolean) => {
+    userPaused = paused;
+    hero.classList.toggle('is-paused', paused);
+    toggle?.setAttribute('aria-pressed', String(paused));
+    if (label && toggle)
       label.textContent = paused
         ? toggle.dataset.labelPlay!
         : toggle.dataset.labelPause!;
+    schedule();
+  };
+  dots.forEach((dot) =>
+    dot.addEventListener('click', () => {
+      show(Number(dot.dataset.goto));
+      schedule();
+    }),
+  );
+  toggle?.addEventListener('click', () => setPaused(!userPaused));
+  if (matchMedia('(hover: hover)').matches) {
+    stage?.addEventListener('pointerenter', () => {
+      holdPaused = true;
+      schedule();
+    });
+    stage?.addEventListener('pointerleave', () => {
+      holdPaused = false;
+      schedule();
+    });
+  }
+  hero.addEventListener('focusin', () => {
+    holdPaused = true;
+    schedule();
   });
+  hero.addEventListener('focusout', () => {
+    holdPaused = false;
+    schedule();
+  });
+  let touchX = 0;
+  stage?.addEventListener(
+    'touchstart',
+    (event) => (touchX = event.touches[0].clientX),
+    { passive: true },
+  );
+  stage?.addEventListener(
+    'touchend',
+    (event) => {
+      const dx = event.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) < SWIPE_PX) return;
+      show(current + (dx < 0 ? 1 : -1));
+      schedule();
+    },
+    { passive: true },
+  );
+  document.addEventListener('visibilitychange', schedule);
+  setPaused(userPaused);
 });
 // Touch screens get the same card lift as hover while a card is pressed.
 const TOUCH_RELEASE_MS = 450;
@@ -277,14 +361,14 @@ const REVEAL_GROUPS: [string, string][] = [
     'rv',
   ],
   [
-    '.cause-card, .program-card, .value-card, .involve-card, .activity-card, .contact-card, .h-proof-list li, .h-needs li, .trust-list li, .need-cards li, .journey-steps li, .faq details, .fact-list div, .album-nav a, .gallery-item, .video-card, .check-list li, .policy-content article, .bank-panel, .qr-panel, .planned-card, .doc-panel, .enquiry-form, .office-card',
+    '.proof-card, .cause-card, .program-card, .value-card, .involve-card, .activity-card, .contact-card, .h-proof-list li, .h-needs li, .trust-list li, .need-cards li, .journey-steps li, .faq details, .fact-list div, .album-nav a, .gallery-item, .video-card, .check-list li, .policy-content article, .bank-panel, .qr-panel, .planned-card, .doc-panel, .enquiry-form, .office-card',
     'rv',
   ],
   [
-    '.story-pair img, .h-mosaic, .h-who-main, .story-image, .festival-strip img, .journey-photos figure, .h-why-media img, .donate-photo',
+    '.story-pair img, .h-mosaic, .wb, .story-image, .festival-strip img, .journey-photos figure, .why-tile, .donate-photo',
     'rv rv-media',
   ],
-  ['.h-who-portrait, .h-journey-still, .story-thumbs li', 'rv rv-scale'],
+  ['.h-journey-still, .story-thumbs li', 'rv rv-scale'],
 ];
 if (!reducedMotion && 'IntersectionObserver' in window) {
   // Clip-path reveals start fully clipped, which IntersectionObserver reports as never
@@ -309,7 +393,7 @@ if (!reducedMotion && 'IntersectionObserver' in window) {
   const MAX_STAGGER = 6;
   document
     .querySelectorAll<HTMLElement>(
-      'main > section:not(.h-hero):not(.ph), main > section > section, .touch-band',
+      'main > section:not(.hero):not(.ph), main > section > section, .touch-band',
     )
     .forEach((section) => {
       REVEAL_GROUPS.forEach(([selector, classes]) => {

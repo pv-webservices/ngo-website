@@ -1,0 +1,509 @@
+/* ==========================================================================
+   Colourful theme layer: colour tones, the joining-hands loader, and the light
+   restyle of inner-page components. Loaded last so it can refine earlier rules.
+   ========================================================================== */
+
+/* ---------- Tones: any element can take one of the logo's colours ---------- */
+.tone-saffron {
+  --tone: var(--saffron-hue);
+  --tone-deep: var(--saffron-deep);
+  --tone-tint: var(--saffron-tint);
+}
+.tone-green {
+  --tone: var(--green);
+  --tone-deep: var(--green-deep);
+  --tone-tint: var(--green-tint);
+}
+.tone-red {
+  --tone: var(--red);
+  --tone-deep: var(--red-deep);
+  --tone-tint: var(--red-tint);
+}
+.tone-blue {
+  --tone: var(--blue);
+  --tone-deep: var(--blue);
+  --tone-tint: var(--blue-tint);
+}
+.tone-purple {
+  --tone: var(--purple);
+  --tone-deep: var(--purple);
+  --tone-tint: var(--purple-tint);
+}
+.tone-sky {
+  --tone: var(--sky);
+  --tone-deep: var(--sky-deep);
+  --tone-tint: var(--sky-tint);
+}
+
+/* ---------- Loader: six hands join around a heart ---------- */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 216, 77, 0.35), transparent 55%),
+    var(--paper);
+  transition:
+    opacity 0.6s ease,
+    visibility 0.6s;
+  /* Without JavaScript the loader still clears itself. */
+  animation: pl-auto-hide 0.6s ease 4.5s forwards;
+}
+.preloader::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--sketch) 0 0 / 420px;
+  opacity: 0.35;
+}
+.preloader.is-done {
+  opacity: 0;
+  visibility: hidden;
+}
+.pl-quick .preloader {
+  background: rgba(255, 250, 240, 0.92);
+}
+.pl-inner {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  transition: transform 0.6s var(--ease);
+}
+.preloader.is-done .pl-inner {
+  transform: scale(1.06);
+}
+.pl-hands {
+  width: 168px;
+  height: 168px;
+  overflow: visible;
+}
+.pl-ring {
+  /* With a viewBox, the view-box origin is the user-space origin: the ring's centre. */
+  transform-box: view-box;
+  transform-origin: 0 0;
+  animation: pl-spin 9s linear infinite;
+}
+.pl-hand {
+  /* With a viewBox, the view-box origin is the user-space origin: the ring's centre. */
+  transform-box: view-box;
+  transform-origin: 0 0;
+  animation: pl-hand-in 0.7s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+  animation-delay: calc(var(--i) * 0.12s);
+}
+.pl-heart {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation:
+    pl-pop 0.5s cubic-bezier(0.3, 1.6, 0.5, 1) 0.8s both,
+    pl-beat 1.1s ease-in-out 1.3s infinite;
+}
+.pl-name {
+  margin: 20px 0 2px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  animation: pl-text 0.6s var(--ease) 0.4s both;
+}
+.pl-tag {
+  margin: 0;
+  color: var(--red);
+  font-family: var(--font-hand);
+  font-size: 1.1rem;
+  animation: pl-text 0.6s var(--ease) 0.55s both;
+}
+.pl-bar {
+  display: block;
+  width: 160px;
+  height: 5px;
+  margin-top: 16px;
+  overflow: hidden;
+  border-radius: 5px;
+  background: rgba(36, 32, 42, 0.08);
+}
+.pl-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--rainbow);
+  animation: pl-load 1.8s var(--ease) both;
+}
+.pl-quick .pl-hand {
+  animation-duration: 0.35s;
+  animation-delay: calc(var(--i) * 0.04s);
+}
+.pl-quick .pl-heart {
+  animation-delay: 0.25s, 0.6s;
+}
+.pl-quick .pl-name,
+.pl-quick .pl-tag {
+  animation-delay: 0s;
+}
+.pl-quick .pl-bar span {
+  animation-duration: 0.45s;
+}
+@keyframes pl-hand-in {
+  from {
+    opacity: 0;
+    transform: scale(0.35) rotate(-40deg);
+  }
+}
+@keyframes pl-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes pl-pop {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+@keyframes pl-beat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(1.18);
+  }
+  40% {
+    transform: scale(0.96);
+  }
+}
+@keyframes pl-text {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes pl-load {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+@keyframes pl-auto-hide {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pl-ring,
+  .pl-hand,
+  .pl-heart,
+  .pl-name,
+  .pl-tag,
+  .pl-bar span {
+    animation: none;
+  }
+}
+
+/* ---------- Sections and cards on inner pages ---------- */
+main > .section:not(.section-soft):not(.section-paper) {
+  background: var(--white);
+}
+.section-paper,
+.section-soft {
+  position: relative;
+  isolation: isolate;
+  background: var(--paper);
+}
+.section-paper::before,
+.section-soft::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--sketch) 0 0 / 420px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+.btn-secondary,
+.btn-facebook,
+.btn-instagram {
+  background: var(--white);
+}
+.icon-badge {
+  border-radius: 16px;
+}
+.value-card,
+.involve-card,
+.contact-card,
+.bank-panel,
+.qr-panel,
+.doc-panel,
+.office-card {
+  border: 0;
+  border-radius: 26px;
+  box-shadow:
+    inset 0 0 0 2px var(--line),
+    var(--shadow);
+}
+/* Cycle the logo colours through repeated cards. */
+:is(.value-grid, .involvement-grid, .contact-methods, .need-cards) > :nth-child(6n + 1) {
+  --tone: var(--saffron-hue);
+  --tone-deep: var(--saffron-deep);
+  --tone-tint: var(--saffron-tint);
+}
+:is(.value-grid, .involvement-grid, .contact-methods, .need-cards) > :nth-child(6n + 2) {
+  --tone: var(--sky);
+  --tone-deep: var(--sky-deep);
+  --tone-tint: var(--sky-tint);
+}
+:is(.value-grid, .involvement-grid, .contact-methods, .need-cards) > :nth-child(6n + 3) {
+  --tone: var(--green);
+  --tone-deep: var(--green-deep);
+  --tone-tint: var(--green-tint);
+}
+:is(.value-grid, .involvement-grid, .contact-methods, .need-cards) > :nth-child(6n + 4) {
+  --tone: var(--purple);
+  --tone-deep: var(--purple);
+  --tone-tint: var(--purple-tint);
+}
+:is(.value-grid, .involvement-grid, .contact-methods, .need-cards) > :nth-child(6n + 5) {
+  --tone: var(--red);
+  --tone-deep: var(--red-deep);
+  --tone-tint: var(--red-tint);
+}
+:is(.value-grid, .involvement-grid, .contact-methods, .need-cards) > :nth-child(6n) {
+  --tone: var(--blue);
+  --tone-deep: var(--blue);
+  --tone-tint: var(--blue-tint);
+}
+:is(.value-grid, .involvement-grid, .contact-methods, .need-cards) > * {
+  box-shadow:
+    inset 0 0 0 2px var(--tone-tint, var(--line)),
+    var(--shadow);
+}
+:is(.value-grid, .involvement-grid, .contact-methods, .need-cards) :is(.icon-badge, .mini-icon) {
+  background: var(--tone-tint, var(--brand-tint));
+  color: var(--tone-deep, var(--brand));
+}
+.need-cards li {
+  background: var(--tone-tint);
+  box-shadow: none;
+}
+.need-cards .icon-badge {
+  background: var(--white);
+}
+.cta-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  max-width: 900px;
+  background: linear-gradient(140deg, var(--sun-tint), var(--saffron-tint));
+  border-radius: 36px;
+}
+.cta-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--sketch) 0 0 / 420px;
+  opacity: 0.4;
+}
+.journey-steps li {
+  border: 0;
+  border-radius: 22px;
+  box-shadow:
+    inset 0 0 0 2px var(--line),
+    var(--shadow);
+}
+.journey-steps li:nth-child(4n + 1) span {
+  color: var(--saffron-deep);
+}
+.journey-steps li:nth-child(4n + 2) span {
+  color: var(--sky-deep);
+}
+.journey-steps li:nth-child(4n + 3) span {
+  color: var(--green-deep);
+}
+.journey-steps li:nth-child(4n) span {
+  color: var(--purple);
+}
+.enquiry-form {
+  background: linear-gradient(160deg, var(--sky-tint), var(--paper));
+  border-radius: 30px;
+}
+.focus-grid li {
+  border: 0;
+  border-radius: 16px;
+  background: var(--green-tint);
+}
+.focus-grid li:nth-child(2n) {
+  background: var(--sun-tint);
+}
+.focus-grid svg {
+  color: var(--green-deep);
+}
+.check-list svg {
+  color: var(--green-deep);
+}
+.fact-list {
+  border-top: 4px solid transparent;
+  border-image: var(--rainbow) 1;
+}
+.donate-panel {
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(150deg, var(--white), var(--sun-tint));
+  border-radius: 36px;
+  box-shadow:
+    inset 0 0 0 2px var(--line),
+    var(--shadow);
+}
+.qr-panel img {
+  border-radius: 14px;
+}
+
+/* Program cards: shaped photographs with a coloured frame. */
+.program-card {
+  padding: 12px;
+  border: 0;
+  border-radius: 28px;
+  box-shadow:
+    inset 0 0 0 2px var(--line),
+    var(--shadow);
+}
+.program-image {
+  border-radius: 20px 20px 20px 80px;
+}
+.program-card:nth-child(3n + 2) .program-image {
+  border-radius: 80px 20px 20px 20px;
+}
+.program-card:nth-child(3n) .program-image {
+  border-radius: 20px 80px 20px 20px;
+}
+.program-body {
+  padding: 18px 12px 12px;
+}
+.program-card:nth-child(6n + 1) .program-number {
+  color: var(--saffron-deep);
+}
+.program-card:nth-child(6n + 2) .program-number {
+  color: var(--green-deep);
+}
+.program-card:nth-child(6n + 3) .program-number {
+  color: var(--red);
+}
+.program-card:nth-child(6n + 4) .program-number {
+  color: var(--blue);
+}
+.program-card:nth-child(6n + 5) .program-number {
+  color: var(--purple);
+}
+
+/* Story images on Our Work and programme pages. */
+.story-image {
+  border-radius: 28px 28px 28px 120px;
+}
+.story-grid.reversed .story-image {
+  border-radius: 28px 120px 28px 28px;
+}
+.story-number {
+  border-radius: 999px;
+  background: var(--sun);
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+/* Leader photograph on About: an arched frame instead of a plain rectangle. */
+.leader-photo::before {
+  border-radius: 999px 999px 24px 24px;
+  background: var(--sun-tint);
+}
+.leader-photo img {
+  border-radius: 999px 999px 24px 24px;
+}
+.leader-photo strong {
+  font-family: var(--font-display);
+}
+
+/* Gallery: rounded photographs, a coloured active filter. */
+.gallery-photo {
+  border-radius: 20px;
+}
+.gallery-filters button {
+  border: 0;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1.5px var(--line);
+}
+.gallery-filters button:hover {
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+.gallery-filters button.active {
+  background: var(--red);
+  box-shadow: none;
+  color: var(--white);
+}
+.carousel-btn {
+  border: 0;
+}
+.carousel-btn:hover {
+  background: var(--red);
+}
+.video-frame {
+  border-radius: 22px;
+}
+.play-icon {
+  color: var(--red);
+}
+.lightbox button:hover {
+  background: var(--red);
+}
+
+/* Events & Stories / Our Journey photographs in shaped tiles. */
+.story-thumbs img {
+  border-radius: 14px;
+}
+.story-thumbs li:nth-child(2) img {
+  border-radius: 999px 999px 14px 14px;
+}
+.festival-strip img {
+  border-radius: 24px;
+}
+.festival-strip img:first-child {
+  border-radius: 24px 24px 24px 110px;
+}
+.festival-strip img:last-child {
+  border-radius: 24px 110px 24px 24px;
+}
+.activity-card {
+  padding: 10px;
+  border: 0;
+  border-radius: 24px;
+  box-shadow:
+    inset 0 0 0 2px var(--line),
+    var(--shadow);
+}
+.activity-card img {
+  border-radius: 18px;
+}
+.activity-card div {
+  padding: 14px 10px 8px;
+}
+.journey-photos img {
+  border-radius: 18px;
+}
+.journey-photos figure:first-child img {
+  border-radius: 999px 999px 18px 18px;
+}
+.journey-photos figcaption {
+  color: var(--ink);
+}
+.album-nav a {
+  border: 0;
+  border-radius: 16px;
+  background: var(--white);
+  box-shadow: inset 0 0 0 2px var(--purple-tint);
+}
+.album-nav a:hover {
+  background: var(--purple-tint);
+}

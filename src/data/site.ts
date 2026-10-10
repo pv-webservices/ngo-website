@@ -1,10 +1,12 @@
 export type Lang = 'en' | 'hi';
 export const site = {
   name: 'Shanti Jan Kalyan Sansthan (Regd.)',
-  domain: 'shantijankalyansanstha.in',
+  domain: 'shantijankalyansanstha.com',
   email: 'sunitabhushan67@gmail.com',
   phones: ['+919821958768', '+919315514056'],
   phoneLabels: ['+91 98219 58768', '+91 93155 14056'],
+  // WhatsApp chat (wa.me takes the number without "+" or spaces).
+  whatsapp: '919821958768',
   facebook: 'https://www.facebook.com/share/19gLWQBAkK/',
   instagram:
     'https://www.instagram.com/sonibhushan62?utm_source=qr&stkn=MWpueWxjcXJya21lZQ==',
@@ -1120,6 +1122,73 @@ export const photos: Photo[] = [
     en: 'Friends at the ashram',
     hi: 'आश्रम के साथी',
   },
+  // "ngo new" batch, 10 October 2026 (scripts/prepare-ngo-new-media.mjs).
+  {
+    image: 'hair-care',
+    category: 'elders',
+    en: 'Caring for a resident’s hair at the ashram',
+    hi: 'आश्रम में एक निवासी के बालों की देखभाल',
+  },
+  {
+    image: 'president-with-elder',
+    category: 'elders',
+    en: 'Sitting with a resident at Shanti Dham',
+    hi: 'शान्ति धाम में एक निवासी के साथ',
+  },
+  {
+    image: 'winter-fire',
+    category: 'elders',
+    en: 'Sitting together by a fire on a winter morning',
+    hi: 'सर्दियों की सुबह आग के पास साथ बैठे',
+  },
+  {
+    image: 'eye-checkup-ashram',
+    category: 'health',
+    en: 'A free eye check-up',
+    hi: 'निःशुल्क आँखों की जाँच',
+  },
+  {
+    image: 'ashram-team-beds',
+    category: 'elders',
+    en: 'Our team with residents at Shanti Dham',
+    hi: 'शान्ति धाम में निवासियों के साथ हमारी टीम',
+  },
+  {
+    image: 'office-residents',
+    category: 'community',
+    en: 'Residents and our team at the office',
+    hi: 'कार्यालय में निवासी और हमारी टीम',
+  },
+  {
+    image: 'dormitory-residents',
+    category: 'elders',
+    en: 'Residents in the ashram dormitory',
+    hi: 'आश्रम के शयनकक्ष में निवासी',
+  },
+  {
+    image: 'dormitory-day',
+    category: 'elders',
+    en: 'Residents resting in the dormitory',
+    hi: 'शयनकक्ष में आराम करते निवासी',
+  },
+  {
+    image: 'ashram-dormitory-evening',
+    category: 'elders',
+    en: 'The ashram dormitory in the evening',
+    hi: 'शाम के समय आश्रम का शयनकक्ष',
+  },
+  {
+    image: 'mahila-diwas-march-honour',
+    category: 'women',
+    en: 'Women honoured at a Mahila Diwas Samaroh',
+    hi: 'महिला दिवस समारोह में सम्मानित महिलाएँ',
+  },
+  {
+    image: 'mahila-diwas-march-group',
+    category: 'women',
+    en: 'Mahila Diwas on 8 March under the Sansthan’s banner',
+    hi: 'संस्थान के बैनर तले 8 मार्च, महिला दिवस',
+  },
 ];
 
 export const photoCaption = (image: string, lang: Lang): string =>
@@ -1138,6 +1207,24 @@ export const videos = [
       'जहाँ से हमारा काम शुरू हुआ',
       'नशा मुक्ति केंद्र भवन में हमारा शुरुआती आश्रम, जिसकी छत गिर चुकी थी।',
     ],
+  },
+  {
+    file: 'doctor-visit',
+    duration: '0:20',
+    en: [
+      'Health Check at the Ashram',
+      'A visiting medical team checks on residents, bed by bed.',
+    ],
+    hi: [
+      'आश्रम में स्वास्थ्य जाँच',
+      'आने वाली चिकित्सा टीम हर बिस्तर पर निवासियों की जाँच करती है।',
+    ],
+  },
+  {
+    file: 'resident-rounds',
+    duration: '0:06',
+    en: ['Going Bed to Bed', 'Our volunteers check in on every resident.'],
+    hi: ['हर बिस्तर तक', 'हमारे स्वयंसेवक हर निवासी का हाल पूछते हैं।'],
   },
   {
     file: 'mother-daughter-reunion',

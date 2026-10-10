@@ -43,3 +43,21 @@ Consent: all items are the NGO's own material, many already published on its soc
 **Archive only (not published):** images 1, 25 (last rites) · 2, 23, 7 (patients in hospital) · 9, 24, 41 (missing-person appeals with names) · 50 (memorial notice) · 3, 47, 49 (residents undressed) · 48 (text over faces) · 5 (duplicate of 6) · 10 (same photograph as the 2025 `president-with-resident`) · 17 (lower-res duplicate of 52) · 27, 29 (near-identical to 28) · 34, 45 (blurred) · 46 (Instagram screenshot) · content img-2/3 (ChatGPT feedback screenshots). Videos 4, 5, 6, 8 (residents undressed / hospital), 1, 2, 10, 13–17 (very short, duplicate material, or carry the bank poster).
 
 **Hero reference** (`hero section for NGO.mp4`, Downloads) was used only for the idea of drifting photo columns; none of its images, type or layout were copied.
+
+## "ngo new" batch (10 October 2026)
+
+Originals: `media-source/New Images 2026-10b/` (moved out of `public/` so raw files are never deployed). Derivatives: `scripts/prepare-ngo-new-media.mjs`.
+
+| Source | Web name | Placement |
+| --- | --- | --- |
+| image 2 (overlay text cropped) | hair-care | Hero, gallery |
+| image 14 | president-with-elder | Hero, About banner, gallery |
+| image 4 | winter-fire | Hero, Stories (winter), gallery |
+| image 17 (Facebook header and poster text cropped) | eye-checkup-ashram | Hero, gallery |
+| image 1 | ashram-team-beds | About banner, gallery |
+| images 3, 5, 8, 12 | office-residents, ashram-dormitory-evening, dormitory-residents, dormitory-day | Gallery |
+| images 6, 7 | mahila-diwas-march-honour, mahila-diwas-march-group | Mahila album "8 March", gallery |
+| video 2 | doctor-visit | Videos |
+| video 1 | resident-rounds | Videos |
+
+**Archive only:** 9, 10 (last rites) · 11 (patient on a hospital stretcher) · 15, 16 and eye-care.jpeg (identifiable patients after eye surgery) · 18 (resident on a drip) · 13 (screenshot) · 19 (duplicate of 1) · video 3 (duplicate of video 2).

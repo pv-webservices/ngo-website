@@ -4,86 +4,83 @@
    transform/opacity/clip-path, and collapses to a still page with reduced motion.
    ========================================================================== */
 
-/* ---------- Inner-page hero ---------- */
+/* ---------- Inner-page hero (light) ---------- */
 .ph {
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  background: var(--ink-night);
-  color: var(--on-night);
+  margin-top: calc(var(--under-header) * -1);
+  padding-top: var(--under-header);
+  background:
+    radial-gradient(40% 60% at 0% 100%, rgba(255, 216, 77, 0.38), transparent 70%),
+    radial-gradient(35% 50% at 100% 0%, rgba(26, 159, 214, 0.12), transparent 70%),
+    var(--paper);
+  color: var(--ink);
+}
+.ph.sketch::before {
+  opacity: 0.4;
 }
 .ph-glow {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    radial-gradient(55% 80% at 0% 0%, rgba(143, 29, 31, 0.6), transparent 70%),
-    radial-gradient(
-      40% 60% at 85% 110%,
-      rgba(227, 154, 45, 0.2),
-      transparent 70%
-    );
+  display: none;
 }
-.ph-glow::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0.07;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-/* The main photograph, blurred and dimmed, slowly breathing behind everything. */
+/* The main photograph, faint and blurred, slowly breathing behind everything. */
 .ph-backdrop {
   position: absolute;
   inset: -40px;
   z-index: -2;
-  opacity: 0.22;
+  opacity: 0.1;
 }
 .ph-backdrop img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: blur(28px) saturate(1.2);
+  filter: blur(18px) grayscale(0.3);
   animation: ph-breathe 24s ease-in-out infinite alternate;
 }
 .ph-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  gap: 64px;
+  gap: clamp(40px, 5vw, 80px);
   align-items: center;
-  min-height: 560px;
-  padding: 64px 0 96px;
+  min-height: 520px;
+  padding: 44px 0 72px;
 }
 .ph-compact .ph-grid {
   grid-template-columns: minmax(0, 1fr);
   min-height: 0;
-  padding: 56px 0 72px;
+  padding: 44px 0 60px;
 }
 .ph-crumbs {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 6px;
-  margin-bottom: 28px;
-  color: var(--on-night-2);
-  font-size: 0.86rem;
+  width: fit-content;
+  margin-bottom: 22px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--ink-3);
+  font-size: 0.84rem;
+  box-shadow: inset 0 0 0 1px var(--line);
 }
 .ph-crumbs a {
   transition: color 0.2s;
 }
 .ph-crumbs a:hover {
-  color: var(--marigold);
+  color: var(--red);
 }
 .ph-crumbs [aria-current] {
-  color: var(--on-night);
-  font-weight: 600;
+  color: var(--ink);
+  font-weight: 700;
 }
 .ph-eyebrow {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 12px 16px;
-  margin: 0 0 18px;
-  color: var(--marigold);
+  margin: 0 0 16px;
+  color: var(--red);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -91,9 +88,10 @@
 }
 .ph-eyebrow::before {
   content: '';
-  width: 32px;
-  height: 1.5px;
-  background: currentColor;
+  width: 30px;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--rainbow);
 }
 html[lang='hi'] .ph-eyebrow {
   font-size: 0.95rem;
@@ -104,21 +102,20 @@ html[lang='hi'] .ph-eyebrow {
 }
 .ph h1 {
   margin: 0;
-  color: var(--on-night);
-  font-size: clamp(2.6rem, 5.4vw, 4.6rem);
-  line-height: 1.04;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.1rem, 4vw, 3.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
 }
 html[lang='hi'] .ph h1 {
-  font-size: clamp(2.2rem, 4.4vw, 3.7rem);
-  line-height: 1.3;
+  font-size: clamp(1.9rem, 3.4vw, 3rem);
+  line-height: 1.35;
 }
-/* The mask is padded on every side so Devanagari matras and italic overhangs are never cut. */
+/* The mask is padded on every side so Devanagari matras and descenders are never cut. */
 .ph-word {
   display: inline-block;
   overflow: hidden;
-  padding: 0.22em 0.12em 0.12em;
-  margin: -0.22em -0.12em -0.12em;
+  padding: 0.22em 0.12em 0.14em;
+  margin: -0.22em -0.12em -0.14em;
   vertical-align: top;
 }
 html[lang='hi'] .ph-word {
@@ -135,42 +132,50 @@ html[lang='hi'] .ph-word:not(:last-child) {
   margin-right: 0.05em;
 }
 .ph-accent {
-  margin: 14px 0 0;
-  color: var(--marigold);
-  font-family: var(--font-display);
-  font-size: clamp(1.35rem, 2.2vw, 1.9rem);
-  font-style: italic;
+  width: fit-content;
+  margin: 12px 0 0;
+  padding-bottom: 0.2em;
+  color: var(--red);
+  font-family: var(--font-hand);
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
   line-height: 1.3;
-}
-html[lang='hi'] .ph-accent {
-  font-style: normal;
+  background: url('/images/sketch/underline.svg') left bottom / 100% 0.34em no-repeat;
 }
 .ph-text {
   max-width: 36rem;
-  margin: 22px 0 0;
-  color: var(--on-night-2);
-  font-size: 1.1rem;
+  margin: 18px 0 0;
+  color: var(--ink-2);
+  font-size: 1.05rem;
   line-height: 1.7;
 }
 .ph .btn-row {
-  margin-top: 34px;
+  margin-top: 28px;
 }
 
+/* Three photographs in a shaped grid: a tall arch beside two stacked tiles. */
 .ph-collage {
   --mx: 0;
   --my: 0;
   position: relative;
-  height: 470px;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  grid-template-rows: 1fr 1fr auto;
+  gap: 14px;
+  height: 480px;
+  translate: calc(var(--mx) * -10px) calc(var(--my) * -10px);
+  transition: translate 0.6s var(--ease);
+}
+.ph-main,
+.ph-sat {
+  overflow: hidden;
+  margin: 0;
+  background: var(--paper-2);
 }
 .ph-main {
-  position: absolute;
-  inset: 0 12% 6% 6%;
-  overflow: hidden;
-  border-radius: 22px;
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.45);
-  rotate: -1.5deg;
-  translate: calc(var(--mx) * -8px) calc(var(--my) * -8px);
-  transition: translate 0.6s var(--ease);
+  grid-column: 1;
+  grid-row: 1 / 3;
+  border-radius: 999px 999px 28px 28px;
+  box-shadow: 0 26px 50px rgba(84, 52, 18, 0.16);
 }
 .ph-main img {
   width: 100%;
@@ -179,15 +184,8 @@ html[lang='hi'] .ph-accent {
   animation: ph-kenburns 22s ease-in-out infinite alternate;
 }
 .ph-sat {
-  position: absolute;
-  overflow: hidden;
-  width: 34%;
-  aspect-ratio: 1;
-  border: 6px solid var(--on-night);
-  border-radius: 16px;
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
-  translate: calc(var(--mx) * 18px) calc(var(--my) * 18px);
-  transition: translate 0.6s var(--ease);
+  border-radius: 26px;
+  box-shadow: 0 18px 36px rgba(84, 52, 18, 0.14);
 }
 .ph-sat img {
   width: 100%;
@@ -195,51 +193,32 @@ html[lang='hi'] .ph-accent {
   object-fit: cover;
 }
 .ph-sat-a {
-  top: -4%;
-  right: 0;
-  rotate: 5deg;
-  animation: ph-float 7s ease-in-out infinite;
+  grid-column: 2;
+  grid-row: 1;
+  border-radius: 26px 100px 26px 26px;
 }
 .ph-sat-b {
-  bottom: -2%;
-  left: -4%;
-  width: 30%;
-  rotate: -6deg;
-  animation: ph-float 8s ease-in-out 1.2s infinite reverse;
+  grid-column: 2;
+  grid-row: 2;
+  border-radius: 26px 26px 100px 26px;
 }
 .ph-note {
-  position: absolute;
-  right: 6%;
-  bottom: 2%;
-  max-width: 15rem;
+  grid-column: 1 / -1;
+  grid-row: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin: 0;
-  padding: 6px 14px;
-  border-radius: 4px;
-  background: var(--on-night);
-  color: var(--ink-night);
+  color: var(--ink-2);
   font-family: var(--font-hand);
-  font-size: 0.98rem;
+  font-size: 1rem;
   line-height: 1.3;
-  rotate: 2deg;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+.ph-note svg {
+  flex: none;
+  color: var(--red);
 }
 .ph-scroll {
-  position: absolute;
-  left: 50%;
-  bottom: 22px;
-  width: 1.5px;
-  height: 44px;
-  overflow: hidden;
-  background: rgba(243, 235, 223, 0.15);
-}
-.ph-scroll span {
-  display: block;
-  width: 100%;
-  height: 50%;
-  background: var(--marigold);
-  animation: ph-scroll 2.2s var(--ease) infinite;
-}
-.ph-compact .ph-scroll {
   display: none;
 }
 
@@ -256,21 +235,8 @@ html[lang='hi'] .ph-accent {
     transform: scale(1.12) translate(-2%, -1%);
   }
 }
-@keyframes ph-float {
-  50% {
-    transform: translateY(-12px);
-  }
-}
-@keyframes ph-scroll {
-  from {
-    transform: translateY(-100%);
-  }
-  to {
-    transform: translateY(200%);
-  }
-}
 
-/* Entrance choreography: eyebrow → words → accent → text → buttons; collage settles. */
+/* Entrance choreography: eyebrow → words → accent → text → buttons; photographs unveil. */
 @media (prefers-reduced-motion: no-preference) {
   .ph-crumbs,
   .ph-eyebrow,
@@ -296,20 +262,16 @@ html[lang='hi'] .ph-accent {
     animation-delay: 0.65s;
   }
   .ph-main {
-    animation: mo-unveil 1.3s var(--ease) 0.15s both;
+    animation: mo-unveil 1.2s var(--ease) 0.15s both;
   }
   .ph-sat-a {
-    animation:
-      mo-pop 0.8s var(--ease) 0.7s both,
-      ph-float 7s ease-in-out 1.5s infinite;
+    animation: mo-pop 0.8s var(--ease) 0.55s both;
   }
   .ph-sat-b {
-    animation:
-      mo-pop 0.8s var(--ease) 0.85s both,
-      ph-float 8s ease-in-out 1.7s infinite reverse;
+    animation: mo-pop 0.8s var(--ease) 0.7s both;
   }
   .ph-note {
-    animation: mo-pop 0.7s var(--ease) 1.1s both;
+    animation: mo-rise 0.7s var(--ease) 0.9s both;
   }
 }
 @keyframes mo-rise {
@@ -325,16 +287,16 @@ html[lang='hi'] .ph-accent {
 }
 @keyframes mo-unveil {
   from {
-    clip-path: inset(100% 0 0 0 round 22px);
+    clip-path: inset(100% 0 0 0);
   }
   to {
-    clip-path: inset(0 0 0 0 round 22px);
+    clip-path: inset(0 0 0 0);
   }
 }
 @keyframes mo-pop {
   from {
     opacity: 0;
-    transform: scale(0.82) translateY(16px);
+    transform: scale(0.86) translateY(16px);
   }
 }
 
@@ -379,14 +341,14 @@ html[lang='hi'] .ph-accent {
   background: var(--brand);
 }
 .btn-primary {
-  --btn-fill: #5e1416;
+  --btn-fill: var(--red-deep);
 }
 .btn-saffron,
 .btn-saffron:hover {
   background: var(--marigold);
 }
 .btn-saffron {
-  --btn-fill: #f6c26d;
+  --btn-fill: var(--saffron-hue);
 }
 .btn-secondary,
 .btn-facebook,
@@ -400,12 +362,12 @@ html[lang='hi'] .ph-accent {
   color: var(--white);
 }
 .btn-ghost-light {
-  --btn-fill: var(--on-night);
+  --btn-fill: var(--ink);
 }
 .btn-ghost-light:hover,
 .btn-ghost-light:focus-visible {
   background: transparent;
-  color: var(--ink-night);
+  color: var(--white);
 }
 .btn .icon-heart {
   transition: transform 0.3s var(--ease);
@@ -441,7 +403,7 @@ html[lang='hi'] .ph-accent {
   text-decoration: none;
   background:
     linear-gradient(currentColor, currentColor) 0 100% / 0% 1.5px no-repeat,
-    linear-gradient(rgba(143, 29, 31, 0.25), rgba(143, 29, 31, 0.25)) 0 100% /
+    linear-gradient(rgba(200, 32, 42, 0.25), rgba(200, 32, 42, 0.25)) 0 100% /
       100% 1.5px no-repeat;
   padding-bottom: 3px;
   transition: background-size 0.4s var(--ease);
@@ -609,34 +571,37 @@ html[lang='hi'] .ph-accent {
 @media (max-width: 1000px) {
   .ph-grid {
     grid-template-columns: minmax(0, 1fr);
-    gap: 48px;
+    gap: 36px;
     min-height: 0;
-    padding: 48px 0 88px;
+    padding: 32px 0 64px;
   }
   .ph-collage {
-    height: 380px;
-    max-width: 560px;
+    height: 420px;
+    max-width: 600px;
   }
 }
 @media (max-width: 640px) {
   .ph h1 {
-    font-size: clamp(2.2rem, 10vw, 2.8rem);
+    font-size: clamp(1.85rem, 8.4vw, 2.4rem);
+  }
+  html[lang='hi'] .ph h1 {
+    font-size: clamp(1.7rem, 7.6vw, 2.2rem);
   }
   .ph .btn-row .btn {
     flex: 1 1 100%;
   }
   .ph-collage {
-    height: 300px;
+    height: 340px;
+    gap: 10px;
   }
-  .ph-main {
-    inset: 0 8% 8% 4%;
+  .ph-sat-a {
+    border-radius: 20px 70px 20px 20px;
   }
-  .ph-sat {
-    border-width: 4px;
+  .ph-sat-b {
+    border-radius: 20px 20px 70px 20px;
   }
   .ph-note {
-    font-size: 0.85rem;
-    max-width: 11rem;
+    font-size: 0.9rem;
   }
   .h-mahila-mosaic {
     grid-template-rows: 140px 140px auto;
@@ -652,8 +617,7 @@ html[lang='hi'] .ph-accent {
   .btn:hover .icon-heart {
     animation: none;
   }
-  .ph-main,
-  .ph-sat {
+  .ph-collage {
     translate: none;
   }
   .rv,

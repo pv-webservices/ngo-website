@@ -3,17 +3,19 @@ import '@fontsource/manrope/latin-400.css';
 import '@fontsource/manrope/latin-500.css';
 import '@fontsource/manrope/latin-600.css';
 import '@fontsource/manrope/latin-700.css';
-import '@fontsource/source-serif-4/latin-600.css';
-import '@fontsource/source-serif-4/latin-600-italic.css';
+import '@fontsource/quicksand/latin-500.css';
+import '@fontsource/quicksand/latin-600.css';
+import '@fontsource/quicksand/latin-700.css';
 import '@fontsource/kalam/latin-400.css';
-import '@fontsource/noto-serif-devanagari/devanagari-600.css';
 import '@fontsource/noto-sans-devanagari/devanagari-400.css';
 import '@fontsource/noto-sans-devanagari/devanagari-600.css';
 import '../styles/global.css';
 import '../styles/home.css';
 import '../styles/pages.css';
 import '../styles/motion.css';
+import '../styles/theme.css';
 import { copy, site, url, programs, type Lang } from '../data/site';
+import { chrome } from '../data/content';
 import Icon from '../components/Icon.astro';
 const {
   lang = 'en',
@@ -27,8 +29,10 @@ const {
   description?: string;
 };
 const t = copy[lang];
+const c = chrome[lang];
 // Header navigation, labelled with each page's title.
 const navSlugs = [
+  '',
   'about',
   'our-work',
   'activities',
@@ -40,6 +44,7 @@ const navSlugs = [
 const navLabels: Record<string, string> =
   lang === 'hi'
     ? {
+        '': c.home,
         about: 'हमारे बारे में',
         'our-work': 'हमारे कार्य',
         activities: 'कहानियाँ',
@@ -49,6 +54,7 @@ const navLabels: Record<string, string> =
         contact: 'संपर्क',
       }
     : {
+        '': c.home,
         about: 'About',
         'our-work': 'Our Work',
         activities: 'Stories',
@@ -71,6 +77,18 @@ const quickLinks = [
   ['contact', t.titles[14]],
 ];
 const canonical = `https://${site.domain}${url(lang, slug)}`;
+const whatsappHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(c.whatsappText)}`;
+// Loader: six open hands in the logo's colours, joined around a heart.
+const handColours = [
+  '#f08a24',
+  '#2e9e4f',
+  '#c8202a',
+  '#1f5fad',
+  '#7a3fa0',
+  '#1a9fd6',
+];
+const HAND =
+  'M-8 0C-9-7-11-13-12-18L-18-25C-20-28-16-31-14-28L-9-22V-37C-9-41-4-41-4-37V-26H-3V-41C-3-45 2-45 2-41V-26H3V-39C3-43 8-43 8-39V-25H9V-34C9-37 13-37 13-34V-17C13-9 11-4 9 0Z';
 const social = [
   ['facebook', site.facebook, lang === 'hi' ? 'फेसबुक' : 'Facebook'],
   ['instagram', site.instagram, lang === 'hi' ? 'इंस्टाग्राम' : 'Instagram'],
@@ -82,7 +100,17 @@ const social = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#8f1d1f" />
+    <meta name="theme-color" content="#ffd84d" />
+    <script is:inline>
+      // The full loader plays once per visit; later pages show a short version.
+      try {
+        if (sessionStorage.getItem('sjks-loader')) {
+          document.documentElement.classList.add('pl-quick');
+        }
+      } catch (e) {
+        /* Storage blocked: always show the full loader. */
+      }
+    </script>
     <title>{title} | {t.name}</title>
     <meta name="description" content={description || t.heroText} />
     <meta property="og:site_name" content={t.name} />
@@ -135,22 +163,49 @@ const social = [
     />
   </head>
   <body data-lang={lang} data-slug={slug}>
+    <div class="preloader" id="preloader" aria-hidden="true">
+      <div class="pl-inner">
+        <svg class="pl-hands" viewBox="-92 -92 184 184" width="184" height="184">
+          <g class="pl-ring">
+            {handColours.map((colour, i) => (
+              <g transform={`rotate(${i * 60})`}>
+                <g class="pl-hand" style={`--i:${i}`}>
+                  <path d={HAND} transform="translate(0 -30) scale(1.32)" fill={colour} />
+                </g>
+              </g>
+            ))}
+          </g>
+          <path
+            class="pl-heart"
+            d="M0 17C-4 12-20 4-20-8c0-7 5-12 11-12 4.5 0 7.5 3 9 6 1.5-3 4.5-6 9-6 6 0 11 5 11 12 0 12-16 20-20 25Z"
+            fill="#c8202a"
+          />
+        </svg>
+        <p class="pl-name">{t.name}</p>
+        <p class="pl-tag">{c.loaderTag}</p>
+        <span class="pl-bar"><span></span></span>
+      </div>
+    </div>
     <a class="skip-link" href="#main">
       {t.skip}
     </a>
     <div class="topbar">
       <div class="container topbar-inner">
+        <p class="top-note">
+          <Icon name="heart" size={15} filled />
+          <span>{c.topNote}</span>
+        </p>
         <div class="topbar-contact">
-          <a href={`tel:${site.phones[0]}`}>
-            <Icon name="phone" size={14} />
-            <span>{site.phoneLabels[0]}</span>
+          <a class="top-chip is-blue" href={`tel:${site.phones[0]}`}>
+            <Icon name="phone" size={13} />
+            {site.phoneLabels[0]}
           </a>
-          <span class="divider" aria-hidden="true"></span>
-          <a class="top-phone-2" href={`tel:${site.phones[1]}`}>
+          <a class="top-chip is-purple" href={`tel:${site.phones[1]}`}>
+            <Icon name="phone" size={13} />
             {site.phoneLabels[1]}
           </a>
-          <a class="top-email" href={`mailto:${site.email}`}>
-            <Icon name="mail" size={15} />
+          <a class="top-chip is-green top-email" href={`mailto:${site.email}`}>
+            <Icon name="mail" size={13} />
             {site.email}
           </a>
         </div>
@@ -191,10 +246,7 @@ const social = [
       <div class="container header-inner">
         <a class="brand" href={url(lang)}>
           <img src="/images/logo.webp" width="72" height="72" alt="" />
-          <span>
-            <strong>{t.name}</strong>
-            <small>{t.tagline}</small>
-          </span>
+          <strong>{t.name}</strong>
         </a>
         <button
           class="menu-toggle"
@@ -203,6 +255,7 @@ const social = [
           aria-label={t.menu}
         >
           <Icon name="menu" />
+          <Icon name="close" />
         </button>
         <nav
           id="navigation"
@@ -231,7 +284,7 @@ const social = [
     <main id="main">
       <slot />
     </main>
-    <section class="touch-band" aria-labelledby="touch-title">
+    <section class="touch-band sketch" aria-labelledby="touch-title">
       <div class="container touch-grid">
         <div class="touch-copy">
           <h2 id="touch-title">{t.contactEyebrow}</h2>
@@ -291,7 +344,7 @@ const social = [
         </div>
       </div>
     </section>
-    <footer class="site-footer">
+    <footer class="site-footer sketch">
       <div class="container footer-grid">
         <div class="footer-brand">
           <a class="brand" href={url(lang)}>
@@ -302,16 +355,26 @@ const social = [
               alt=""
               loading="lazy"
             />
-            <span>
-              <strong>{t.name}</strong>
-              <small>{t.tagline}</small>
-            </span>
+            <strong>{t.name}</strong>
           </a>
           <p>{t.footerText}</p>
-          <a class="btn btn-saffron" href={url(lang, 'donate')}>
+          <a class="btn btn-primary" href={url(lang, 'donate')}>
             <Icon name="heart" size={16} filled />
             {t.donate}
           </a>
+          <div class="footer-social">
+            {social.map(([icon, href, label]) => (
+              <a
+                href={href}
+                aria-label={label}
+                target="_blank"
+                rel="noopener noreferrer"
+                class={`social-dot large ${icon}`}
+              >
+                <Icon name={icon} size={20} />
+              </a>
+            ))}
+          </div>
         </div>
         <div>
           <h3>{t.quickLinks}</h3>
@@ -333,20 +396,22 @@ const social = [
             ))}
           </ul>
         </div>
-        <div>
-          <h3>{t.follow.replace(':', '')}</h3>
-          <div class="footer-social">
-            {social.map(([icon, href, label]) => (
-              <a
-                href={href}
-                aria-label={label}
-                target="_blank"
-                rel="noopener noreferrer"
-                class={`social-dot large ${icon}`}
-              >
-                <Icon name={icon} size={22} />
-              </a>
-            ))}
+        <div class="footer-qr-col">
+          <h3>{c.qrTitle}</h3>
+          <div class="footer-qr">
+            <img
+              src="/images/donation-qr.png"
+              alt={t.qrAlt}
+              width="150"
+              height="150"
+              loading="lazy"
+            />
+            <strong>{site.bank.accountName}</strong>
+            <p>{c.qrText}</p>
+            <a class="text-link" href={url(lang, 'donate#donate-methods')}>
+              {t.bankTitle}
+              <Icon name="arrow" size={15} />
+            </a>
           </div>
           <div class="footer-language">
             <a href={url('en', slug)} data-language="en" lang="en">
@@ -373,6 +438,54 @@ const social = [
         </div>
       </div>
     </footer>
+    <div class="whatsapp-float">
+      <span class="wa-label" aria-hidden="true">{c.whatsapp}</span>
+      <a
+        href={whatsappHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${c.whatsapp} (${site.phoneLabels[0]})`}
+      >
+        <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true">
+          <path
+            fill="currentColor"
+            d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.8 2 6.9L3 29l6.5-2c2 1.1 4.2 1.6 6.5 1.6 7.2 0 13-5.7 13-12.8S23.2 3 16 3Zm0 23.4c-2 0-4-.6-5.7-1.6l-.4-.2-3.9 1.2 1.3-3.7-.3-.4a10.4 10.4 0 0 1-1.7-5.8C5.3 10 10.1 5.3 16 5.3s10.7 4.7 10.7 10.5S21.9 26.4 16 26.4Zm5.9-7.8c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6.3-.5c.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.2 1.3 3.4c.2.2 2.3 3.5 5.6 4.9 2.8 1.1 3.3.9 3.9.8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4Z"
+          />
+        </svg>
+      </a>
+    </div>
+    <script is:inline>
+      (function () {
+        var loader = document.getElementById('preloader');
+        if (!loader) return;
+        var root = document.documentElement;
+        var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var quick = root.classList.contains('pl-quick');
+        var minTime = still ? 200 : quick ? 450 : 1900;
+        var start = performance.now();
+        var done = false;
+        function finish() {
+          if (done) return;
+          done = true;
+          var wait = Math.max(0, minTime - (performance.now() - start));
+          setTimeout(function () {
+            loader.classList.add('is-done');
+            try {
+              sessionStorage.setItem('sjks-loader', '1');
+            } catch (e) {
+              /* Storage blocked: the full loader shows again next time. */
+            }
+            setTimeout(function () {
+              loader.remove();
+            }, 800);
+          }, wait);
+        }
+        if (document.readyState === 'complete') finish();
+        else window.addEventListener('load', finish);
+        // Never hold the page back on a slow image or video.
+        setTimeout(finish, 3200);
+      })();
+    </script>
     <script src="../scripts/site.ts"></script>
   </body>
 </html>

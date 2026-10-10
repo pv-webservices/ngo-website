@@ -11,30 +11,88 @@ export const statusLabels: Bi<Record<Status, string>> = {
   hi: { ongoing: 'निरंतर जारी', periodic: 'समय-समय पर', planned: 'प्रस्तावित' },
 };
 
-// Three slowly drifting columns on desktop; the first two also form the mobile rows.
-// Old (2025) and new (2026) photographs are mixed so the hero shows the whole history.
-export const heroColumns: string[][] = [
-  [
-    'selfie-with-resident',
-    'holi-milan',
-    'ration-distribution',
-    'volunteers',
-    'resident-portrait-man',
-  ],
-  [
-    'mahila-diwas-group',
-    'window-conversation',
-    'yoga-session',
-    'office-cake',
-    'residents-gathering',
-  ],
-  [
-    'volunteers-logo-wall',
-    'resident-and-caregiver',
-    'president-with-resident',
-    'women-members',
-    'distribution-office',
-  ],
+// Site-wide interface text added in the colourful redesign (header, loader, WhatsApp,
+// footer QR, hero slider controls).
+export const chrome: Bi<{
+  topNote: string;
+  home: string;
+  whatsapp: string;
+  whatsappText: string;
+  loading: string;
+  loaderTag: string;
+  qrTitle: string;
+  qrText: string;
+  slidesLabel: string;
+  goToSlide: string;
+  pauseSlides: string;
+  playSlides: string;
+}> = {
+  en: {
+    topNote: 'Be a helping hand for elders who have no one',
+    home: 'Home',
+    whatsapp: 'Chat with us on WhatsApp',
+    whatsappText:
+      'Namaste! I would like to know more about Shanti Jan Kalyan Sansthan.',
+    loading: 'Loading',
+    loaderTag: 'Joining hands in care',
+    qrTitle: 'Scan & Donate',
+    qrText: 'Use any UPI app. Check the name “Shanti Jan Kalyan Sansthan” before you pay.',
+    slidesLabel: 'Photographs of our work',
+    goToSlide: 'Show photograph',
+    pauseSlides: 'Pause the slideshow',
+    playSlides: 'Play the slideshow',
+  },
+  hi: {
+    topNote: 'बेसहारा बुज़ुर्गों का सहारा बनें',
+    home: 'होम',
+    whatsapp: 'व्हाट्सऐप पर बात करें',
+    whatsappText:
+      'नमस्ते! मैं शांति जन कल्याण संस्थान के बारे में और जानना चाहता/चाहती हूँ।',
+    loading: 'लोड हो रहा है',
+    loaderTag: 'सेवा में जुड़ते हाथ',
+    qrTitle: 'स्कैन करें और दान दें',
+    qrText: 'किसी भी यूपीआई ऐप से। भुगतान से पहले नाम “शांति जन कल्याण संस्थान” जाँच लें।',
+    slidesLabel: 'हमारे कार्यों की तस्वीरें',
+    goToSlide: 'तस्वीर दिखाएँ',
+    pauseSlides: 'स्लाइड शो रोकें',
+    playSlides: 'स्लाइड शो चलाएँ',
+  },
+};
+
+// Splits a heading so its last word can carry the marker highlight.
+export const splitLast = (text: string): [string, string] => {
+  const i = text.trimEnd().lastIndexOf(' ');
+  return i < 0 ? ['', text] : [text.slice(0, i + 1), text.slice(i + 1)];
+};
+
+// Homepage hero slideshow: only photographs of hands-on care for people (grooming, hospital
+// visits, eye checks, first aid, sitting with residents), as the client asked.
+// `focus` is the object-position that keeps faces in frame when the photograph is cropped.
+export interface HeroSlide {
+  image: string;
+  focus: string;
+}
+export const heroSlides: HeroSlide[] = [
+  { image: 'hair-care', focus: '50% 0%' },
+  { image: 'beard-grooming', focus: '50% 40%' },
+  { image: 'gift-for-resident', focus: '55% 40%' },
+  { image: 'hospital-admission', focus: '50% 35%' },
+  { image: 'eye-camp-team', focus: '62% 45%' },
+  { image: 'street-outreach', focus: '50% 40%' },
+  { image: 'president-with-elder', focus: '62% 55%' },
+  { image: 'hand-care', focus: '50% 55%' },
+  { image: 'eye-checkup-ashram', focus: '38% 55%' },
+  { image: 'winter-fire', focus: '62% 55%' },
+  { image: 'food-distribution-winter', focus: '35% 45%' },
+  { image: 'yoga-session', focus: '50% 50%' },
+];
+
+// One photograph for each "What we can show you" point, in the same order as `proof`.
+export const proofImages: HeroSlide[] = [
+  { image: 'residents-gathering', focus: '50% 55%' },
+  { image: 'eye-camp-checkup', focus: '50% 42%' },
+  { image: 'mahila-diwas-2022', focus: '60% 40%' },
+  { image: 'holi-children-2023', focus: '50% 35%' },
 ];
 
 export interface Cause {
@@ -554,6 +612,29 @@ export const mahila = {
       ],
     },
     {
+      id: 'mahila-8-march',
+      en: [
+        'Mahila Diwas · 8 March',
+        'The banner reads “8 March … Mahila Diwas” under the Sansthan’s name. Year to be confirmed by the NGO.',
+      ],
+      hi: [
+        'महिला दिवस · 8 मार्च',
+        'संस्थान के नाम के साथ बैनर पर “8 मार्च … महिला दिवस” लिखा है। वर्ष की पुष्टि संस्था करेगी।',
+      ],
+      photos: [
+        {
+          image: 'mahila-diwas-march-group',
+          en: 'Members and guests under the Mahila Diwas banner',
+          hi: 'महिला दिवस बैनर के नीचे सदस्य और अतिथि',
+        },
+        {
+          image: 'mahila-diwas-march-honour',
+          en: 'Women honoured with bouquets and mementos',
+          hi: 'गुलदस्ते और स्मृति-चिह्न से सम्मानित महिलाएँ',
+        },
+      ],
+    },
+    {
       id: 'women-gatherings',
       en: [
         'Women of the Sansthan',
@@ -676,11 +757,7 @@ export interface PageHero {
 
 export const pageHeroes: Record<string, PageHero> = {
   about: {
-    images: [
-      'president-with-resident',
-      'residents-gathering',
-      'volunteers-logo-wall',
-    ],
+    images: ['president-with-elder', 'ashram-team-beds', 'volunteers-logo-wall'],
     en: ['Who we are', 'Strangers, treated as family.'],
     hi: ['हम कौन हैं', 'अजनबी भी, परिवार की तरह।'],
   },

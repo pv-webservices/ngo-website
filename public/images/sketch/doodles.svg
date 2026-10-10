@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" viewBox="0 0 420 420" fill="none" stroke="#b9853f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Hand-drawn line art for section backgrounds: hearts, diyas, marigolds, leaves,
+       open hands and small stars. Tiled and shown at low opacity. -->
+  <!-- heart -->
+  <path d="M38 52c0-9 12-11 14-2 2-9 14-7 14 2 0 9-14 15-14 19 0-4-14-10-14-19Z"/>
+  <!-- diya with flame -->
+  <path d="M150 70c10 10 34 10 44 0Z M162 70c0 5 20 5 20 0"/>
+  <path d="M172 62c-5-6-2-12 0-16 2 4 5 10 0 16Z"/>
+  <!-- marigold -->
+  <circle cx="300" cy="48" r="5"/>
+  <path d="M300 34c4 0 5 5 0 9-5-4-4-9 0-9Zm14 14c0 4-5 5-9 0 4-5 9-4 9 0Zm-14 14c-4 0-5-5 0-9 5 4 4 9 0 9Zm-14-14c0-4 5-5 9 0-4 5-9 4-9 0Zm24-10c3 3 0 7-6 6 0-6 3-9 6-6Zm0 20c-3 3-7 0-6-6 6 0 9 3 6 6Zm-20 0c-3-3 0-7 6-6 0 6-3 9-6 6Zm0-20c3-3 7 0 6 6-6 0-9-3-6-6Z"/>
+  <!-- leaf sprig -->
+  <path d="M380 130c-14-4-26 4-30 18 14 4 26-4 30-18Zm-30 18 22-12"/>
+  <path d="M362 170c-10-8-24-6-30 4 10 8 24 6 30-4Zm-30 4 20-2"/>
+  <!-- open hand -->
+  <path d="M70 200c-6-6-8-14-8-22v-14c0-4 6-4 6 0v10m0-18v-16c0-4 6-4 6 0v18m0-22c0-4 6-4 6 0v22m0-18c0-4 6-4 6 0v26c0 8-3 14-8 20m-16-30c-3-4-8-4-9 0l7 12"/>
+  <!-- small heart -->
+  <path d="M232 168c0-5 7-6 8-1 1-5 8-4 8 1s-8 9-8 11c0-2-8-6-8-11Z"/>
+  <!-- swirl -->
+  <path d="M130 270c8-14 26-14 30 0 3 10-10 16-15 8-4-6 4-10 7-6"/>
+  <!-- stars and sparkles -->
+  <path d="M260 250v14m-7-7h14 M40 320v10m-5-5h10 M400 250v10m-5-5h10 M200 380v12m-6-6h12"/>
+  <!-- dots -->
+  <circle cx="110" cy="110" r="1.6" fill="#b9853f"/>
+  <circle cx="240" cy="110" r="1.6" fill="#b9853f"/>
+  <circle cx="20" cy="250" r="1.6" fill="#b9853f"/>
+  <circle cx="330" cy="330" r="1.6" fill="#b9853f"/>
+  <circle cx="160" cy="210" r="1.6" fill="#b9853f"/>
+  <!-- lotus -->
+  <path d="M300 300c6 8 6 18 0 26-6-8-6-18 0-26Zm0 26c-10 0-18-4-22-12 8-2 16 2 22 12Zm0 0c10 0 18-4 22-12-8-2-16 2-22 12Zm-26 6h52"/>
+  <!-- two hearts joined -->
+  <path d="M60 372c0-6 8-7 9-1 1-6 9-5 9 1s-9 10-9 13c0-3-9-7-9-13Z M82 366c0-5 7-6 8-1 1-5 8-4 8 1s-8 9-8 11c0-2-8-6-8-11Z"/>
+  <!-- small diya -->
+  <path d="M370 396c6 6 20 6 26 0Z M383 390c-3-4-1-8 0-10 1 2 3 6 0 10Z"/>
+  <!-- leaf -->
+  <path d="M220 330c-4-12 2-24 14-28 4 12-2 24-14 28Zm0 0 10-20"/>
+</svg>

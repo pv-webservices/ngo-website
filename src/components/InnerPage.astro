@@ -63,7 +63,7 @@ const docRequest = `mailto:${site.email}?subject=${encodeURIComponent(
 // Extra photographs for the Events & Stories page, beyond the two on the homepage.
 const storyExtras: Record<string, string[]> = {
   'eye-camp': [],
-  winter: ['street-outreach', 'roadside-grooming', 'roadside-first-aid'],
+  winter: ['winter-fire', 'roadside-grooming', 'roadside-first-aid'],
   children: ['children-class'],
 };
 const festivals = [
@@ -375,13 +375,14 @@ const involveTargets = [
 {slug === 'our-journey' && (
   <>
     <section
-      class="h-journey"
+      class="h-journey photo-wash sketch"
+      style="--bg:url('/images/photos/kendra-building-sm.webp')"
       id="beginnings"
       aria-labelledby="beginnings-title"
     >
       <div class="container h-journey-grid">
         <div class="h-journey-copy">
-          <p class="eyebrow eyebrow-light">{h.journeyEyebrow}</p>
+          <p class="eyebrow">{h.journeyEyebrow}</p>
           <h2 id="beginnings-title">{h.journeyTitle}</h2>
           {h.journeyText.map((paragraph) => (
             <p>{paragraph}</p>
@@ -490,6 +491,7 @@ const involveTargets = [
             class:list={[
               'story-module',
               'story-anchor',
+              `tone-${['saffron', 'green', 'purple'][i % 3]}`,
               { reversed: i % 2 === 1 },
             ]}
           >

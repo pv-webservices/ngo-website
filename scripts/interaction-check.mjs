@@ -11,27 +11,47 @@ const check = (name, ok, detail = '') =>
 // Desktop interactions
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 await page.goto(`${origin}/`);
-const reel = page.locator('[data-reel]');
-const anim = () =>
-  page.$eval(
-    '.h-col-1 .h-track',
-    (el) => getComputedStyle(el).animationPlayState,
+// The loader covers the page briefly; interactions start once it has gone.
+const loaded = (p) =>
+  p.waitForSelector('#preloader', { state: 'detached', timeout: 8000 });
+await loaded(page);
+const hero = page.locator('[data-hero]');
+const activeSlide = () =>
+  page.$$eval('[data-slide]', (slides) =>
+    slides.findIndex((el) => el.classList.contains('is-active')),
   );
-check('hero reel animates', (await anim()) === 'running');
 await page.mouse.move(5, 5);
-await page.click('.h-reel-toggle');
+await page.waitForTimeout(6600);
+check('hero slideshow advances', (await activeSlide()) === 1);
+await page.click('.hero-dot[data-goto="3"]');
+await page.mouse.move(5, 5);
+check(
+  'hero dot shows that photograph',
+  (await activeSlide()) === 3 &&
+    (await page.getAttribute('.hero-dot[data-goto="3"]', 'aria-current')) ===
+      'true',
+);
+await page.click('.hero-toggle');
+await page.mouse.move(5, 5);
 check(
   'hero toggle pauses',
-  (await reel.getAttribute('class')).includes('is-paused') &&
-    (await anim()) === 'paused',
+  (await hero.getAttribute('class')).includes('is-paused'),
 );
 check(
   'hero toggle aria-pressed',
-  (await page.getAttribute('.h-reel-toggle', 'aria-pressed')) === 'true',
+  (await page.getAttribute('.hero-toggle', 'aria-pressed')) === 'true',
 );
 check(
   'hero toggle label switches',
-  (await page.textContent('.h-reel-toggle .sr-only')).includes('Play'),
+  (await page.textContent('.hero-toggle .sr-only')).includes('Play'),
+);
+await page.waitForTimeout(6600);
+check('paused slideshow stays put', (await activeSlide()) === 3);
+check(
+  'whatsapp button links to the NGO number',
+  (await page.getAttribute('.whatsapp-float a', 'href')).startsWith(
+    'https://wa.me/919821958768',
+  ),
 );
 await page.click('.h-watch');
 await page.waitForTimeout(2000);
@@ -58,6 +78,7 @@ check(
 );
 
 await page.goto(`${origin}/gallery/`);
+await loaded(page);
 const visible = () =>
   page.$$eval('.gallery-item', (els) => els.filter((e) => !e.hidden).length);
 const total = await page.$$eval('.gallery-item', (els) => els.length);
@@ -88,11 +109,12 @@ check(
 );
 
 await page.goto(`${origin}/mahila-diwas/`);
+await loaded(page);
 const mahilaCount = await page.$$eval(
   '.album .gallery-item',
   (els) => els.length,
 );
-check('Mahila Diwas collection photos', mahilaCount === 9, `${mahilaCount}`);
+check('Mahila Diwas collection photos', mahilaCount === 11, `${mahilaCount}`);
 check(
   'single lightbox on Mahila page',
   (await page.$$('.lightbox')).length === 1,
@@ -105,6 +127,7 @@ check(
 await page.keyboard.press('Escape');
 
 await page.goto(`${origin}/contact/`);
+await loaded(page);
 await page.fill('#name', 'Test Visitor');
 await page.fill('#email', 'visitor@example.test');
 await page.fill('#message', 'This is a local test of the enquiry draft.');
@@ -118,6 +141,7 @@ check(
 // Mobile navigation
 const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
 await mobile.goto(`${origin}/hi/`);
+await loaded(mobile);
 await mobile.click('.menu-toggle');
 check(
   'mobile menu opens',
@@ -139,12 +163,11 @@ const stillContext = await browser.newContext({
 });
 const still = await stillContext.newPage();
 await still.goto(`${origin}/`);
+await loaded(still);
 check(
-  'reduced motion stops hero drift',
-  (await still.$eval(
-    '.h-col-1 .h-track',
-    (el) => getComputedStyle(el).animationName,
-  )) === 'none',
+  'reduced motion starts the slideshow paused',
+  (await still.getAttribute('[data-hero]', 'class')).includes('is-paused') &&
+    (await still.getAttribute('.hero-toggle', 'aria-pressed')) === 'true',
 );
 
 // Accessibility

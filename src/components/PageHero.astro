@@ -1,7 +1,7 @@
 ---
-// Cinematic header for every inner page: dark photographic field, words of the title rising
-// in, an italic accent line, and a collage of three of the NGO's own photographs that settle
-// in and float gently (with pointer parallax on desktop; still with reduced motion).
+// Header for every inner page: cream paper with faint sketches and the main photograph washed
+// in behind, words of the title rising in, a handwritten accent line, and three of the NGO's
+// own photographs in a shaped grid that never overlaps (gentle pointer parallax on desktop).
 import {
   copy,
   site,
@@ -67,7 +67,7 @@ const cta =
 ---
 
 <section
-  class:list={['ph', { 'ph-compact': !hero }]}
+  class:list={['ph', 'sketch', { 'ph-compact': !hero }]}
   data-ph
   aria-labelledby="page-title"
 >
@@ -112,20 +112,20 @@ const cta =
       <p class="ph-text">{description}</p>
       {!policy && (
         <div class="btn-row">
-          <a class="btn btn-primary btn-xl" href={cta.href}>
+          <a class="btn btn-primary" href={cta.href}>
             <Icon name="heart" size={17} filled />
             {cta.label}
           </a>
           {slug === 'contact' ? (
             <a
-              class="btn btn-ghost-light btn-xl"
+              class="btn btn-secondary"
               href={`tel:${site.phones[0]}`}
             >
               <Icon name="phone" size={17} />
               {site.phoneLabels[0]}
             </a>
           ) : (
-            <a class="btn btn-ghost-light btn-xl" href={url(lang, 'contact')}>
+            <a class="btn btn-secondary" href={url(lang, 'contact')}>
               {t.contact}
               <Icon name="arrow" size={17} />
             </a>
@@ -153,6 +153,7 @@ const cta =
           <img src={imgSm(hero.images[2])} alt="" width="640" height="640" />
         </figure>
         <p class="ph-note" aria-hidden="true">
+          <Icon name="heart" size={14} filled />
           {photoCaption(hero.images[0], lang)}
         </p>
       </div>
